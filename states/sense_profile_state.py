@@ -4,17 +4,16 @@ import time
 import RPi.GPIO as GPIO
 
 from application import Application, COMMAND_LINE_PARAM_PROFILE_ID
-from profiles import Profiles
+from profiles import profile_by_id, profile_by_jumper
 from .state import State
 
 PINS = [5, 6, 13, 19]
 
 
 class SensingProfileState(State):
-
     def __load_profile__(self, id, first=True):
         self.app.red_led_on = False
-        p = Profiles().profile_by_id(id)
+        p = profile_by_id(id)
         if first:
             self.app.profiles = []
             self.app.print("Loading profile {}".format(id))
@@ -39,10 +38,12 @@ class SensingProfileState(State):
         self.skip_detect = False
         self.led_status = True
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
-            self.app.print("Using profile from command line: {}".format(sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]))
-            self.__load_profile__(sys.argv[1])
-            self.skip_detect = True
-            return
+            id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
+            if not id=='_':
+                self.app.print("Using profile from command line: {}".format(id))
+                self.__load_profile__(sys.argv[1])
+                self.skip_detect = True
+                return
         self.app.print("Detecting profile by jumper")
         self.message_shown = False
 
@@ -53,7 +54,7 @@ class SensingProfileState(State):
             p = PINS[j]
             if not GPIO.input(p):
                 self.app.print("Detected jumper {}".format(j + 1))
-                temp = Profiles().profile_by_jumper(j + 1)
+                temp = profile_by_jumper(j + 1)
                 id = temp["id"]
                 self.__load_profile__(id)
                 return True
