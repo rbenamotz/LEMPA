@@ -25,7 +25,7 @@
     "type": "bin",
     "device": "m328p",
     "programmer": "linuxspi",
-    "jumper" : 1,
+    "jumper" : 2,
     "bins": [
       {
         "method": "local",
