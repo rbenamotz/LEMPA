@@ -4,11 +4,12 @@
     "type": "bin",
     "device": "attiny85",
     "programmer": "linuxspi",
+    "jumper" : 3,
     "speed": 9600,
     "bins": [
       {
         "method": "cloud",
-        "url": "tbc/tinyblink",
+        "url": "https://github.com/rbenamotz/LEMPA/releases/download/0.01/tinyblink.hex",
         "name": "tinyblink"
       }
     ],
@@ -24,6 +25,7 @@
     "type": "bin",
     "device": "m328p",
     "programmer": "linuxspi",
+    "jumper" : 1,
     "bins": [
       {
         "method": "local",
@@ -57,12 +59,12 @@
     "id": "blink-cloud",
     "type": "bin",
     "device": "m328p",
-    "jumper": 4,
+    "jumper": 1,
     "programmer": "linuxspi",
     "bins": [
       {
         "method": "cloud",
-        "url": "tbc",
+        "url": "https://github.com/rbenamotz/LEMPA/releases/download/0.01/blink.hex",
         "name": "blink"
       }
     ],
