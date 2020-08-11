@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Serial data injector</title>
+        <script language="javascript">
+ddd = {};
+function buildForm() {
+    root = document.getElementById("mainform");
+    ddd.forEach(f => {
+        div0 = document.createElement("div");
+        div0.className = "row";
+        div1 = document.createElement("div");
+        div1.className = "caption";
+        div2 = document.createElement("div");
+        div2.id = "data_" + f.id;
+        div1.innerText = f.title;
+        div2.innerText = f.value;
+        div2.contentEditable = true;
+        div0.appendChild(div1);
+        div0.appendChild(div2);
+        root.appendChild(div0);
+    })
+}
+function sendData() {
+    ddd.forEach(f => {
+        d = document.getElementById("data_" + f.id);
+        f.value = d.innerText;
+    });
+    fetch('/data', {method: 'POST', body: JSON.stringify(ddd)})
+        .then (resp => resp.text())
+        .then (txt => alert(txt))
+}
+
+function onload() {
+    fetch ('/data')
+        .then (resp => resp.json())
+        .then (data => {
+            ddd = data;
+            buildForm()
+        });
+}
+    </script>
+    </head>
+    <body onload="onload()">
+        <h1>Serial data injector</h1>
+        <div id="mainform"></div>
+        <hr>
+        <input type="button" onclick="sendData()" value="update">
+    </body>
+    <style>
+        .row {
+            padding-top: 10px;
+        }
+        .caption {
+            background-color: cyan;
+        }
+    </style>
+</html>
+

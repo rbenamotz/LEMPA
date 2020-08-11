@@ -1,0 +1,120 @@
+[
+  {
+    "id": "blinktiny",
+    "type": "bin",
+    "device": "attiny85",
+    "programmer": "linuxspi",
+    "speed": 9600,
+    "bins": [
+      {
+        "method": "cloud",
+        "url": "tbc/tinyblink",
+        "name": "tinyblink"
+      }
+    ],
+    "fuses": {
+      "lfuse": "0xE2",
+      "hfuse": "0xDF",
+      "efuse": "0xFF",
+      "lock": "0xFF"
+    }
+  },
+  {
+    "id": "blinklocal",
+    "type": "bin",
+    "device": "m328p",
+    "programmer": "linuxspi",
+    "bins": [
+      {
+        "method": "local",
+        "name": "blinklocal"
+      }
+    ],
+    "fuses": {
+      "lfuse": "0xF7",
+      "hfuse": "0xD6",
+      "efuse": "0xFD",
+      "lock": "0xFF"
+    },
+    "plugins": [
+      {
+        "name": "serialinjector",
+        "conf": {
+          "serialSpeed": 38400,
+          "fields": [
+            {
+              "id": "blinkrate",
+              "value": 5,
+              "title": "Blink rate in 100ms. For exampe value of 5 means 500ms off, 500ms on",
+              "type": "byte"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "blink-cloud",
+    "type": "bin",
+    "device": "m328p",
+    "jumper": 4,
+    "programmer": "linuxspi",
+    "bins": [
+      {
+        "method": "cloud",
+        "url": "tbc",
+        "name": "blink"
+      }
+    ],
+    "fuses": {
+      "lfuse": "0xF7",
+      "hfuse": "0xD6",
+      "efuse": "0xFD",
+      "lock": "0xFF"
+    },
+    "plugins": [
+      {
+        "name": "serialinjector",
+        "conf": {
+          "serialSpeed": 38400,
+          "fields": [
+            {
+              "id": "blinkrate",
+              "value": 5,
+              "title": "Blink rate in 100ms. For example, value of 5 means 500ms off, 500ms on",
+              "type": "byte"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "sample-esp",
+    "type": "bin",
+    "device": "esp8266",
+    "programmer": "esptool",
+    "bins": [
+      {
+        "method": "cloud",
+        "url": "http://tbc/binfile",
+        "name": "binfile",
+        "addr": "0x00000"
+      },
+      {
+        "method": "cloud",
+        "url": "http://tbc/spiffs",
+        "name": "spiffs",
+        "addr": "0x300000"
+      }
+    ]
+  },
+  {
+    "id": "blinkx2",
+    "type": "composite",
+    "profiles": [
+      "blink-cloud",
+      "blink-cloud"
+    ]
+  }
+]
