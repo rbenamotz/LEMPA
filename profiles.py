@@ -11,13 +11,15 @@ print("Reading profiles from {}".format(file_name))
 with open(file_name) as f:
     profile_data = json.load(f)
 
+
 def profile_by_jumper(jumper):
     for x in profile_data:
-        if not "jumper" in x:
+        if "jumper" not in x:
             continue
         if x["jumper"] == jumper:
             return x
     raise Exception("No profile defined for jumper {}".format(jumper))
+
 
 def profile_by_id(profile_id):
     for x in profile_data:

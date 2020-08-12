@@ -11,8 +11,9 @@ ser = serial.Serial(port='/dev/serial0', baudrate=38400, parity=serial.PARITY_NO
                     bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
 
 
-class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
-    def export_config(self):
+class MyRequestHandler(BaseHTTPRequestHandler):
+    @staticmethod
+    def export_config():
         packet = bytearray()
         for f in test_conf:
             packet.append(int(f["value"]))
@@ -31,7 +32,7 @@ class testHTTPServer_RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global test_conf
         data = json.loads(self.rfile.read(int(self.headers['Content-Length'])).decode('utf8'))
-        test_conf = data;
+        test_conf = data
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
@@ -61,7 +62,7 @@ class WebserverPlugin(Plugin):
 
     def run(self):
         self.app.print("Starting web server for serial injector on port 8080")
-        httpd = HTTPServer(('', 8080), testHTTPServer_RequestHandler)
+        httpd = HTTPServer(('', 8080), MyRequestHandler)
         httpd.serve_forever()
 
     def on_start(self):

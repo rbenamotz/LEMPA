@@ -5,7 +5,7 @@ class View(object):
     def header(self):
         pass
 
-    def print(self,txt):
+    def print(self, txt):
         pass
 
     def error(self, e):

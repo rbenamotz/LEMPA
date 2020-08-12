@@ -26,7 +26,7 @@ class FirmwareDownload(State):
             o = r.json()
             download_url = o["url"]
         else:
-            raise Exception ("Method is cloud but URL data was given")
+            raise Exception("Method is cloud but URL data was given")
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
         self.app.print("{} bytes downloaded\n-----".format(p.st_size))

@@ -8,14 +8,14 @@ LEMPA is a combination of software and hardware to allow easy..ish programming o
 LEMPA is composed of 3 parts:
 #### Hardware: Raspberry PI HAT
 A custom PCB that contains all the relevant connections required to program:
-* ATMega328 (including external oscilator)
+* ATMega328 (including external oscillator)
 * ATTiny
 * ESP8266 
 * Arduino mini pro
 * Any other ATMega controller via connector
 
 The board also includes:
-* LEDs for visual status (ready, downloaindg, programing, success, and error)
+* LEDs for visual status (ready, downloading, programing, success, and error)
 * Jumper to define which profile to use.
 * LED for testing 
 * Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud 
@@ -74,9 +74,9 @@ The configuration file can contain as many profiles as required.
 ```
 * **id** Unique ID for the profile 
 * **type** `bin` or `composite`. Composite allows for multiple profile programming, one after another.
-* **jumper** *optional* If specfied, and the relevant profile is chosen with a physical jumper, this profile will be used if none was specified as part of command line parameter.
-* **device** Type of device to program. Not requried for ESP. See [AVRDude](https://www.nongnu.org/avrdude/user-manual/avrdude.html) for list of devices
-* **bins** List of bins to upload. For ATMega only one bin is requried. For ESP multiple bins can be specified to support SPIFFS
+* **jumper** *optional* If specified, and the relevant profile is chosen with a physical jumper, this profile will be used if none was specified as part of command line parameter.
+* **device** Type of device to program. Not required for ESP. See [AVRDude](https://www.nongnu.org/avrdude/user-manual/avrdude.html) for list of devices
+* **bins** List of bins to upload. For ATMega only one bin is required. For ESP multiple bins can be specified to support SPIFFS
 * **plugins** System support a simple web server with the ability to send data to the ATMega via serial. This allows for parameter tweaking and QA. 
 
  

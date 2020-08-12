@@ -1,6 +1,7 @@
 class Plugin(object):
     def __init__(self, app):
         self.app = app
+        self.conf = {}
 
     def on_start(self):
         pass
@@ -8,7 +9,7 @@ class Plugin(object):
     def on_exit(self):
         pass
 
-    def load_conf(self,conf):
+    def load_conf(self, conf):
         self.conf = conf
 
     def __repr__(self):

@@ -11,12 +11,12 @@ PINS = [5, 6, 13, 19]
 
 
 class SensingProfileState(State):
-    def __load_profile__(self, id, first=True):
+    def __load_profile__(self, profile_id, first=True):
         self.app.red_led_on = False
-        p = profile_by_id(id)
+        p = profile_by_id(profile_id)
         if first:
             self.app.profiles = []
-            self.app.print("Loading profile {}".format(id))
+            self.app.print("Loading profile {}".format(profile_id))
             if "plugins" in p:
                 for pl in self.app.plugins:
                     pl.load_conf(p["plugins"][0]["conf"])
@@ -39,7 +39,7 @@ class SensingProfileState(State):
         self.led_status = True
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
             id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
-            if not id=='_':
+            if not id == '_':
                 self.app.print("Using profile from command line: {}".format(id))
                 self.__load_profile__(sys.argv[1])
                 self.skip_detect = True
