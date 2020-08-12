@@ -20,6 +20,7 @@ The board also includes:
 * LED for testing 
 * Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud 
 
+![Image](imgs/2D.png)
 #### Software
 The software reads the different profiles and orchestrates the process of downloading new BINs and programming 
 ###### Installation instructions
