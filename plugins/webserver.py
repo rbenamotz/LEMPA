@@ -7,8 +7,12 @@ import serial
 from plugin import Plugin
 
 test_conf = {}
-ser = serial.Serial(port='/dev/serial0', baudrate=38400, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                    bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
+
+
+def init_serial(speed):
+    global ser
+    ser = serial.Serial(port='/dev/serial0', baudrate=speed, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
 
 
 class MyRequestHandler(BaseHTTPRequestHandler):
@@ -58,6 +62,7 @@ class WebserverPlugin(Plugin):
 
     def load_conf(self, conf):
         global test_conf
+        init_serial(conf["serialSpeed"])
         test_conf = conf["fields"]
 
     def run(self):
@@ -67,5 +72,5 @@ class WebserverPlugin(Plugin):
 
     def on_start(self):
         daemon = threading.Thread(name='daemon_server', target=self.run)
-        daemon.setDaemon(True)  # Set as a daemon so it will be killed once the main thread is dead.
+        daemon.setDaemon(True)
         daemon.start()
