@@ -18,7 +18,7 @@ The board also includes:
 * LEDs for visual status (ready, downloading, programing, success, and error)
 * Jumper to define which profile to use.
 * LED for testing 
-* Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud 
+* Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud / local network / shared folder.
 
 ![Image](imgs/2D.png)
 #### Software
