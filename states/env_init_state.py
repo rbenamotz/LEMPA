@@ -29,12 +29,11 @@ class EnvInit(State):
     def do_step(self):
         if self.steps_counter == 0:
             self.load_plugins()
-        time.sleep(0.1)
         self.steps_counter = self.steps_counter + 1
         self.app.blue_led_on = (self.steps_counter % 3 == 0)
         self.app.green_led_on = (self.steps_counter % 3 == 1)
         self.app.red_led_on = (self.steps_counter % 3 == 2)
-        if self.steps_counter >= 10:
+        if self.steps_counter >= 100:
             self.app.blue_led_on = False
             self.app.green_led_on = False
             self.app.red_led_on = False

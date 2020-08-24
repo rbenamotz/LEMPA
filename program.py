@@ -46,9 +46,10 @@ while True:
         while not event:
             event = state.do_step()
             app.refresh_views()
-            time.sleep(0.1)
+            time.sleep(0.01)
         state_code = state.on_event(event)
         state = load_state(state_code)
+        app.refresh_views()
     except KeyboardInterrupt:
         app.clean_views()
         break

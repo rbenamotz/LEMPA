@@ -40,7 +40,7 @@ class LedsView(View):
         GPIO.output(PIN_RED, b)
 
     def __update_blue_2(self):
-        b = self.app.dl_led_on
+        b = (self.app.app_state == application.Application.APP_STATE_FIRMWARE_DOWNLOAD)
         GPIO.output(PIN_BLUE2, b)
 
     def refresh(self):

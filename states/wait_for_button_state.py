@@ -11,7 +11,6 @@ GPIO_BUTTON = 17
 class WaitForButtonState(State):
     def __init__(self, app):
         super().__init__(app)
-        self.app.blue_led_on = True
         self.app.green_led_on = False
         self.app.ref_led_on = False
         GPIO.setwarnings(False)

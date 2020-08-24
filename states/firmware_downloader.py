@@ -38,9 +38,6 @@ class FirmwareDownload(State):
         self.app.print("{} exists on disk".format(b["name"]))
 
     def do_step(self):
-        if not self.app.dl_led_on:
-            self.app.dl_led_on = True
-            return False
         profile = self.app.profiles[self.profile_index]
         # TODO: Seriously??? Else if? Might as well program in BASIC
         for b in profile["bins"]:
@@ -58,5 +55,4 @@ class FirmwareDownload(State):
         return True
 
     def on_event(self, event):
-        self.app.dl_led_on = False
         return Application.APP_STATE_WAITING_FOR_BUTTON
