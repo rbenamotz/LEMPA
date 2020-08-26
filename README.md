@@ -2,7 +2,7 @@
 ### LEan Mean Programming mAchine
 LEMPA is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
 
-![Click to watch](https://img.youtube.com/vi/8qee_lv31-o/0.jpg)](https://www.youtube.com/watch?v=8qee_lv31-o)
+[![Click to watch](https://img.youtube.com/vi/8qee_lv31-o/0.jpg)](https://www.youtube.com/watch?v=8qee_lv31-o)
 
 <!--![Image](https://i.giphy.com/media/S64nu0NFtD7TRhJ7rL/giphy.webp)-->
 
