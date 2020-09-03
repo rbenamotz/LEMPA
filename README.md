@@ -5,7 +5,7 @@ LEMPA is a combination of software and hardware to allow easy..ish programming o
 
 Click image for short video:
 
-[![Click to watch](https://img.youtube.com/vi/8qee_lv31-o/0.jpg)](https://www.youtube.com/watch?v=8qee_lv31-o)
+[![Click to watch](imgs/yt.png)](https://www.youtube.com/watch?v=8qee_lv31-o)
 
 <!--![Image](https://i.giphy.com/media/S64nu0NFtD7TRhJ7rL/giphy.webp)-->
 
