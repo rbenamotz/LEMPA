@@ -1,37 +1,86 @@
-## Welcome to GitHub Pages
+### LEan Mean Programming mAchine
+LEMPA (yes, dumb name - I know) is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
 
-You can use the [editor on GitHub](https://github.com/rbenamotz/LEMPA/edit/gh-pages/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+<iframe width="420" height="315" src="http://www.youtube.com/embed/8qee_lv31-o" frameborder="0" allowfullscreen></iframe>
 
-### Markdown
+LEMPA is composed of 3 parts:
+#### Hardware: Raspberry PI HAT
+A custom PCB that contains all the relevant connections required to program:
+* ATMega328 (including external oscillator)
+* ATTiny
+* ESP8266 
+* Arduino mini pro
+* Any other ATMega controller via connector
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+The board also includes:
+* LEDs for visual status (ready, downloading, programing, success, and error)
+* Jumper to define which profile to use.
+* LED for testing 
+* Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud / local network / shared folder.
 
-```markdown
-Syntax highlighted code block
+#### Software
+The software reads the different profiles and orchestrates the process of downloading new BINs and programming.
+See full [software](software) 
+###### Installation instructions
+1. Download the software and extract it
+2. Install **avrdude** if needed `sudo apt-get install avrdude`
+3. Install required libraries `pip3 install -r requirements.tx`
+4. Make sure **profiles.json** reflects your environment
+5. `python3 program.py` or `python3 program.py <profile id>`
 
-# Header 1
-## Header 2
-### Header 3
+#### Configuration: profiles.json
+The configuration file can contain as many profiles as required.
+```javascript
+  {
+    "id": "blinklocal",
+    "type": "bin",
+    "jumper" : 1,
+    "device": "m328p",
+    "programmer": "linuxspi",
+    "bins": [
+      {
+        "method": "local",
+        "name": "blinklocal"
+      }
+    ],
+    "fuses": {
+      "lfuse": "0xF7",
+      "hfuse": "0xD6",
+      "efuse": "0xFD",
+      "lock": "0xFF"
+    },
+    "plugins": [
+      {
+        "name": "serialinjector",
+        "conf": {
+          "serialSpeed": 38400,
+          "fields": [
+            {
+              "id": "blinkrate",
+              "value": 5,
+              "title": "Blink rate in 100ms. For exampe value of 5 means 500ms off, 500ms on",
+              "type": "byte"
+            }
+          ]
+        }
+      }
+    ]
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+  },
+...
+]
 ```
+* **id** Unique ID for the profile 
+* **type** `bin` or `composite`. Composite allows for multiple profile programming, one after another.
+* **jumper** *optional* If specified, and the relevant profile is chosen with a physical jumper, this profile will be used if none was specified as part of command line parameter.
+* **device** Type of device to program. Not required for ESP. See [AVRDude](https://www.nongnu.org/avrdude/user-manual/avrdude.html) for list of devices
+* **bins** List of bins to upload. For ATMega only one bin is required. For ESP multiple bins can be specified to support SPIFFS
+* **plugins** System support a simple web server with the ability to send data to the ATMega via serial. This allows for parameter tweaking and QA. 
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+ 
 
-### Jekyll Themes
+<a href="https://www.tindie.com/products/21205/"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/rbenamotz/LEMPA/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## Contact
+Please contact me at roey@benamotz.com with any comments
