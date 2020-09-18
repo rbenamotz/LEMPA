@@ -17,7 +17,7 @@ class FirmwareDownload(State):
 
     def __download_cloud__(self, b):
         bin_file = "./bins/%s.hex" % (b["name"])
-        self.app.print("Downloading {}".format(b["name"]))
+        self.app.print("DL {}".format(b["name"]))
         if "url" in b:
             download_url = b["url"]
         elif "info_url" in b:
@@ -29,13 +29,13 @@ class FirmwareDownload(State):
             raise Exception("Method is cloud but URL data was given")
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
-        self.app.print("{} bytes downloaded\n-----".format(p.st_size))
+        self.app.detail("{} bytes downloaded\n-----".format(p.st_size))
 
     def __validate_local_bin(self, b):
         bin_file = "./bins/%s.hex" % (b["name"])
         if not os.path.exists(bin_file):
             raise Exception("{} does not exist".format(bin_file))
-        self.app.print("{} exists on disk".format(b["name"]))
+        self.app.detail("{} exists on disk".format(b["name"]))
 
     def do_step(self):
         profile = self.app.profiles[self.profile_index]

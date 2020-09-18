@@ -1,5 +1,26 @@
 [
   {
+    "id": "haunted2",
+    "type": "bin",
+    "device": "attiny85",
+    "programmer" : "linuxspi",
+    "jumper" : 4,
+    "speed" : 9600,
+    "bins" : [
+        {
+            "method" : "cloud",
+            "url" : "https://s3.amazonaws.com/firmwares.benamotz.com/haunted2.hex",
+            "name" : "haunted2"
+        }
+    ],
+    "fuses" : {
+        "lfuse": "0xE2",
+        "hfuse" : "0xDF",
+        "efuse" : "0xFF",
+        "lock" : "0xFF"
+    }
+  },
+  {
     "id": "blinktiny",
     "type": "bin",
     "device": "attiny85",

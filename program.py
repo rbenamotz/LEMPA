@@ -56,4 +56,6 @@ while True:
     except Exception as e:
         logging.error(e)
         app.error(e)
-        state = load_state(Application.APP_STATE_WAITING_FOR_BUTTON)
+        raise e
+        # break
+        # state = load_state(Application.APP_STATE_WAITING_FOR_BUTTON)

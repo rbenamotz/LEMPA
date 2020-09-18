@@ -16,7 +16,9 @@ class SensingProfileState(State):
         p = profile_by_id(profile_id)
         if first:
             self.app.profiles = []
-            self.app.print("Loading profile {}".format(profile_id))
+            self.app.profile_name = profile_id
+            print(self.app.profile_name)
+            self.app.print("Loading \"{}\"".format(profile_id))
             if "plugins" in p:
                 for pl in self.app.plugins:
                     pl.load_conf(p["plugins"][0]["conf"])
@@ -40,11 +42,11 @@ class SensingProfileState(State):
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
             id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
             if not id == '_':
-                self.app.print("Using profile from command line: {}".format(id))
+                self.app.detail("Using profile from command line: {}".format(id))
                 self.__load_profile__(sys.argv[1])
                 self.skip_detect = True
                 return
-        self.app.print("Detecting profile by jumper")
+        self.app.detail("Detecting profile by jumper")
         self.message_shown = False
 
     def do_step(self):
@@ -53,7 +55,7 @@ class SensingProfileState(State):
         for j in range(4):
             p = PINS[j]
             if not GPIO.input(p):
-                self.app.print("Detected jumper {}".format(j + 1))
+                self.app.detail("Detected jumper {}".format(j + 1))
                 temp = profile_by_jumper(j + 1)
                 id = temp["id"]
                 self.__load_profile__(id)

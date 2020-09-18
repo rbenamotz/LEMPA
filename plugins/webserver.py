@@ -66,7 +66,7 @@ class WebserverPlugin(Plugin):
         test_conf = conf["fields"]
 
     def run(self):
-        self.app.print("Starting web server for serial injector on port 8080")
+        self.app.detail("Starting web server for serial injector on port 8080")
         httpd = HTTPServer(('', 8080), MyRequestHandler)
         httpd.serve_forever()
 

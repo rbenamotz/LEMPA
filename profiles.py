@@ -25,4 +25,4 @@ def profile_by_id(profile_id):
     for x in profile_data:
         if x["id"] == profile_id:
             return x
-    raise Exception("Profile %s  not found" % profile_id)
+    raise Exception("Profile %s not found" % profile_id)

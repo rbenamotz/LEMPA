@@ -8,6 +8,9 @@ class View(object):
     def print(self, txt):
         pass
 
+    def detail(self, txt):
+        pass
+
     def error(self, e):
         pass
 

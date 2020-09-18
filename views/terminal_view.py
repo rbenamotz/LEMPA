@@ -10,6 +10,10 @@ class TerminalView(View):
 
     def print(self, txt):
         print(txt)
+  
+    def detail(self, txt):
+        print(txt)
+
 
     def error(self, e):
         print('\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')

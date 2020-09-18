@@ -21,7 +21,7 @@ class ProgramState(State):
             if len(output) == 0 and process.poll() is not None:
                 break
             if output:
-                self.app.print(output.strip().decode('utf-8'))
+                self.app.detail(output.strip().decode('utf-8'))
         rc = process.poll()
         self.is_error = (rc != 0)
 
@@ -71,6 +71,7 @@ class ProgramState(State):
         b = self.profile["bins"][0]
         command: str = "-p %s -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b %s -D -u -U flash:w:bins/%s.hex:i -u  -e " % (
             self.profile["device"], self.programming_speed, b["name"])
+        print(command)
         self.__run_avrdude__(command)
 
     def do_step(self):
@@ -80,7 +81,7 @@ class ProgramState(State):
             self.app.print("Burning fuses")
             self.__do_step_fuse()
         if self.step == self.__STEP_PROGRAM:
-            self.app.print("Programming")
+            self.app.print("Writing flash")
             self.__do_step_write_flash()
         if self.step == self.__STEP_ESPTOOL:
             if self.profile["programmer"] == "esptool":
