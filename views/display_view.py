@@ -2,6 +2,7 @@ from views.view import View
 import logging
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
+import time
 
 from PIL import Image
 from PIL import ImageDraw
@@ -47,8 +48,11 @@ class DisplayView(View):
         self.disp.image(img)
         self.disp.display()
 
-    # def cleanup(self):
-    #     print("Goodbye")
+    def cleanup(self):
+        if not self.is_display_connected:
+            return
+        self.disp.clear()
+        self.disp.display()
 
     def print(self, txt):
         self.disp_body = txt
