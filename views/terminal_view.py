@@ -1,4 +1,4 @@
-from views.view import View
+from views import View
 
 
 class TerminalView(View):

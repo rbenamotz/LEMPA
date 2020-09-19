@@ -4,7 +4,7 @@ import time
 
 
 import application
-from views.view import View
+from views import View
 
 PIN_RED = 23
 PIN_GREEN = 24

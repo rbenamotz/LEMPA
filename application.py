@@ -10,7 +10,7 @@ class Application:
     APP_STATE_PROFILE_SENSE = "Profile Sensing"
     APP_STATE_INIT = "Initializing"
     APP_STATE_FIRMWARE_DOWNLOAD = "Firmware Download"
-    APP_STATE_WAITING_FOR_BUTTON = "Push button to start"
+    APP_STATE_WAITING_FOR_BUTTON = "Push button"
     APP_STATE_CHECKING_UPDATE = "Cloud"
     APP_STATE_PROGRAMMING = "Programming"
     APP_STATE_SUCCESS = "Success"

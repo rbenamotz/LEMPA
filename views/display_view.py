@@ -1,8 +1,9 @@
-from views.view import View
+from views import View
 import logging
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
 import time
+from pathlib import Path
 
 from PIL import Image
 from PIL import ImageDraw
@@ -10,7 +11,11 @@ from PIL import ImageFont
 
 
 class DisplayView(View):
+    fonts_folder = Path(__file__).parents[0] / "fonts/"
+    print(fonts_folder)
+
     def __init__(self, app):
+        super().__init__(app)
         self.disp_header = ""
         self.disp_body = "LEMPA"
         self.disp_error = None
@@ -29,7 +34,7 @@ class DisplayView(View):
         self.image = Image.new('1', (width, height))
         self.draw = ImageDraw.Draw(self.image)
         self.font = ImageFont.load_default()
-        return View.__init__(self, app)
+        self.fontSmall = ImageFont.truetype(str(self.fonts_folder) + "/ProggyClean.ttf", 15) 
 
     def __refresh(self):
         if not self.is_display_connected:
@@ -39,13 +44,14 @@ class DisplayView(View):
         if self.disp_error:
             self.draw.text((0,y), self.disp_error, font = self.font, fill=1)
         else:
-            self.draw.text((0,y), self.app.profile_name, font = self.font, fill=1)
+            self.draw.text((0,y), self.app.profile_name, font = self.fontSmall, fill=1)
             y = y + 10
-            self.draw.text((0, y), self.app.app_state,  font=self.font, fill=1)
-            y = y + 10
-            self.draw.text((0, y),self.disp_body, font=self.font, fill=1)
-        img = self.image.transpose(Image.ROTATE_180)
-        self.disp.image(img)
+            self.draw.line([(0,y),(self.disp.width,y)],fill=1)
+            y = y + 1
+            self.draw.text((0, y), self.app.app_state,  font=self.fontSmall, fill=1)
+            y = y + 11
+            self.draw.text((0, y),self.disp_body, font=self.fontSmall, fill=1)
+        self.disp.image(self.image)
         self.disp.display()
 
     def cleanup(self):
