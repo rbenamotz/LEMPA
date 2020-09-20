@@ -38,6 +38,7 @@ class LedsView(View):
         b = b or (self.app.app_state == application.Application.APP_STATE_WAITING_FOR_BUTTON)
         b = b or self.app.blue_led_on
         b = b or (self.blink_state and self.app.app_state == application.Application.APP_STATE_PROGRAMMING)
+        b = b or (not self.blink_state and self.app.app_state == application.Application.APP_STATE_ERASE)
         GPIO.output(PIN_BLUE, b)
 
     def __update_green(self):
@@ -51,6 +52,7 @@ class LedsView(View):
         b = False
         b = b or (self.app.app_state == application.Application.APP_STATE_FAIL)
         b = b or self.app.red_led_on
+        b = b or (self.blink_state and self.app.app_state == application.Application.APP_STATE_ERASE)
         GPIO.output(PIN_RED, b)
 
     def __update_blue_2(self):

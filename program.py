@@ -11,7 +11,7 @@ from states.program_state import ProgramState
 from states.sense_profile_state import SensingProfileState
 from states.success_state import SuccessState
 from states.wait_for_button_state import WaitForButtonState
-
+from states.fw_erase import FirmwareEraseState
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p', filename='LEMPA.log', level=logging.WARNING)
@@ -35,6 +35,8 @@ def load_state(code):
         return SuccessState(app)
     if code == Application.APP_STATE_FAIL:
         return FailState(app)
+    if code == Application.APP_STATE_ERASE:
+        return FirmwareEraseState(app)
     raise Exception("Unknown state %s" % code)
 
 

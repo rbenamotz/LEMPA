@@ -17,8 +17,7 @@ class SensingProfileState(State):
         if first:
             self.app.profiles = []
             self.app.profile_name = profile_id
-            print(self.app.profile_name)
-            self.app.print("Loading \"{}\"".format(profile_id))
+            self.app.detail("Loading \"{}\"".format(profile_id))
             if "plugins" in p:
                 for pl in self.app.plugins:
                     pl.load_conf(p["plugins"][0]["conf"])
@@ -64,7 +63,7 @@ class SensingProfileState(State):
         self.led_status = not self.led_status
         time.sleep(0.1)
         if not self.message_shown:
-            self.app.print("Please connect jumper")
+            self.app.print("Connect jumper")
             self.message_shown = True
         return False
 
