@@ -1,0 +1,32 @@
+stateDiagram
+    profile_sense: "Sensing profile"
+    profile_load: "Load profile data"
+    init: "Enviroment init"
+    download: "Firmware download"
+    button: "Wait for button"
+    state Program  {
+        fuse: "Burn fuses"
+        esp: "ESP"
+        atmel: "Atmel"
+        esp --> burn
+        atmel --> fuse
+        fuse --> burn
+        fuse --> error
+        burn: "Write flash"
+        success: "Successs"
+        error: "Error"
+        burn --> success
+        burn --> error
+        success 
+        error
+    } 
+
+
+    init --> profile_sense
+    profile_sense --> profile_load: jumpter detected
+    profile_load --> download
+    download --> button
+    button --> Program: Short click
+    button --> profile_sense: Long click
+    Program --> button: Done
+    Program --> Program: Composite        
