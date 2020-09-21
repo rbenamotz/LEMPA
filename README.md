@@ -84,8 +84,6 @@ The configuration file can contain as many profiles as required.
 * **plugins** System support a simple web server with the ability to send data to the ATMega via serial. This allows for parameter tweaking and QA. 
 
  
-![Image Eco system](eco.png)
-
 <a href="https://www.tindie.com/products/21205/"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
 
 ## Contact

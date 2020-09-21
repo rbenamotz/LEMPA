@@ -20,13 +20,28 @@ stateDiagram
         success 
         error
     } 
+    state Erase  {
+        esp: "ESP"
+        atmel: "Atmel"
+        esp --> error
+        atmel --> erase
+        erase : "Firmware erase"
+        success: "Successs"
+        error: "Error"
+        erase --> success
+        erase --> error
+        success 
+        error
+    } 
 
 
     init --> profile_sense
     profile_sense --> profile_load: jumpter detected
     profile_load --> download
     download --> button
-    button --> Program: Short click
-    button --> profile_sense: Long click
+    button --> Program: Prog short click
+    button --> profile_sense: Prog long click
+    button --> Erase: Erase  button
+    Erase --> Erase: Composite
     Program --> button: Done
-    Program --> Program: Composite        
+    Program --> Program: Composite
