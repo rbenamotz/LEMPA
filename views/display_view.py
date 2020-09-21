@@ -1,4 +1,5 @@
 from views import View
+import application
 import logging
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
@@ -12,6 +13,23 @@ from PIL import ImageFont
 
 class DisplayView(View):
     fonts_folder = Path(__file__).parents[0] / "fonts/"
+
+    def __get_icon__(self):
+        state = self.app.app_state
+        if (state == application.Application.APP_STATE_WAITING_FOR_BUTTON):
+            return '\uf0a5'
+        if (state == application.Application.APP_STATE_PROGRAMMING):
+            return '\uf0c7'
+        if (state == application.Application.APP_STATE_ERASE):
+            return '\uf2ed'
+        if (state == application.Application.APP_STATE_SUCCESS):
+            return '\uf118'
+        if (state == application.Application.APP_STATE_FAIL):
+            return '\uf119'
+        if (state == application.Application.APP_STATE_FIRMWARE_DOWNLOAD):
+            return '\uf358'
+        return None
+        
 
     def __init__(self, app):
         super().__init__(app)
@@ -43,7 +61,9 @@ class DisplayView(View):
         self.draw.rectangle((0,0,self.disp.width,self.disp.height), outline=0, fill=0)
         y = 0
         self.draw.text((0,y), self.disp_header, font = self.fontHeader, fill=1)
-        self.draw.text((118,y), '\uf07b', font = self.fontIcon, fill=1)
+        icon = self.__get_icon__()
+        if icon:
+            self.draw.text((118,y), icon, font = self.fontIcon, fill=1)
         y = y + 12
         self.draw.line([(0,y),(self.disp.width,y)],fill=1)
         y = y + 3
