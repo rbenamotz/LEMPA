@@ -2,7 +2,7 @@ import time
 import subprocess
 
 from application import Application
-from states.state import State
+from . import State
 
 class FirmwareEraseState(State):
     def __init__(self, app):

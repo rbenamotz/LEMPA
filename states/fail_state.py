@@ -1,7 +1,7 @@
 import time
 
 from application import Application
-from states.state import State
+from states import State
 
 
 class FailState(State):

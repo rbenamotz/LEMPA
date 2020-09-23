@@ -1,10 +1,9 @@
 import subprocess
 
-import RPi.GPIO as GPIO
 import esptool
 
 from application import Application
-from states.state import State
+from . import State
 
 
 class ProgramState(State):
@@ -29,8 +28,6 @@ class ProgramState(State):
         super().__init__(app)
         self.step = self.__STEP_INIT
         self.app.blue_led_on = False
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
         self.profile_index = 0
         self.programming_speed = 125000
         self.profile = None

@@ -5,7 +5,7 @@ from pathlib import Path
 import requests
 
 from application import Application
-from .state import State
+from states import State
 
 
 class FirmwareDownload(State):

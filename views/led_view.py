@@ -5,11 +5,7 @@ import time
 
 import application
 from views import View
-
-PIN_RED = 23
-PIN_GREEN = 24
-PIN_BLUE = 20
-PIN_BLUE2 = 25
+from hardware import PIN_BLUE, PIN_GREEN, PIN_RED, PIN_BLUE2
 
 ALL_PINS = [PIN_BLUE, PIN_GREEN, PIN_RED, PIN_BLUE2]
 
@@ -17,8 +13,6 @@ ALL_PINS = [PIN_BLUE, PIN_GREEN, PIN_RED, PIN_BLUE2]
 class LedsView(View):
     def __init__(self, app):
         super().__init__(app)
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
         for p in ALL_PINS:
             GPIO.setup(p, GPIO.OUT)
         self.blink_state = False
@@ -38,7 +32,7 @@ class LedsView(View):
         b = b or (self.app.app_state == application.Application.APP_STATE_WAITING_FOR_BUTTON)
         b = b or self.app.blue_led_on
         b = b or (self.blink_state and self.app.app_state == application.Application.APP_STATE_PROGRAMMING)
-        b = b or (not self.blink_state and self.app.app_state == application.Application.APP_STATE_ERASE)
+        b = b or self.app.app_state == application.Application.APP_STATE_ERASE
         GPIO.output(PIN_BLUE, b)
 
     def __update_green(self):

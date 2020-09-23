@@ -29,7 +29,6 @@ class DisplayView(View):
         if (state == application.Application.APP_STATE_FIRMWARE_DOWNLOAD):
             return '\uf358'
         return None
-        
 
     def __init__(self, app):
         super().__init__(app)
@@ -51,8 +50,8 @@ class DisplayView(View):
         self.image = Image.new('1', (width, height))
         self.draw = ImageDraw.Draw(self.image)
         self.font = ImageFont.load_default()
-        self.fontHeader = ImageFont.truetype(str(self.fonts_folder) + "/Arimo.ttf", 10) 
-        self.fontBody = ImageFont.truetype(str(self.fonts_folder) + "/Arimo.ttf", 12)  
+        self.fontHeader = ImageFont.truetype(str(self.fonts_folder) + "/Arimo.ttf", 10)
+        self.fontBody = ImageFont.truetype(str(self.fonts_folder) + "/Arimo.ttf", 12)
         self.fontIcon = ImageFont.truetype(str(self.fonts_folder) + "/FontAwesomeRegular.ttf", 10)
 
     def __refresh(self):

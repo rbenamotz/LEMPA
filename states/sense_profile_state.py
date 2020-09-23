@@ -5,9 +5,9 @@ import RPi.GPIO as GPIO
 
 from application import Application, COMMAND_LINE_PARAM_PROFILE_ID
 from profiles import profile_by_id, profile_by_jumper
-from .state import State
+from . import State
+from hardware import PINS_PROFILES
 
-PINS = [5, 6, 13, 19]
 
 
 class SensingProfileState(State):
@@ -32,9 +32,7 @@ class SensingProfileState(State):
 
     def __init__(self, app):
         super().__init__(app)
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
-        for p in PINS:
+        for p in PINS_PROFILES:
             GPIO.setup(p, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         self.skip_detect = False
         self.led_status = True
@@ -52,7 +50,7 @@ class SensingProfileState(State):
         if self.skip_detect:
             return True
         for j in range(4):
-            p = PINS[j]
+            p = PINS_PROFILES[j]
             if not GPIO.input(p):
                 self.app.detail("Detected jumper {}".format(j + 1))
                 temp = profile_by_jumper(j + 1)

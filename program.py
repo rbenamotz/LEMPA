@@ -2,6 +2,8 @@
 
 import logging
 import time
+import RPi.GPIO as GPIO
+
 
 from application import Application
 from states.env_init_state import EnvInit
@@ -16,7 +18,6 @@ from states.fw_erase import FirmwareEraseState
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p', filename='LEMPA.log', level=logging.WARNING)
 logging.info("Programmer is running")
-app = Application()
 
 
 def load_state(code):
@@ -39,10 +40,9 @@ def load_state(code):
         return FirmwareEraseState(app)
     raise Exception("Unknown state %s" % code)
 
-
-state = load_state(Application.APP_STATE_INIT)
-while True:
-    try:
+def main_loop():
+    global state
+    while True:
         app.refresh_views()
         event = False
         while not event:
@@ -51,13 +51,18 @@ while True:
             time.sleep(0.01)
         state_code = state.on_event(event)
         state = load_state(state_code)
-        app.refresh_views()
-    except KeyboardInterrupt:
-        app.clean_views()
-        break
-    except Exception as e:
-        logging.error(e)
-        app.error(e)
-        raise e
-        # break
-        # state = load_state(Application.APP_STATE_WAITING_FOR_BUTTON)
+try:
+    # GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
+    app = Application()
+    state = load_state(Application.APP_STATE_INIT)
+    main_loop()
+except KeyboardInterrupt:
+    app.clean_views()
+except Exception as e:
+    logging.error(e)
+    app.error(e)
+    raise e
+    # state = load_state(Application.APP_STATE_WAITING_FOR_BUTTON)
+finally:
+    GPIO.cleanup() 

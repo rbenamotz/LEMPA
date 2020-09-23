@@ -4,7 +4,7 @@ import re
 import time
 
 from application import Application
-from states.state import State
+from states import State
 
 
 class EnvInit(State):
@@ -19,7 +19,7 @@ class EnvInit(State):
         pp = map(form_module, pluginfiles)
         importlib.import_module('plugins')
         for plugin in pp:
-            if not plugin.startswith('__'):
+            if not plugin.startswith('.__'):
                 module = importlib.import_module(plugin, package="plugins")
                 class_ = getattr(module, "WebserverPlugin")
                 instance = class_(self.app)

@@ -1,7 +1,7 @@
 import time
 
 from application import Application
-from states.state import State
+from . import State
 
 
 class SuccessState(State):

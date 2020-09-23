@@ -4,7 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import serial
 
-from plugin import Plugin
+from . import Plugin
 
 test_conf = {}
 
