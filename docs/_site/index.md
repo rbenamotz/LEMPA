@@ -1,13 +1,7 @@
-# LEMPA
 ### LEan Mean Programming mAchine
-LEMPA is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
+LEMPA (yes, dumb name - I know) is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
 
-#### version 4 with OLED display coming up <a href="https://www.youtube.com/watch?v=MS-8_smsfuY">soon</a>
-Click image for short video:
-
-[![Click to watch](imgs/yt.png)](https://www.youtube.com/watch?v=8qee_lv31-o)
-
-<!--![Image](https://i.giphy.com/media/S64nu0NFtD7TRhJ7rL/giphy.webp)-->
+{% include youtubePlayer.html id="8qee_lv31-o" %}
 
 LEMPA is composed of 3 parts:
 #### Hardware: Raspberry PI HAT
@@ -18,18 +12,15 @@ A custom PCB that contains all the relevant connections required to program:
 * Arduino mini pro
 * Any other ATMega controller via connector
 
-<a href="https://www.tindie.com/products/21205/"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
-
 The board also includes:
 * LEDs for visual status (ready, downloading, programing, success, and error)
 * Jumper to define which profile to use.
 * LED for testing 
 * Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud / local network / shared folder.
 
-![Image](imgs/2D.png)
 #### Software
-The software reads the different profiles and orchestrates the process of downloading new BINs and programming 
-![Image](imgs/states.png)
+The software reads the different profiles and orchestrates the process of downloading new BINs and programming.
+See full [software](software) 
 ###### Installation instructions
 1. Download the software and extract it
 2. Install **avrdude** if needed `sudo apt-get install avrdude`
@@ -87,6 +78,8 @@ The configuration file can contain as many profiles as required.
 * **plugins** System support a simple web server with the ability to send data to the ATMega via serial. This allows for parameter tweaking and QA. 
 
  
+
+<a href="https://www.tindie.com/products/21205/"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
 
 ## Contact
 Please contact me at roey@benamotz.com with any comments
