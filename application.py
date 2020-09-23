@@ -16,6 +16,8 @@ class Application:
     APP_STATE_SUCCESS = "Success"
     APP_STATE_FAIL = "Fail"
     APP_STATE_ERASE = "Erasing"
+    APP_STATE_EXCEPTION = "Exception"
+    
     
     def update_views(self):
         for v in self.views:

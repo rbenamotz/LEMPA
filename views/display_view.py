@@ -85,7 +85,7 @@ class DisplayView(View):
 
     def error(self, e):
         self.disp_header = "[error]"
-        self.disp_error = str(e)
+        self.disp_body = str(e)
         self.__refresh()
 
     def header(self):

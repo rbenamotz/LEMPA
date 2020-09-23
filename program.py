@@ -3,6 +3,7 @@
 import logging
 import time
 import RPi.GPIO as GPIO
+import traceback, sys
 
 
 from application import Application
@@ -14,6 +15,7 @@ from states.sense_profile_state import SensingProfileState
 from states.success_state import SuccessState
 from states.wait_for_button_state import WaitForButtonState
 from states.fw_erase import FirmwareEraseState
+from states.exception_state import ExceptionState
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p', filename='LEMPA.log', level=logging.WARNING)
@@ -38,31 +40,35 @@ def load_state(code):
         return FailState(app)
     if code == Application.APP_STATE_ERASE:
         return FirmwareEraseState(app)
+    if code == Application.APP_STATE_EXCEPTION:
+        return ExceptionState(app)
     raise Exception("Unknown state %s" % code)
 
-def main_loop():
+def cycle():
     global state
-    while True:
+    app.refresh_views()
+    event = False
+    while not event:
+        event = state.do_step()
         app.refresh_views()
-        event = False
-        while not event:
-            event = state.do_step()
-            app.refresh_views()
-            time.sleep(0.01)
-        state_code = state.on_event(event)
-        state = load_state(state_code)
-try:
-    # GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-    app = Application()
-    state = load_state(Application.APP_STATE_INIT)
-    main_loop()
-except KeyboardInterrupt:
-    app.clean_views()
-except Exception as e:
-    logging.error(e)
-    app.error(e)
-    raise e
-    # state = load_state(Application.APP_STATE_WAITING_FOR_BUTTON)
-finally:
-    GPIO.cleanup() 
+        time.sleep(0.01)
+    state_code = state.on_event(event)
+    state = load_state(state_code)
+
+
+GPIO.setmode(GPIO.BCM)
+app = Application()
+state = load_state(Application.APP_STATE_INIT)
+
+while True:
+    try:
+        cycle()
+    except KeyboardInterrupt:
+        app.clean_views()
+        break
+    except Exception as e:
+        logging.error(e)
+        # traceback.print_exc()
+        state = load_state(Application.APP_STATE_EXCEPTION)
+        app.error(e)
+GPIO.cleanup() 
