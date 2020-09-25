@@ -33,6 +33,7 @@ The software reads the different profiles and orchestrates the process of downlo
 ###### Installation instructions
 1. Download the software and extract it
 2. Install **avrdude** if needed `sudo apt-get install avrdude`
+3. Install prequisites: `sudo apt-get install libopenjp2-7` and `sudo apt-get install libtiff5`
 3. Install required libraries `pip3 install -r requirements.tx`
 4. Make sure **profiles.json** reflects your environment
 5. `python3 program.py` or `python3 program.py <profile id>`
