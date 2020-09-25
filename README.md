@@ -37,6 +37,7 @@ The software reads the different profiles and orchestrates the process of downlo
 3. Install required libraries `pip3 install -r requirements.tx`
 4. Make sure **profiles.json** reflects your environment
 5. `python3 program.py` or `python3 program.py <profile id>`
+6. Make sure you enable RPi interfaces: SPI, I2C, and Serial
 
 #### Configuration: profiles.json
 The configuration file can contain as many profiles as required.
