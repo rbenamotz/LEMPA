@@ -25,10 +25,20 @@ class EnvInit(State):
                 instance = class_(self.app)
                 instance.on_start()
                 self.app.plugins.append(instance)
+    def __read_hat_info_field__(self,field, default):
+        try:
+            f = open('/proc/device-tree/hat/' + field,'r')
+            return f.read()
+        except:
+            return default
+    def __read_hat_info__(self):
+        self.app.my_name = self.__read_hat_info_field__('product', 'LEMPA')
+        self.app.print(self.app.my_name)
 
     def do_step(self):
-        if self.steps_counter == 0:
+        if self.steps_counter == 1:
             self.load_plugins()
+            self.__read_hat_info__()
         self.steps_counter = self.steps_counter + 1
         self.app.blue_led_on = (self.steps_counter % 3 == 0)
         self.app.green_led_on = (self.steps_counter % 3 == 1)

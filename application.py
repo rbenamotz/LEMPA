@@ -24,6 +24,7 @@ class Application:
             v.update()
 
     def __init__(self):
+        self.my_name = "LEMPA"
         self.profile_name = ""
         self.blue_led_on = False
         self.green_led_on = False
