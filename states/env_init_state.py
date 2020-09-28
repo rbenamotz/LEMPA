@@ -10,6 +10,7 @@ from states import State
 class EnvInit(State):
     def __init__(self, app):
         super().__init__(app)
+        self.init_time = time.time()
         self.steps_counter = 0
 
     def load_plugins(self):
@@ -36,14 +37,16 @@ class EnvInit(State):
         self.app.print(self.app.my_name)
 
     def do_step(self):
-        if self.steps_counter == 1:
-            self.load_plugins()
+        if self.steps_counter ==1:
             self.__read_hat_info__()
+        if self.steps_counter == 2:
+            self.load_plugins()
         self.steps_counter = self.steps_counter + 1
         self.app.blue_led_on = (self.steps_counter % 3 == 0)
         self.app.green_led_on = (self.steps_counter % 3 == 1)
         self.app.red_led_on = (self.steps_counter % 3 == 2)
-        if self.steps_counter >= 100:
+        t = time.time() - self.init_time
+        if t>3:
             self.app.blue_led_on = False
             self.app.green_led_on = False
             self.app.red_led_on = False
