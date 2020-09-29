@@ -30,7 +30,7 @@
     "bins": [
       {
         "method": "cloud",
-        "url": "https://github.com/rbenamotz/LEMPA/releases/download/0.01/tinyblink.hex",
+        "url": "https://github.com/rbenamotz/LEMPA/releases/download/0.01/tinyblink.ino.tiny8.hex",
         "name": "tinyblink"
       }
     ],
@@ -113,22 +113,17 @@
     ]
   },
   {
-    "id": "sample-esp",
+    "id": "espblink",
     "type": "bin",
     "device": "esp8266",
+    "speed" : 921600,
     "programmer": "esptool",
     "bins": [
       {
         "method": "cloud",
-        "url": "http://tbc/binfile",
+        "url": "https://github.com/rbenamotz/LEMPA/releases/download/0.01/espblink.ino.generic.bin",
         "name": "binfile",
         "addr": "0x00000"
-      },
-      {
-        "method": "cloud",
-        "url": "http://tbc/spiffs",
-        "name": "spiffs",
-        "addr": "0x300000"
       }
     ]
   },

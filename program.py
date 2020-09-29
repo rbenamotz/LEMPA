@@ -3,7 +3,8 @@
 import logging
 import time
 import RPi.GPIO as GPIO
-import traceback, sys
+import traceback
+import sys
 
 
 from application import Application
@@ -11,13 +12,16 @@ from states.state_factory import *
 
 logging.basicConfig(format='%(asctime)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p', filename='LEMPA.log', level=logging.WARNING)
+logging.getLogger().addHandler(logging.StreamHandler())
 logging.info("Programmer is running")
+
 
 def load_state(code):
     global app
     output = state_by_code(code, app)
     app.app_state = code
     return output
+
 
 def cycle():
     global state
@@ -29,7 +33,6 @@ def cycle():
         time.sleep(0.01)
     state_code = state.on_event(event)
     state = load_state(state_code)
-
 
 
 GPIO.setmode(GPIO.BCM)
@@ -45,7 +48,7 @@ while True:
         break
     except Exception as e:
         logging.error(e)
-        # traceback.print_exc()
+        traceback.print_exc()
         state = load_state(Application.APP_STATE_EXCEPTION)
         app.error(e)
 GPIO.cleanup()
