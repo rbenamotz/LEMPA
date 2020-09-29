@@ -14,3 +14,8 @@ PINS_PROFILES = [5, 6, 13, 19]
 #MCU
 PIN_RESET_ATMEGA = 16
 PIN_MASTER_POWER = 12
+PIN_ESP_RESET = 8
+
+
+#Interfaces
+SERIAL_PORT = '/dev/serial0'

@@ -131,3 +131,4 @@ Pipfile.lock
 firmware.hex
 *.hex
 .DS_Store
+.vscode/settings.json

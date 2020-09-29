@@ -1,18 +1,23 @@
 import json
 import threading
+import logging
 from http.server import BaseHTTPRequestHandler, HTTPServer
-
+from hardware import *
 import serial
 
 from . import Plugin
 
 test_conf = {}
+ser = None
 
 
 def init_serial(speed):
     global ser
-    ser = serial.Serial(port='/dev/serial0', baudrate=speed, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                        bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
+    try:
+        ser = serial.Serial(port=SERIAL_PORT, baudrate=speed, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
+                            bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
+    except:
+        logging.warning(SERIAL_PORT + " not availabvle. Web Server will not be able to push data")
 
 
 class MyRequestHandler(BaseHTTPRequestHandler):
@@ -35,11 +40,16 @@ class MyRequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         global test_conf
-        data = json.loads(self.rfile.read(int(self.headers['Content-Length'])).decode('utf8'))
+        data = json.loads(self.rfile.read(
+            int(self.headers['Content-Length'])).decode('utf8'))
         test_conf = data
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
+        if ser == None:
+            self.wfile.write(bytes(
+                "Serial not available. Can't push data. Try to enable Serial with raspi-config", "utf8"))
+            return
         self.export_config()
         self.wfile.write(bytes("Data sent to system. Maybe", "utf8"))
         return
@@ -66,6 +76,7 @@ class WebserverPlugin(Plugin):
         test_conf = conf["fields"]
 
     def run(self):
+        # return
         self.app.detail("Starting web server for serial injector on port 8080")
         httpd = HTTPServer(('', 8080), MyRequestHandler)
         httpd.serve_forever()

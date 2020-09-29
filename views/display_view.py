@@ -39,8 +39,10 @@ class DisplayView(View):
         try:
             self.disp = Adafruit_SSD1306.SSD1306_128_32(rst=None)
             self.disp.begin()
+            self.disp.command(Adafruit_SSD1306.SSD1306_DEACTIVATE_SCROLL)
             self.is_display_connected = True
-        except OSError:
+        except OSError as e:
+            logging.error(e)
             logging.warning("Could not initialize display. Well... LEDs should suffice")
             return
         self.disp.clear()

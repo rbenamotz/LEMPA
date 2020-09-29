@@ -33,9 +33,11 @@ class FirmwareEraseState(State):
 
     def do_step(self):
         if not self.profile["programmer"] == "linuxspi":
-            return True
-        command: str = "-p %s -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b %s -e" % (self.profile["device"], self.erase_speed)
-        self.app.detail(command)
-        self.__run_avrdude__(command)
+            self.app.print("Not supported")
+            self.is_error = True
+        else:
+            command: str = "-p %s -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b %s -e" % (self.profile["device"], self.erase_speed)
+            self.app.detail(command)
+            self.__run_avrdude__(command)
         time.sleep(2)
         return True
