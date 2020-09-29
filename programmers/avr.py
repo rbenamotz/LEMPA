@@ -6,12 +6,7 @@ from application import Application
 
 class avr(Programmer):
     def __init__(self, app, profile):
-        super().__init__(app)
-        self.app = app
-        self.profile = profile
-        self.programming_speed = 125000
-        if "speed" in self.profile:
-            self.programming_speed = self.profile["speed"]
+        super().__init__(app, profile)
 
     def __run_avrdude__(self, params):
         command = "/usr/bin/sudo avrdude {}".format(params)

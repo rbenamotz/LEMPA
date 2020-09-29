@@ -25,7 +25,7 @@ class WaitForButtonState(State):
 
         self.button_erase = HatButton('Erase', app, PIN_BUTTON_ERASE)
         self.button_erase.long_click_action_name = "Erase"
-        self.button_erase.long_click_cancel_message = Application.APP_STATE_WAITING_FOR_BUTTON
+        # self.button_erase.long_click_cancel_message = Application.APP_STATE_WAITING_FOR_BUTTON
         self.button_erase.on_long_click = self.__do_erase
         self.button_erase.long_click_duration = 3
 

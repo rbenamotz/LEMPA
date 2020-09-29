@@ -18,8 +18,8 @@ logging.info("Programmer is running")
 
 def load_state(code):
     global app
-    output = state_by_code(code, app)
     app.app_state = code
+    output = state_by_code(code, app)
     return output
 
 
