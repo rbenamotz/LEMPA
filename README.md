@@ -4,6 +4,7 @@ LEMPA is a combination of software and hardware to allow easy..ish programming o
 
 #### version 4 with OLED display coming up <a href="https://www.youtube.com/watch?v=MS-8_smsfuY">soon</a>
 Click image for short video:
+![Image](imgs/zero_on.jpg)
 
 [![Click to watch](imgs/yt.png)](https://www.youtube.com/watch?v=8qee_lv31-o)
 
