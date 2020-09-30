@@ -26,9 +26,15 @@
                 d = document.getElementById("data_" + f.id);
                 f.value = d.innerText;
             });
-            fetch('/data', { method: 'POST', body: JSON.stringify(ddd) })
+            payload = ddd.map(o => {
+                return {"id" : o.id, "value" : o.value};
+            })
+            body = JSON.stringify(payload)
+            writeToLog("Sending " + body)
+            fetch('/data', { method: 'POST', body: body })
                 .then(resp => resp.text())
-                .then(txt => alert(txt))
+                .then(txt => writeToLog(txt))
+            writeToLog("---------------------------")
         }
 
         function onload() {
@@ -37,16 +43,32 @@
                 .then(data => {
                     ddd = data;
                     buildForm()
-                });
+                })
+                .then(() => writeToLog("Data loaded from server"))
+
+        }
+        function writeToLog(txt) {
+            pre = document.getElementById("logPre");
+            line = document.createElement("log");
+            line.innerText = txt + "\n";
+            pre.appendChild(line);
+            pre.scrollTo(50,pre.scrollHeight);
         }
     </script>
 </head>
 
 <body onload="onload()">
     <h1>Serial data injector</h1>
-    <div id="mainform"></div>
+    <div class="grid-container">
+        <div class="grid-child purple">
+            <div id="mainform"></div>
+            <input type="button" onclick="sendData()" value="update">
+        </div>
+        <div class="grid-child green">
+            <pre class="log" id="logPre"></pre>
+        </div>
+    </div>
     <hr>
-    <input type="button" onclick="sendData()" value="update">
 </body>
 <style>
     .row {
@@ -55,6 +77,36 @@
 
     .caption {
         background-color: cyan;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    pre.log {
+        white-space: pre-wrap;
+        background-color: #EFEFEF;
+        height: 200px;
+        overflow: auto;
+    }
+
+    pre.log:before {
+        counter-reset: listing;
+    }
+
+    pre.log log {
+        counter-increment: listing;
+    }
+
+    pre.log log::before {
+        content: counter(listing) ". ";
+        display: inline-block;
+        width: 82m;
+        padding-left: auto;
+        margin-left: auto;
+        text-align: right;
     }
 </style>
 

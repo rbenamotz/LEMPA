@@ -16,13 +16,17 @@ def init_serial(speed):
     try:
         ser = serial.Serial(port=SERIAL_PORT, baudrate=speed, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                             bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
+        print("Serial connection initiated with speed of ", speed)
     except:
-        logging.warning(SERIAL_PORT + " not availabvle. Web Server will not be able to push data")
+        logging.warning(
+            SERIAL_PORT + " not availabvle. Web Server will not be able to push data")
 
 
 class MyRequestHandler(BaseHTTPRequestHandler):
     @staticmethod
     def export_config():
+        if ser == None:
+            raise Exception("Serial not available. Can't push data. Try to enable Serial with raspi-config")
         packet = bytearray()
         for f in test_conf:
             packet.append(int(f["value"]))
@@ -40,18 +44,24 @@ class MyRequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         global test_conf
-        data = json.loads(self.rfile.read(
-            int(self.headers['Content-Length'])).decode('utf8'))
+        data = json.loads(self.rfile.read(int(self.headers['Content-Length'])).decode('utf8'))
+        for f in data:
+            for f1 in test_conf:
+                if f1["id"] == f["id"]:
+                    f1["value"] = f["value"]
         test_conf = data
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        if ser == None:
-            self.wfile.write(bytes(
-                "Serial not available. Can't push data. Try to enable Serial with raspi-config", "utf8"))
-            return
-        self.export_config()
-        self.wfile.write(bytes("Data sent to system. Maybe", "utf8"))
+        try:
+            self.export_config()
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(bytes("Data sent to system. Maybe", "utf8"))
+        except Exception as e:
+            logging.error(e)
+            self.send_response(500)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(bytes(str(e), "utf8"))
         return
 
     def do_GET(self):

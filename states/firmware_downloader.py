@@ -28,6 +28,7 @@ class FirmwareDownload(State):
         else:
             raise Exception("Missing URL for bin")
         self.app.detail(bin_file)
+        self.app.detail(download_url)
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
         self.app.detail("{} bytes downloaded\n-----".format(p.st_size))
