@@ -49,7 +49,6 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             for f1 in test_conf:
                 if f1["id"] == f["id"]:
                     f1["value"] = f["value"]
-        test_conf = data
         try:
             self.export_config()
             self.send_response(200)
