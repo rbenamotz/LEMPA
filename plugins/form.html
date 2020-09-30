@@ -27,14 +27,21 @@
                 f.value = d.innerText;
             });
             payload = ddd.map(o => {
-                return {"id" : o.id, "value" : o.value};
+                return { "id": o.id, "value": o.value };
             })
             body = JSON.stringify(payload)
             writeToLog("Sending " + body)
             fetch('/data', { method: 'POST', body: body })
-                .then(resp => resp.text())
-                .then(txt => writeToLog(txt))
-            writeToLog("---------------------------")
+                .then(async resp => {
+                    txt = await resp.text();
+                    if (resp.ok) {
+                        writeToLog(txt)
+                    } else {
+                        writeErrorToLog(txt)
+                    }
+                })
+                .finally(() => writeSepToLog())
+
         }
 
         function onload() {
@@ -45,14 +52,29 @@
                     buildForm()
                 })
                 .then(() => writeToLog("Data loaded from server"))
+                .finally(() => writeSepToLog())
 
+        }
+        function writeErrorToLog(txt) {
+            pre = document.getElementById("logPre");
+            line = document.createElement("log");
+            line.innerText = txt + "\n";
+            line.style.color = "red";
+            pre.appendChild(line);
+            pre.scrollTo(0, pre.scrollHeight);
+        }
+        function writeSepToLog() {
+            pre = document.getElementById("logPre");
+            hr = document.createElement("hr");
+            pre.appendChild(hr);
+            pre.scrollTo(0, pre.scrollHeight);
         }
         function writeToLog(txt) {
             pre = document.getElementById("logPre");
             line = document.createElement("log");
             line.innerText = txt + "\n";
             pre.appendChild(line);
-            pre.scrollTo(50,pre.scrollHeight);
+            pre.scrollTo(0, pre.scrollHeight);
         }
     </script>
 </head>
