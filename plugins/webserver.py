@@ -1,11 +1,12 @@
 import json
 import threading
 import logging
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from hardware import *
+from hardware import SERIAL_PORT
 import serial
-
+from flask import Flask, send_from_directory, jsonify, request
+from flask_socketio import SocketIO, join_room, emit, send
 from . import Plugin
+import time
 
 test_conf = {}
 ser = None
@@ -16,67 +17,58 @@ def init_serial(speed):
     try:
         ser = serial.Serial(port=SERIAL_PORT, baudrate=speed, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                             bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
-        print("Serial connection initiated with speed of ", speed)
+        logging.info("Serial connection initiated with speed of " + str(speed))
     except:
         logging.warning(
             SERIAL_PORT + " not availabvle. Web Server will not be able to push data")
 
 
-class MyRequestHandler(BaseHTTPRequestHandler):
-    @staticmethod
-    def export_config():
-        if ser == None:
-            raise Exception("Serial not available. Can't push data. Try to enable Serial with raspi-config")
-        packet = bytearray()
-        for f in test_conf:
-            packet.append(int(f["value"]))
-        ser.write(packet)
+server = Flask(__name__)
+server.debug = False
+socketio = SocketIO(server)
 
-    def do_get_data(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        message = json.dumps(test_conf)
-        self.wfile.write(bytes(message, "utf8"))
 
-    def log_message(self, format, *args):
-        return
+def export_config():
+    global ser
+    if ser == None:
+        raise Exception(
+            "Serial not available. Can't push data. Try to enable Serial with raspi-config")
+    packet = bytearray()
+    log = ""
+    for f in test_conf:
+        i = int(f["value"])
+        packet.append(i)
+        if len(log) > 0:
+            log = log + ","
+        log = log + str(i)
+    ser.write(packet)
+    socketio.emit('serialout', log)
 
-    def do_POST(self):
-        global test_conf
-        data = json.loads(self.rfile.read(int(self.headers['Content-Length'])).decode('utf8'))
-        for f in data:
-            for f1 in test_conf:
-                if f1["id"] == f["id"]:
-                    f1["value"] = f["value"]
-        try:
-            self.export_config()
-            self.send_response(200)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(bytes("Data sent to system. Maybe", "utf8"))
-        except Exception as e:
-            logging.error(e)
-            self.send_response(500)
-            self.send_header('Content-type', 'text/plain')
-            self.end_headers()
-            self.wfile.write(bytes(str(e), "utf8"))
-        return
 
-    def do_GET(self):
-        if self.path == "/data":
-            return self.do_get_data()
-        f = open('plugins/form.html', 'r')
-        message = f.read()
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-        self.wfile.write(bytes(message, "utf8"))
-        return
+@server.route('/')
+def root():
+    return send_from_directory(".", "form.html")
+
+@server.route('/data', methods=["GET"])
+def data_get():
+    return jsonify(test_conf)
+
+@server.route('/data', methods=["POST"])
+def data_post():
+    data = request.get_json(force=True)
+    for f in data:
+        for f1 in test_conf:
+            if f1["id"] == f["id"]:
+                f1["value"] = f["value"]
+    export_config()
+    return ("Data (probably) sent to MCU")
+
+
 
 
 class WebserverPlugin(Plugin):
     def __init__(self, app):
+        self.cnt = 0
         super().__init__(app)
 
     def load_conf(self, conf):
@@ -85,12 +77,28 @@ class WebserverPlugin(Plugin):
         test_conf = conf["fields"]
 
     def run(self):
-        # return
         self.app.detail("Starting web server for serial injector on port 8080")
-        httpd = HTTPServer(('', 8080), MyRequestHandler)
-        httpd.serve_forever()
+        socketio.run(server, host='0.0.0.0', port=8080)
+
+    def serial_listener(self):
+        ba = bytearray()
+        while (ser == None):
+            time.sleep(0.2)
+        while True:
+            b = ser.read()
+            if b:
+                ba.append(ord(b))
+                if (b==b'\n'):
+                    s = ba.decode("utf-8")
+                    socketio.emit('serialin', s)
+                    ba = bytearray()
+            else:
+                time.sleep(0.1)
 
     def on_start(self):
-        daemon = threading.Thread(name='daemon_server', target=self.run)
-        daemon.setDaemon(True)
-        daemon.start()
+        daemon1 = threading.Thread(name='daemon_server', target=self.run)
+        daemon1.setDaemon(True)
+        daemon1.start()
+        daemon2 = threading.Thread(name='serial_listener', target=self.serial_listener)
+        daemon2.setDaemon(True)
+        daemon2.start()

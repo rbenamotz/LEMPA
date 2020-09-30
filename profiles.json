@@ -63,7 +63,7 @@
       {
         "name": "serialinjector",
         "conf": {
-          "serialSpeed": 38400,
+          "serialSpeed": 9600,
           "fields": [
             {
               "id": "blinkrate",
@@ -99,7 +99,7 @@
       {
         "name": "serialinjector",
         "conf": {
-          "serialSpeed": 38400,
+          "serialSpeed": 9600,
           "fields": [
             {
               "id": "blinkrate",

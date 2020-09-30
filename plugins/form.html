@@ -1,7 +1,17 @@
 <html>
 
 <head>
-    <title>Serial data injector</title>
+    <title>LEMPA Serial Monitor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('serialout', (data) => {
+            writeToSerialMonitor(data, ">>>");
+        });
+        socket.on('serialin', (data) => {
+            writeToSerialMonitor(data, "<<<");
+        });
+    </script>
     <script language="javascript">
         ddd = {};
         function buildForm() {
@@ -35,9 +45,9 @@
                 .then(async resp => {
                     txt = await resp.text();
                     if (resp.ok) {
-                        writeToLog(txt)
+                        writeToLog(txt, null)
                     } else {
-                        writeErrorToLog(txt)
+                        writeToLog(txt, "red")
                     }
                 })
                 .finally(() => writeSepToLog())
@@ -55,40 +65,58 @@
                 .finally(() => writeSepToLog())
 
         }
-        function writeErrorToLog(txt) {
-            pre = document.getElementById("logPre");
-            line = document.createElement("log");
-            line.innerText = txt + "\n";
-            line.style.color = "red";
-            pre.appendChild(line);
-            pre.scrollTo(0, pre.scrollHeight);
+        function writeToSerialMonitor(txt, preFix) {
+            elm = document.getElementById("serialMonitor");
+            line = document.createElement("div");
+            line.innerText = formatDate() + " " + preFix + " " + txt;
+            elm.appendChild(line);
+            elm.scrollTo(0, elm.scrollHeight);
         }
+
+        function writeToLog(txt, clr) {
+            elm = document.getElementById("logDiv");
+            line = document.createElement("div");
+            line.innerText = formatDate() + " " + txt;
+            if (clr)
+                line.style.color = clr;
+            elm.appendChild(line);
+            elm.scrollTo(0, elm.scrollHeight);
+        }
+
         function writeSepToLog() {
-            pre = document.getElementById("logPre");
+            pre = document.getElementById("logDiv");
             hr = document.createElement("hr");
             pre.appendChild(hr);
             pre.scrollTo(0, pre.scrollHeight);
         }
-        function writeToLog(txt) {
-            pre = document.getElementById("logPre");
-            line = document.createElement("log");
-            line.innerText = txt + "\n";
-            pre.appendChild(line);
-            pre.scrollTo(0, pre.scrollHeight);
+        function addLeadingZero(v) {
+            if (v < 10) {
+                return "0" + v;
+            }
+            return "" + v;
         }
+        function formatDate() {
+            var date = new Date()
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var sec = date.getSeconds();
+            return addLeadingZero(hours) + ":" + addLeadingZero(minutes) + ":" + addLeadingZero(sec);
+        }
+
+        var d = new Date();
+        var e = formatDate(d);        
     </script>
 </head>
 
 <body onload="onload()">
     <h1>Serial data injector</h1>
     <div class="grid-container">
-        <div class="grid-child purple">
+        <div class="grid-child">
             <div id="mainform"></div>
             <input type="button" onclick="sendData()" value="update">
         </div>
-        <div class="grid-child green">
-            <pre class="log" id="logPre"></pre>
-        </div>
+        <div class="grid-child" id="logDiv"></div>
+        <div class="grid-child" id="serialMonitor"></div>
     </div>
     <hr>
 </body>
@@ -103,32 +131,36 @@
 
     .grid-container {
         display: grid;
+        grid-template-rows: 1fr, 1fr;
         grid-template-columns: 1fr 1fr;
         grid-gap: 20px;
     }
 
-    pre.log {
-        white-space: pre-wrap;
-        background-color: #EFEFEF;
+    .grid-child {
+        padding: 10px;
+        border: 1px black solid;
         height: 200px;
         overflow: auto;
     }
 
-    pre.log:before {
-        counter-reset: listing;
+    .grid-child:nth-child(2) {
+        background-color: #EFEFEF;
+        font-family: "Courier New", monospace;
+        font-size: small;
+        font-weight: bold;
+        white-space: pre;
     }
 
-    pre.log log {
-        counter-increment: listing;
+    .grid-child:nth-child(3) {
+        background-color: #EFEFEF;
+        font-family: "Courier New", monospace;
+        font-size: small;
+        font-weight: bold;
+        white-space: pre;
     }
 
-    pre.log log::before {
-        content: counter(listing) ". ";
-        display: inline-block;
-        width: 82m;
-        padding-left: auto;
-        margin-left: auto;
-        text-align: right;
+    .grid-child:nth-child(3) {
+        grid-column: span 2;
     }
 </style>
 
