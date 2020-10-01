@@ -25,7 +25,7 @@ def init_serial(speed):
 
 server = Flask(__name__)
 server.debug = False
-socketio = SocketIO(server)
+socketio = SocketIO(server, cors_allowed_origin="*")
 
 
 def export_config():
