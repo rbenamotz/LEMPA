@@ -11,7 +11,7 @@ from application import Application
 from states.state_factory import *
 
 logging.basicConfig(format='%(asctime)s %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S %p', filename='LEMPA.log', level=logging.WARNING)
+                    datefmt='%m/%d/%Y %I:%M:%S %p', filename='LEMPA.log', level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler())
 logging.info("Programmer is running")
 
