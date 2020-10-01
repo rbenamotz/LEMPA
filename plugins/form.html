@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>LEMPA Serial Monitor</title>
+    <title>LEMPA Serial Tools</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
         var socket = io();
@@ -17,8 +17,6 @@
         function buildForm() {
             root = document.getElementById("mainform");
             ddd.forEach(f => {
-                // div0 = document.createElement("div");
-                // div0.className = "row";
                 div1 = document.createElement("div");
                 div1.className = "formLine";
                 div2 = document.createElement("div");
@@ -29,7 +27,6 @@
                 div2.contentEditable = true;
                 root.appendChild(div1);
                 root.appendChild(div2);
-                // root.appendChild(div0);
             })
         }
         function sendData() {
@@ -110,7 +107,7 @@
 </head>
 
 <body onload="onload()">
-    <h1>LEMPA Serial Monitor</h1>
+    <h1>LEMPA Serial Tools</h1>
     <div class="grid-container">
         <div class="grid-child">
             <div class="cellheader">Data Injection</div>

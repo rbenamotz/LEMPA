@@ -10,6 +10,8 @@ ecdsa==0.15
 esptool==2.8
 Flask==1.1.2
 Flask-SocketIO==4.3.1
+# gevent==20.9.0
+# gevent-websocket==0.10.1
 idna==2.10
 isort==4.3.21
 lazy-object-proxy==1.4.3
@@ -19,6 +21,7 @@ pyaes==1.6.1
 pycodestyle==2.6.0
 pylint==2.5.3
 pyserial==3.4
+# python-statemachine==0.8.0
 requests==2.24.0
 RPi.GPIO==0.7.0
 six==1.15.0
