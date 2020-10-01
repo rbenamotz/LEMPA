@@ -63,7 +63,7 @@
       {
         "name": "serialinjector",
         "conf": {
-          "serialSpeed": 38400,
+          "serialSpeed": 9600,
           "fields": [
             {
               "id": "blinkrate",
@@ -85,8 +85,8 @@
     "bins": [
       {
         "method": "cloud",
-        "url": "https://github.com/rbenamotz/LEMPA/releases/download/0.01/blink.hex",
-        "name": "blink"
+        "url": "https://github.com/rbenamotz/LEMPA/releases/download/0.01/cloudblink.ino.standard.hex",
+        "name": "cloudblink"
       }
     ],
     "fuses": {
@@ -99,7 +99,7 @@
       {
         "name": "serialinjector",
         "conf": {
-          "serialSpeed": 38400,
+          "serialSpeed": 9600,
           "fields": [
             {
               "id": "blinkrate",

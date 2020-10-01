@@ -1,5 +1,6 @@
 import logging
 import subprocess
+import time
 from . import Programmer
 from application import Application
 
@@ -10,6 +11,7 @@ class avr(Programmer):
 
     def __run_avrdude__(self, params):
         command = "/usr/bin/sudo avrdude {}".format(params)
+        self.app.detail(command)
         process = subprocess.Popen(command.split(), stderr=subprocess.PIPE)
         while True:
             output = process.stderr.readline()
@@ -25,7 +27,7 @@ class avr(Programmer):
         f = self.profile["fuses"]
         command: str = '-p {} -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b {} ' \
                        '-D -e -u -U lfuse:w:{}:m -U hfuse:w:{}:m'.format(
-                           self.profile["device"], self.programming_speed, f["lfuse"], f["hfuse"])
+                           self.profile["device"], self.comm_speed, f["lfuse"], f["hfuse"])
         if "efuse" in f:
             command = '{} -U efuse:w:{}:m'.format(command, f["efuse"])
         if "lock" in f:
@@ -36,7 +38,7 @@ class avr(Programmer):
         self.app.print("Writing flash")
         b = self.profile["bins"][0]
         command: str = "-p %s -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b %s -u -U flash:w:bins/%s.hex:i -u  -e " % (
-            self.profile["device"], self.programming_speed, b["name"])
+            self.profile["device"], self.comm_speed, b["name"])
         logging.debug(command)
         return self.__run_avrdude__(command)
 
@@ -45,3 +47,10 @@ class avr(Programmer):
         if not b:
             return False
         return self.__write_flash__()
+
+    def erase(self):
+        command: str = "-p %s -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b %s -e" % (self.profile["device"], self.comm_speed)
+        self.app.detail(command)
+        output = self.__run_avrdude__(command)
+        time.sleep(2)
+        return output

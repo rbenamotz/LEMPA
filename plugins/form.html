@@ -1,24 +1,32 @@
 <html>
 
 <head>
-    <title>Serial data injector</title>
+    <title>LEMPA Serial Tools</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('serialout', (data) => {
+            writeToSerialMonitor(data, ">>>");
+        });
+        socket.on('serialin', (data) => {
+            writeToSerialMonitor(data, "<<<");
+        });
+    </script>
     <script language="javascript">
         ddd = {};
         function buildForm() {
             root = document.getElementById("mainform");
             ddd.forEach(f => {
-                div0 = document.createElement("div");
-                div0.className = "row";
                 div1 = document.createElement("div");
-                div1.className = "caption";
+                div1.className = "formLine";
                 div2 = document.createElement("div");
+                div2.className = "formLine formValue"
                 div2.id = "data_" + f.id;
                 div1.innerText = f.title;
                 div2.innerText = f.value;
                 div2.contentEditable = true;
-                div0.appendChild(div1);
-                div0.appendChild(div2);
-                root.appendChild(div0);
+                root.appendChild(div1);
+                root.appendChild(div2);
             })
         }
         function sendData() {
@@ -26,9 +34,22 @@
                 d = document.getElementById("data_" + f.id);
                 f.value = d.innerText;
             });
-            fetch('/data', { method: 'POST', body: JSON.stringify(ddd) })
-                .then(resp => resp.text())
-                .then(txt => alert(txt))
+            payload = ddd.map(o => {
+                return { "id": o.id, "value": o.value };
+            })
+            body = JSON.stringify(payload)
+            writeToLog("Sending " + body)
+            fetch('/data', { method: 'POST', body: body })
+                .then(async resp => {
+                    txt = await resp.text();
+                    if (resp.ok) {
+                        writeToLog(txt, null)
+                    } else {
+                        writeToLog(txt, "red")
+                    }
+                })
+                .finally(() => writeSepToLog())
+
         }
 
         function onload() {
@@ -37,24 +58,146 @@
                 .then(data => {
                     ddd = data;
                     buildForm()
-                });
+                })
+                .then(() => writeToLog("Data loaded from server"))
+                .finally(() => writeSepToLog())
+
         }
+        function writeToSerialMonitor(txt, preFix) {
+            elm = document.getElementById("serialMonitor");
+            line = document.createElement("div");
+            line.innerText = formatDate() + " " + preFix + " " + txt;
+            elm.appendChild(line);
+            elm.scrollTo(0, elm.scrollHeight);
+        }
+
+        function writeToLog(txt, clr) {
+            elm = document.getElementById("logDiv");
+            line = document.createElement("div");
+            line.innerText = formatDate() + " " + txt;
+            if (clr)
+                line.style.color = clr;
+            elm.appendChild(line);
+            elm.scrollTo(0, elm.scrollHeight);
+        }
+
+        function writeSepToLog() {
+            pre = document.getElementById("logDiv");
+            hr = document.createElement("hr");
+            pre.appendChild(hr);
+            pre.scrollTo(0, pre.scrollHeight);
+        }
+        function addLeadingZero(v) {
+            if (v < 10) {
+                return "0" + v;
+            }
+            return "" + v;
+        }
+        function formatDate() {
+            var date = new Date()
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var sec = date.getSeconds();
+            return addLeadingZero(hours) + ":" + addLeadingZero(minutes) + ":" + addLeadingZero(sec);
+        }
+
+        var d = new Date();
+        var e = formatDate(d);        
     </script>
 </head>
 
 <body onload="onload()">
-    <h1>Serial data injector</h1>
-    <div id="mainform"></div>
-    <hr>
-    <input type="button" onclick="sendData()" value="update">
+    <h1>LEMPA Serial Tools</h1>
+    <div class="grid-container">
+        <div class="grid-child">
+            <div class="cellheader">Data Injection</div>
+            <div id="mainform" class="form-grid-container"></div>
+            <input type="button" onclick="sendData()" value="update">
+        </div>
+        <div class="grid-child">
+            <div class="cellheader">Operation Log</div>
+            <div id="logDiv" class="monitor"></div>
+        </div>
+        <div class="grid-child">
+            <div class="cellheader">Live Serial Monitor</div>
+            <div id="serialMonitor" class="monitor"></div>
+        </div>
+    </div>
+    <div class="footer">
+        Created by Roey Benamotz <a href="mailto:roey@benamotz.com">roey@benamotz.com</a> <a
+            href="https://github.com/rbenamotz/LEMPA">https://github.com/rbenamotz/LEMPA</a>
+    </div>
 </body>
 <style>
-    .row {
-        padding-top: 10px;
+    body {
+        font-family: Arial, Helvetica, sans-serif;
     }
 
-    .caption {
-        background-color: cyan;
+    h1 {
+        text-align: center;
+        color: slateblue;
+    }
+
+    .footer {
+        padding-top: 20px;
+        font-weight: bold;
+        font-size: x-small;
+    }
+
+    .formLine {
+        border-top: 2px white solid;
+        border-bottom: 2px white solid;
+        padding: 0;
+        background-color: #EFEFEF;
+        font-size: small;
+    }
+
+    .formValue {
+        /* background-color: white; */
+        text-align: right;
+    }
+
+    .form-grid-container {
+        display: grid;
+        grid-template-columns: auto 100px;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-rows: 1fr, 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+    }
+
+    .grid-child {
+        padding: 10px;
+        border: 1px black dotted;
+        height: 300px;
+        overflow: auto
+    }
+
+    .cellheader {
+        height: 30px;
+        font-weight: bold;
+        font-size: large;
+        vertical-align: middle;
+        background-color: blue;
+        color: white;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .monitor {
+        background-color: #EFEFEF;
+        font-family: monospace;
+        font-weight: bold;
+        height: calc(100% - 30px);
+        width: 100%;
+        overflow: auto;
+    }
+
+    .grid-child:nth-child(3) {
+        grid-column: span 2;
     }
 </style>
 
