@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <title>LEMPA Web Interface</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('serialout', (data) => {
+            writeToSerialMonitor(data, ">>>");
+        });
+        socket.on('serialin', (data) => {
+            writeToSerialMonitor(data, "<<<");
+        });
+        socket.on('viewHeader', data => {
+            document.getElementById("viewHeader").innerText = data;
+            // document.getElementById("viewPrint").innerText = "";
+            document.getElementById("viewPrint").style.color = "gray";
+            document.getElementById("viewDetails").style.color = "gray";
+            writeToLog(data, "blue")
+            writeSepToLog();
+        });
+        socket.on('viewPrint', data => {
+            document.getElementById("viewPrint").innerText = data;
+            document.getElementById("viewPrint").style.color = "";
+        });
+        socket.on('viewDetail', data => {
+            writeToLog(data);
+            if (!data) {
+                return;
+            }
+            document.getElementById("viewDetails").innerText = data;
+            document.getElementById("viewDetails").style.color = "";
+        });
+        socket.on('viewError', data => {
+            writeToLog(data, "red");
+            document.getElementById("viewDetails").innerText = data;
+        });
+    </script>
+    <script language="javascript" src="static/js/main.js"></script>
+    <link href="static/css/main.css" rel="stylesheet">
+</head>
+
+<body onload="onload()">
+    <h1>LEMPA Web Interface</h1>
+    <div class="grid-container">
+        <div class="grid-child">
+            <div class="cellheader">System Status</div>
+            <div class="monitor">
+                <h2 id="viewHeader">&nbsp;</h2>
+                <h3 id="viewPrint">&nbsp;</h3>
+                <div id="viewDetails"></div>
+            </div>
+            <div class="toolbar"></div>
+        </div>
+        <div class="grid-child">
+            <div class="cellheader">Data Injection</div>
+            <div id="mainform" class="form-grid-container"></div>
+            <div class="toolbar"><input type="button" onclick="sendFormToSerial()" value="send"></div>
+        </div>
+        <div class="grid-child">
+            <div class="cellheader">Operation Log</div>
+            <div id="logDiv" class="monitor"></div>
+            <div class="toolbar"><input type="button" onclick="clearLog('logDiv')" value="clear"></div>
+        </div>
+        <div class="grid-child">
+            <div class="cellheader">Live Serial Monitor</div>
+            <div id="serialMonitor" class="monitor"></div>
+            <div class="toolbar">
+                <input type="text" class="longtextbox" id="serialOutText">
+                <input type="button" value="send" onclick="sendSerialTextFromForm()">
+                <input type="button" onclick="clearLog('serialMonitor')" value="clear">
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        Created by Roey Benamotz <a href="mailto:roey@benamotz.com">roey@benamotz.com</a> <a href="https://github.com/rbenamotz/LEMPA">https://github.com/rbenamotz/LEMPA</a>
+    </div>
+</body>
+
+</html>

@@ -1,10 +1,21 @@
 from views.led_view import LedsView
 from views.terminal_view import TerminalView
 from views.display_view import DisplayView
+from views import View
 
 COMMAND_LINE_PARAM_PROFILE_ID = 1
 COMMAND_LINE_PARAM_CONFIG_FILE = 2
 
+
+
+class PlugingsList(list):
+    def __init__(self,app):
+        self.app = app
+        super().__init__()
+    def append(self,x):
+        if isinstance(x,View):
+            self.app.views.append(x)
+        return super().append(x)
 
 class Application:
     APP_STATE_PROFILE_SENSE = "Profile Sensing"
@@ -33,7 +44,7 @@ class Application:
         self.firmware_version = 0
         self.__app_state = self.APP_STATE_PROFILE_SENSE
         self.profiles = []
-        self.plugins = []
+        self.plugins = PlugingsList(self)
         self.views = [TerminalView(self), LedsView(self), DisplayView(self)]
 
     def refresh_views(self):
