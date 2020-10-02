@@ -13,6 +13,7 @@ from views import View
 test_conf = {}
 ser = None
 serial_speed = 9600
+WEB_SERVER_PORT = 8080
 
 
 def init_serial():
@@ -48,12 +49,13 @@ def export_config():
     ser.write(packet)
     socketio.emit('serialout', log)
 
+
 def export_text(txt):
     global ser
     if ser == None:
         raise Exception(
             "Serial not available. Can't push data. Try to enable Serial with raspi-config")
-    ser.write(txt.encode());
+    ser.write(txt.encode())
     socketio.emit('serialout', txt)
 
 
@@ -61,10 +63,11 @@ def export_text(txt):
 def root():
     return send_from_directory(".", "index.html")
 
+
 @server.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(server.root_path, 'static'),
-                          'favicon.ico',mimetype='image/vnd.microsoft.icon')
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @server.route('/data', methods=["GET"])
@@ -84,7 +87,7 @@ def data_post():
     elif j["type"] == "text":
         export_text(j["data"])
     else:
-        raise Exception ("Unknown type")
+        raise Exception("Unknown type")
     return ("Data (probably) sent to MCU")
 
 
@@ -99,7 +102,7 @@ class WebserverPlugin(Plugin, View):
         super().__init__(app)
 
     def header(self):
-        socketio.emit('viewHeader',self.app.app_state)
+        socketio.emit('viewHeader', self.app.app_state)
 
     def print(self, txt):
         socketio.emit('viewPrint', txt)
@@ -108,7 +111,7 @@ class WebserverPlugin(Plugin, View):
         socketio.emit('viewDetail', txt)
 
     def error(self, e):
-        socketio.emit('viewError', txt)
+        socketio.emit('viewError', str(e))
 
     def cleanup(self):
         pass
@@ -122,8 +125,9 @@ class WebserverPlugin(Plugin, View):
         test_conf = conf["fields"]
 
     def run(self):
-        self.app.detail("Starting web server for serial injector on port 8080")
-        socketio.run(server, host='0.0.0.0', port=8080)
+        self.app.detail(
+            "LEMPA Web Interface on port {}".format(WEB_SERVER_PORT))
+        socketio.run(server, host='0.0.0.0', port=WEB_SERVER_PORT)
 
     def serial_listener(self):
         global ser
