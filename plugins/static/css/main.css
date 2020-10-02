@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: slateblue;
+}
+
+input {
+    width: 100px;
+}
+
+input[type=button] {
+    font-weight: bold;
+    text-align: center;
+}
+
+.footer {
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: x-small;
+}
+
+.formLine {
+    border-top: 2px white solid;
+    border-bottom: 2px white solid;
+    padding: 0;
+    /* background-color: #EFEFEF; */
+    color: blue;
+    font-size: small;
+    height: 20px;
+    overflow: hidden;
+    border-bottom: 1px gray solid;
+}
+
+.formValue {
+    /* background-color: white; */
+    text-align: right;
+    /* border: 1px black dotted; */
+}
+
+.form-grid-container {
+    display: grid;
+    grid-template-columns: auto 100px;
+    height: calc(100% - 30px - 20px);
+    width: 100%;
+    overflow: auto;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-rows: 1fr, 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.grid-child {
+    padding: 10px;
+    border: 1px gray dotted;
+    height: 300px;
+    overflow: auto;
+}
+
+.cellheader {
+    height: 30px;
+    font-weight: bold;
+    font-size: large;
+    vertical-align: middle;
+    background-color: blue;
+    color: white;
+    line-height: 30px;
+    text-align: center;
+}
+
+.monitor {
+    background-color: #EFEFEF;
+    font-family: monospace;
+    font-weight: bold;
+    height: calc(100% - 30px - 20px);
+    width: 100%;
+    overflow: auto;
+}
+
+.toolbar {
+    height: 20px;
+    background-color: white;
+    width: 100%;
+    text-align: right;
+    /* display: inline-block; */
+}
+
+.longtextbox {
+    width: calc(100% - 210px);
+}
+
+.grid-child:nth-child(1) {
+    grid-column: span 2;
+}

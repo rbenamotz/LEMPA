@@ -1,4 +1,5 @@
 import json
+import os
 import threading
 import logging
 from hardware import SERIAL_PORT
@@ -39,20 +40,30 @@ def export_config():
         raise Exception(
             "Serial not available. Can't push data. Try to enable Serial with raspi-config")
     packet = bytearray()
-    log = ""
     for f in test_conf:
         i = int(f["value"])
         packet.append(i)
-        if len(log) > 0:
-            log = log + ","
-        log = log + str(i)
+    log = ','.join('0x{:02X}'.format(a) for a in packet)
     ser.write(packet)
     socketio.emit('serialout', log)
+
+def export_text(txt):
+    global ser
+    if ser == None:
+        raise Exception(
+            "Serial not available. Can't push data. Try to enable Serial with raspi-config")
+    ser.write(txt.encode());
+    socketio.emit('serialout', txt)
 
 
 @server.route('/')
 def root():
-    return send_from_directory(".", "form.html")
+    return send_from_directory(".", "index.html")
+
+@server.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(server.root_path, 'static'),
+                          'favicon.ico',mimetype='image/vnd.microsoft.icon')
 
 
 @server.route('/data', methods=["GET"])
@@ -62,12 +73,17 @@ def data_get():
 
 @server.route('/data', methods=["POST"])
 def data_post():
-    data = request.get_json(force=True)
-    for f in data:
-        for f1 in test_conf:
-            if f1["id"] == f["id"]:
-                f1["value"] = f["value"]
-    export_config()
+    j = request.get_json(force=True)
+    if (j["type"] == "form"):
+        for f in j["data"]:
+            for f1 in test_conf:
+                if f1["id"] == f["id"]:
+                    f1["value"] = f["value"]
+        export_config()
+    elif j["type"] == "text":
+        export_text(j["data"])
+    else:
+        raise Exception ("Unknown type")
     return ("Data (probably) sent to MCU")
 
 
