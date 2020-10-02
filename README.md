@@ -1,8 +1,9 @@
 # LEMPA
-### LEan Mean Programming mAchine
+**Standalone MCU programmer for RPi**
+
 LEMPA is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
 
-#### version 4 with OLED display coming up <a href="https://www.youtube.com/watch?v=MS-8_smsfuY">soon</a>
+### version 4 with OLED display coming up <a href="https://www.youtube.com/watch?v=MS-8_smsfuY">soon</a>
 Click image for short video:
 ![Image](imgs/zero_on.jpg)
 
@@ -11,7 +12,7 @@ Click image for short video:
 <!--![Image](https://i.giphy.com/media/S64nu0NFtD7TRhJ7rL/giphy.webp)-->
 
 LEMPA is composed of 3 parts:
-#### Hardware: Raspberry PI HAT
+### Hardware: Raspberry PI HAT
 A custom PCB that contains all the relevant connections required to program:
 * ATMega328 (including external oscillator)
 * ATTiny
@@ -28,7 +29,9 @@ The board also includes:
 * Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud / local network / shared folder.
 
 ![Image](imgs/2D.png)
-#### Software
+![Image](imgs/zero_2d.png)
+
+### Software
 The software reads the different profiles and orchestrates the process of downloading new BINs and programming 
 ![Image](imgs/states.png)
 ###### Installation instructions
@@ -89,7 +92,13 @@ The configuration file can contain as many profiles as required.
 * **bins** List of bins to upload. For ATMega only one bin is required. For ESP multiple bins can be specified to support SPIFFS
 * **plugins** System support a simple web server with the ability to send data to the ATMega via serial. This allows for parameter tweaking and QA. 
 
- 
+## Web Interface
+It is possible to access the system via web UI that allows:
+* Live view of system actions
+* Full working 2 way serial monitor. ATMega328 is connected by default to RPi serial0. External boards can be connected via dedicated headers on the HAT
+* Operation log
+* System control
+ ![Image](imgs/web_ui.png)
 
 ## Contact
 Please contact me at roey@benamotz.com with any comments
