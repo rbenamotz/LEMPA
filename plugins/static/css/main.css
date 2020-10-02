@@ -7,6 +7,18 @@ h1 {
     color: slateblue;
 }
 
+h2 {
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-bottom: 1px black solid;
+    border-top: 1px black solid;
+}
+
+h3 {
+    height: 30px;
+}
+
 input {
     width: 100px;
 }
@@ -35,31 +47,41 @@ input[type=button] {
 }
 
 .formValue {
-    /* background-color: white; */
+    background-color: white;
     text-align: right;
-    /* border: 1px black dotted; */
 }
 
 .form-grid-container {
     display: grid;
     grid-template-columns: auto 100px;
-    height: calc(100% - 30px - 20px);
+    height: calc(100% - 30px - 23px);
     width: 100%;
     overflow: auto;
 }
 
 .grid-container {
     display: grid;
-    grid-template-rows: 1fr, 1fr;
-    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    /* grid-template-columns: auto 100px; */
+    grid-template-columns: 1fr 2fr 3fr;
     grid-gap: 20px;
+    height: 80%;
+    padding: 10px;
+}
+
+.grid-child:nth-child(4) {
+    grid-column: span 2;
+}
+
+.grid-child:nth-child(3) {
+    grid-row: span 2;
 }
 
 .grid-child {
-    padding: 10px;
-    border: 1px gray dotted;
-    height: 300px;
+    /* border: 1px gray dotted; */
+    height: 100%;
     overflow: auto;
+    background-color: #EFEFEF;
 }
 
 .cellheader {
@@ -74,16 +96,18 @@ input[type=button] {
 }
 
 .monitor {
-    background-color: #EFEFEF;
+    /* background-color: #EFEFEF; */
     font-family: monospace;
-    font-weight: bold;
-    height: calc(100% - 30px - 20px);
+    /* font-weight: bold; */
+    height: calc(100% - 30px - 23px);
     width: 100%;
     overflow: auto;
 }
 
 .toolbar {
     height: 20px;
+    padding-top: 2px;
+    padding-bottom: 1px;
     background-color: white;
     width: 100%;
     text-align: right;
@@ -92,8 +116,4 @@ input[type=button] {
 
 .longtextbox {
     width: calc(100% - 210px);
-}
-
-.grid-child:nth-child(1) {
-    grid-column: span 2;
 }

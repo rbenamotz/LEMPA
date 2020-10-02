@@ -8,6 +8,7 @@ from flask import Flask, send_from_directory, jsonify, request
 from flask_socketio import SocketIO, emit
 from . import Plugin
 import time
+from views import View
 
 test_conf = {}
 ser = None
@@ -92,10 +93,28 @@ def update_serial_status():
     socketio.emit('serialstatus', data)
 
 
-class WebserverPlugin(Plugin):
+class WebserverPlugin(Plugin, View):
     def __init__(self, app):
         self.cnt = 0
         super().__init__(app)
+
+    def header(self):
+        socketio.emit('viewHeader',self.app.app_state)
+
+    def print(self, txt):
+        socketio.emit('viewPrint', txt)
+
+    def detail(self, txt):
+        socketio.emit('viewDetail', txt)
+
+    def error(self, e):
+        socketio.emit('viewError', txt)
+
+    def cleanup(self):
+        pass
+
+    def refresh(self):
+        pass
 
     def load_conf(self, conf):
         global test_conf, serial_speed
