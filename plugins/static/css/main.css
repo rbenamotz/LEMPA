@@ -15,8 +15,20 @@ h2 {
     border-top: 1px black solid;
 }
 
+.logDir {
+    font-size: small;
+    font-weight: bold;
+    color: green;
+}
+
 h3 {
     height: 30px;
+}
+
+h4 {
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
 }
 
 input {
@@ -54,7 +66,7 @@ input[type=button] {
 .form-grid-container {
     display: grid;
     grid-template-columns: auto 100px;
-    height: calc(100% - 30px - 23px);
+    height: calc(100% - 30px - 24px);
     width: 100%;
     overflow: auto;
 }
@@ -99,15 +111,13 @@ input[type=button] {
     /* background-color: #EFEFEF; */
     font-family: monospace;
     /* font-weight: bold; */
-    height: calc(100% - 30px - 23px);
+    height: calc(100% - 30px - 24px);
     width: 100%;
     overflow: auto;
 }
 
 .toolbar {
-    height: 20px;
-    padding-top: 2px;
-    padding-bottom: 1px;
+    height: 22px;
     background-color: white;
     width: 100%;
     text-align: right;

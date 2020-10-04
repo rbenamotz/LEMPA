@@ -91,6 +91,7 @@ def data_post():
     return ("Data (probably) sent to MCU")
 
 
+
 def update_serial_status():
     data = {"connected": (ser != None), "speed": serial_speed}
     socketio.emit('serialstatus', data)
@@ -100,6 +101,7 @@ class WebserverPlugin(Plugin, View):
     def __init__(self, app):
         self.cnt = 0
         super().__init__(app)
+
 
     def header(self):
         socketio.emit('viewHeader', self.app.app_state)
@@ -117,7 +119,7 @@ class WebserverPlugin(Plugin, View):
         pass
 
     def refresh(self):
-        pass
+        socketio.emit('viewProfile', self.app.profile_name)
 
     def load_conf(self, conf):
         global test_conf, serial_speed

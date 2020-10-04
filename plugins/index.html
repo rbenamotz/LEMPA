@@ -36,6 +36,9 @@
             writeToLog(data, "red");
             document.getElementById("viewDetails").innerText = data;
         });
+        socket.on('viewProfile', data => {
+            document.getElementById('viewProfile').innerText = data;
+        });
     </script>
     <script language="javascript" src="static/js/main.js"></script>
     <link href="static/css/main.css" rel="stylesheet">
@@ -47,6 +50,7 @@
         <div class="grid-child">
             <div class="cellheader">System Status</div>
             <div class="monitor">
+                <h4 id="viewProfile"></h2>
                 <h2 id="viewHeader">&nbsp;</h2>
                 <h3 id="viewPrint">&nbsp;</h3>
                 <div id="viewDetails"></div>
@@ -54,7 +58,7 @@
             <div class="toolbar"></div>
         </div>
         <div class="grid-child">
-            <div class="cellheader">Data Injection</div>
+            <div class="cellheader">Binary Data Injection</div>
             <div id="mainform" class="form-grid-container"></div>
             <div class="toolbar"><input type="button" onclick="sendFormToSerial()" value="send"></div>
         </div>
