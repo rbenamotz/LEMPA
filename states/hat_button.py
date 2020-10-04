@@ -63,7 +63,7 @@ class HatButton:
         self.is_down = not GPIO.input(self.pin)
         if self.is_down and self.waiting_for_button_up:
             return False
-        self.button_initial_state = None
+        self.waiting_for_button_up = False
         if not self.button_down_since and self.is_down:
             self.button_down_since = time.time()
         if (self.__check_short_click()):
