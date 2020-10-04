@@ -28,15 +28,14 @@ class Application:
     APP_STATE_FAIL = "Fail"
     APP_STATE_ERASE = "Erasing"
     APP_STATE_EXCEPTION = "Exception"
-    
-    
+
     def update_views(self):
         for v in self.views:
             v.update()
 
     def __init__(self):
         self.my_name = "LEMPA"
-        self.profile_name = ""
+        self.__profile_name__ = ""
         self.blue_led_on = False
         self.green_led_on = False
         self.red_led_on = False
@@ -70,6 +69,15 @@ class Application:
     @property
     def app_state(self):
         return self.__app_state
+
+    @property
+    def profile_name(self):
+        return self.__profile_name__
+
+    @profile_name.setter
+    def profile_name(self, x):
+        self.__profile_name__ = x
+        self.refresh_views()
 
     @app_state.setter
     def app_state(self, app_state):

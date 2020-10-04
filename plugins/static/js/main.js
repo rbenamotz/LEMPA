@@ -66,8 +66,18 @@ function onload() {
 
 function writeToSerialMonitor(txt, preFix) {
     elm = document.getElementById("serialMonitor");
-    line = document.createElement("div");
-    line.innerText = formatDate() + " " + preFix + " " + txt;
+    let line = document.createElement("div");
+    var spn1 = document.createElement("span");
+    spn1.innerText = formatDate();
+    var spn2 = document.createElement("span");
+    spn2.className = "logDir";
+    spn2.innerText = " " + preFix + " ";
+    var spn3 = document.createElement("span");
+    spn3.innerText = txt;
+    line.appendChild(spn1);
+    line.appendChild(spn2);
+    line.appendChild(spn3);
+    //line.innerText = formatDate() + " " + preFix + " " + txt;
     elm.appendChild(line);
     elm.scrollTo(0, elm.scrollHeight);
 }
