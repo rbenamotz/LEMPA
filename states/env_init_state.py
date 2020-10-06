@@ -1,4 +1,5 @@
 import importlib
+import logging
 import os
 import re
 import time
@@ -15,6 +16,9 @@ class EnvInit(State):
         self.steps_counter = 0
 
     def __load_plugins__(self):
+        if len(self.app.plugins) > 0:
+            logging.warning("Plugins already loaded. Not loading again")
+            return
         pysearchre = re.compile('.py$', re.IGNORECASE)
         pluginfiles = filter(pysearchre.search, os.listdir(os.path.join(os.path.dirname(__file__), '../plugins')))
         form_module = lambda fp: '.' + os.path.splitext(fp)[0]

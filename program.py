@@ -5,6 +5,11 @@ import time
 import RPi.GPIO as GPIO
 import traceback
 import sys
+try:
+    import eventlet
+    eventlet.monkey_patch()
+except (ModuleNotFoundError):
+    logging.warning("Eventlet not installed.")
 
 
 from application import Application

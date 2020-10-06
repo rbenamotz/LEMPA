@@ -31,7 +31,7 @@ class FirmwareDownload(State):
         self.app.detail(download_url)
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
-        self.app.detail("{} bytes downloaded\n-----".format(p.st_size))
+        self.app.detail("{} bytes downloaded".format(p.st_size))
 
     def __validate_local_bin(self, b):
         bin_file = "./bins/%s.hex" % (b["name"])
