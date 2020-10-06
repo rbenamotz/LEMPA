@@ -1,6 +1,9 @@
 ddd = {};
 
 function buildForm() {
+    if (!ddd.forEach) {
+        return;
+    }
     root = document.getElementById("mainform");
     ddd.forEach(f => {
         div1 = document.createElement("div");
@@ -17,6 +20,9 @@ function buildForm() {
 }
 
 function sendFormToSerial() {
+    if (!ddd) {
+        return;
+    }
     ddd.forEach(f => {
         d = document.getElementById("data_" + f.id);
         f.value = d.innerText;

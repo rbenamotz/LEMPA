@@ -9,6 +9,11 @@ from flask_socketio import SocketIO, emit
 from . import Plugin
 import time
 from views import View
+try:
+    import eventlet
+    eventlet.monkey_patch()
+except (ModuleNotFoundError):
+    logging.warning("Eventlet not installed.")
 
 test_conf = {}
 ser = None
@@ -91,7 +96,6 @@ def data_post():
     return ("Data (probably) sent to MCU")
 
 
-
 def update_serial_status():
     data = {"connected": (ser != None), "speed": serial_speed}
     socketio.emit('serialstatus', data)
@@ -101,7 +105,6 @@ class WebserverPlugin(Plugin, View):
     def __init__(self, app):
         self.cnt = 0
         super().__init__(app)
-
 
     def header(self):
         socketio.emit('viewHeader', self.app.app_state)
@@ -118,8 +121,8 @@ class WebserverPlugin(Plugin, View):
     def cleanup(self):
         pass
 
-    def refresh(self):
-        socketio.emit('viewProfile', self.app.profile_name)
+    def set_profile_name(self, x):
+        socketio.emit('viewProfile', x)
 
     def load_conf(self, conf):
         global test_conf, serial_speed

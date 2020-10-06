@@ -12,19 +12,18 @@
         socket.on('serialin', (data) => {
             writeToSerialMonitor(data, "<<<");
         });
-        socket.on('viewHeader', data => {
+        socket.on('viewHeader', (data) => {
             document.getElementById("viewHeader").innerText = data;
-            // document.getElementById("viewPrint").innerText = "";
             document.getElementById("viewPrint").style.color = "gray";
             document.getElementById("viewDetails").style.color = "gray";
             writeToLog(data, "blue")
             writeSepToLog();
         });
-        socket.on('viewPrint', data => {
+        socket.on('viewPrint', (data) => {
             document.getElementById("viewPrint").innerText = data;
             document.getElementById("viewPrint").style.color = "";
         });
-        socket.on('viewDetail', data => {
+        socket.on('viewDetail', (data) => {
             writeToLog(data);
             if (!data) {
                 return;
@@ -50,10 +49,11 @@
         <div class="grid-child">
             <div class="cellheader">System Status</div>
             <div class="monitor">
-                <h4 id="viewProfile"></h2>
-                <h2 id="viewHeader">&nbsp;</h2>
-                <h3 id="viewPrint">&nbsp;</h3>
-                <div id="viewDetails"></div>
+                <h4 id="viewProfile">
+                    </h2>
+                    <h2 id="viewHeader">&nbsp;</h2>
+                    <h3 id="viewPrint">&nbsp;</h3>
+                    <div id="viewDetails"></div>
             </div>
             <div class="toolbar"></div>
         </div>
@@ -78,7 +78,8 @@
         </div>
     </div>
     <div class="footer">
-        Created by Roey Benamotz <a href="mailto:roey@benamotz.com">roey@benamotz.com</a> <a href="https://github.com/rbenamotz/LEMPA">https://github.com/rbenamotz/LEMPA</a>
+        Created by Roey Benamotz <a href="mailto:roey@benamotz.com">roey@benamotz.com</a> <a
+            href="https://github.com/rbenamotz/LEMPA">https://github.com/rbenamotz/LEMPA</a>
     </div>
 </body>
 

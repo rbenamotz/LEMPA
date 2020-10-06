@@ -6,22 +6,29 @@ astroid==2.4.2
 autopep8==1.5.3
 certifi==2020.6.20
 chardet==3.0.4
+click==7.1.2
+dnspython==1.16.0
 ecdsa==0.15
 esptool==2.8
+eventlet==0.28.0
 Flask==1.1.2
 Flask-SocketIO==4.3.1
-# gevent==20.9.0
-# gevent-websocket==0.10.1
+greenlet==0.4.17
 idna==2.10
 isort==4.3.21
+itsdangerous==1.1.0
+Jinja2==2.11.2
 lazy-object-proxy==1.4.3
+MarkupSafe==1.1.1
 mccabe==0.6.1
+monotonic==1.5
 Pillow==7.2.0
 pyaes==1.6.1
 pycodestyle==2.6.0
 pylint==2.5.3
 pyserial==3.4
-# python-statemachine==0.8.0
+python-engineio==3.13.2
+python-socketio==4.6.0
 requests==2.24.0
 RPi.GPIO==0.7.0
 six==1.15.0
@@ -29,4 +36,5 @@ spidev==3.5
 toml==0.10.1
 typed-ast==1.4.1
 urllib3==1.25.9
+Werkzeug==1.0.1
 wrapt==1.12.1
