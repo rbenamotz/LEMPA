@@ -77,7 +77,8 @@ class Application:
     @profile_name.setter
     def profile_name(self, x):
         self.__profile_name__ = x
-        self.refresh_views()
+        for v in self.views:
+            v.set_profile_name(x)
 
     @app_state.setter
     def app_state(self, app_state):
