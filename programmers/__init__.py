@@ -3,7 +3,7 @@ class Programmer(object):
     def __init__(self, app, profile):
         self.app = app
         self.profile = profile
-        self.comm_speed = 125000
+        self.comm_speed = 921600 #125000
         if "speed" in self.profile:
             self.comm_speed = self.profile["speed"]
 

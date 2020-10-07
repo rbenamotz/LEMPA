@@ -17,6 +17,7 @@ class SensingProfileState(State):
         if first:
             self.app.profiles = []
             self.app.profile_name = profile_id
+            self.app.profile_info = p
             self.app.detail("Loading \"{}\"".format(profile_id))
             if "plugins" in p:
                 for pl in self.app.plugins:
