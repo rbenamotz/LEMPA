@@ -45,6 +45,7 @@ class Application:
         self.profiles = []
         self.plugins = PlugingsList(self)
         self.views = [TerminalView(self), LedsView(self), DisplayView(self)]
+        self.profile_info = None
 
     def refresh_views(self):
         for v in self.views:
@@ -73,6 +74,14 @@ class Application:
     @property
     def profile_name(self):
         return self.__profile_name__
+
+    @property
+    def is_auto_detect(self):
+        if not self.profile_info:
+            return False
+        if not 'autodetect' in self.profile_info:
+            return False
+        return self.profile_info['autodetect']
 
     @profile_name.setter
     def profile_name(self, x):

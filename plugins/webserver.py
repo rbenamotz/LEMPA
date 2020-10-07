@@ -152,11 +152,14 @@ class WebserverPlugin(Plugin, View):
                         ba = bytearray()
                 else:
                     time.sleep(0.1)
+            except KeyboardInterrupt:
+                break
             except Exception as e:
                 logging.error(e)
-                if ser:
-                    ser.close()
-                    ser = None
+                break
+        if ser:
+            ser.close()
+            ser = None
 
     def on_start(self):
         daemon1 = threading.Thread(name='daemon_server', target=self.run)
