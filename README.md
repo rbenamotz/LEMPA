@@ -90,6 +90,16 @@ The configuration file can contain as many profiles as required.
 * **jumper** *optional* If specified, and the relevant profile is chosen with a physical jumper, this profile will be used if none was specified as part of command line parameter.
 * **device** Type of device to program. Not required for ESP. See [AVRDude](https://www.nongnu.org/avrdude/user-manual/avrdude.html) for list of devices
 * **bins** List of bins to upload. For ATMega only one bin is required. For ESP multiple bins can be specified to support SPIFFS
+Bin method can be one of the following:
+
+|method|description|requred fields|
+|------|-----------|--------------|
+|cloud |Fetch BIN from any URL|`url` - source of the BIN|
+|cloud_gw |GW that will return info about the BIN. Usefull when a service is required in front of the BIN cloud storage|`info_url` - End point of the service that will retun information about the BIN. The response of this URL must be a valid JSON with  `url` field that points to the actual BIN|
+|local |Don't fetch. Valid BIN must be under `bins` folder. System will not actively fetch anything |(none)|
+|fs |File system copy|`src` - Path to source bin that needs to be copied|
+
+
 * **plugins** System support a simple web server with the ability to send data to the ATMega via serial. This allows for parameter tweaking and QA. 
 
 ## Web Interface

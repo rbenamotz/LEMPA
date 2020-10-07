@@ -9,11 +9,6 @@ from flask_socketio import SocketIO, emit
 from . import Plugin
 import time
 from views import View
-try:
-    import eventlet
-    eventlet.monkey_patch()
-except (ModuleNotFoundError):
-    logging.warning("Eventlet not installed.")
 
 test_conf = {}
 ser = None

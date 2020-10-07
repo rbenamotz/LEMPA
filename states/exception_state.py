@@ -24,4 +24,4 @@ class ExceptionState(State):
         return self.button_erase.loop() or self.button_prog.loop()
 
     def on_event(self, event):
-        return Application.APP_STATE_INIT
+        return Application.APP_STATE_PROFILE_SENSE

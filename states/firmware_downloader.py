@@ -6,6 +6,7 @@ import requests
 
 from application import Application
 from states import State
+from .binfetchers.binfetcher_factory import  create_fetcher
 
 
 class FirmwareDownload(State):
@@ -31,7 +32,7 @@ class FirmwareDownload(State):
         self.app.detail(download_url)
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
-        self.app.detail("{} bytes downloaded\n-----".format(p.st_size))
+        self.app.detail("{} bytes downloaded".format(p.st_size))
 
     def __validate_local_bin(self, b):
         bin_file = "./bins/%s.hex" % (b["name"])
@@ -44,6 +45,9 @@ class FirmwareDownload(State):
         # TODO: Seriously??? Else if? Might as well program in BASIC
         for b in profile["bins"]:
             m = b["method"]
+            f = create_fetcher(m,self.app)
+            f.fetch(b)
+            continue
             if m == "cloud":
                 self.__download_cloud__(b)
             elif m == "local":
