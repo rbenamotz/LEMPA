@@ -49,8 +49,9 @@
     "jumper" : 2,
     "bins": [
       {
-        "method": "local",
-        "name": "blinklocal"
+        "method": "fs",
+        "name": "blinklocal",
+        "src": "sketches/cloudblink/cloudblink.ino.standard.hex"
       }
     ],
     "fuses": {
@@ -69,6 +70,12 @@
               "id": "blinkrate",
               "value": 5,
               "title": "Blink rate in 100ms. For exampe value of 5 means 500ms off, 500ms on",
+              "type": "byte"
+            },
+            {
+              "id": "intensity",
+              "value": 100,
+              "title": "LED intensity (0-255)",
               "type": "byte"
             }
           ]
