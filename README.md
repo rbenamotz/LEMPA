@@ -89,6 +89,7 @@ The configuration file can contain as many profiles as required.
 * **type** `bin` or `composite`. Composite allows for multiple profile programming, one after another.
 * **jumper** *optional* If specified, and the relevant profile is chosen with a physical jumper, this profile will be used if none was specified as part of command line parameter.
 * **device** Type of device to program. Not required for ESP. See [AVRDude](https://www.nongnu.org/avrdude/user-manual/avrdude.html) for list of devices
+* **autodetect** If set to true, system will start programming as soon as it detects chip (does not work ESP)
 * **bins** List of bins to upload. For ATMega only one bin is required. For ESP multiple bins can be specified to support SPIFFS
 Bin method can be one of the following:
 

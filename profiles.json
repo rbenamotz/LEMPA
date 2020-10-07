@@ -3,21 +3,21 @@
     "id": "haunted2",
     "type": "bin",
     "device": "attiny85",
-    "programmer" : "linuxspi",
-    "jumper" : 4,
-    "speed" : 9600,
-    "bins" : [
-        {
-            "method" : "cloud",
-            "url" : "https://s3.amazonaws.com/firmwares.benamotz.com/haunted2.hex",
-            "name" : "haunted2"
-        }
+    "programmer": "linuxspi",
+    "jumper": 4,
+    "speed": 9600,
+    "bins": [
+      {
+        "method": "cloud",
+        "url": "https://s3.amazonaws.com/firmwares.benamotz.com/haunted2.hex",
+        "name": "haunted2"
+      }
     ],
-    "fuses" : {
-        "lfuse": "0xE2",
-        "hfuse" : "0xDF",
-        "efuse" : "0xFF",
-        "lock" : "0xFF"
+    "fuses": {
+      "lfuse": "0xE2",
+      "hfuse": "0xDF",
+      "efuse": "0xFF",
+      "lock": "0xFF"
     }
   },
   {
@@ -25,7 +25,7 @@
     "type": "bin",
     "device": "attiny85",
     "programmer": "linuxspi",
-    "jumper" : 3,
+    "jumper": 3,
     "speed": 9600,
     "bins": [
       {
@@ -46,7 +46,8 @@
     "type": "bin",
     "device": "m328p",
     "programmer": "linuxspi",
-    "jumper" : 2,
+    "jumper": 2,
+    "autodetect": true,
     "bins": [
       {
         "method": "fs",
@@ -123,7 +124,7 @@
     "id": "espblink",
     "type": "bin",
     "device": "esp8266",
-    "speed" : 921600,
+    "speed": 921600,
     "programmer": "esptool",
     "bins": [
       {
