@@ -12,7 +12,6 @@ from hardware import PINS_PROFILES
 
 class SensingProfileState(State):
     def __load_profile__(self, profile_id, first=True):
-        self.app.red_led_on = False
         p = profile_by_id(profile_id)
         if first:
             self.app.profiles = []
@@ -36,7 +35,6 @@ class SensingProfileState(State):
         for p in PINS_PROFILES:
             GPIO.setup(p, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         self.skip_detect = False
-        self.led_status = True
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
             id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
             if not id == '_':
@@ -58,8 +56,6 @@ class SensingProfileState(State):
                 id = temp["id"]
                 self.__load_profile__(id)
                 return True
-        self.app.red_led_on = self.led_status
-        self.led_status = not self.led_status
         time.sleep(0.1)
         if not self.message_shown:
             self.app.print("Connect jumper")
