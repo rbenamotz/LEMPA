@@ -16,6 +16,9 @@ PIN_RESET_ATMEGA = 16
 PIN_MASTER_POWER = 12
 PIN_ESP_RESET = 8
 
+#MISC 
+PIN_BUZZER = 26
+
 
 #Interfaces
 SERIAL_PORT = '/dev/serial0'
