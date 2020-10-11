@@ -20,16 +20,19 @@ class EnvInit(State):
         if len(self.app.plugins) > 0:
             logging.warning("Plugins already loaded. Not loading again")
             return
-        pysearchre = re.compile('.py$', re.IGNORECASE)
+        pysearchre = re.compile(".py$", re.IGNORECASE)
         pluginfiles = filter(
             pysearchre.search,
-            os.listdir(os.path.join(os.path.dirname(__file__), '../plugins')))
+            os.listdir(os.path.join(os.path.dirname(__file__), "../plugins")),
+        )
 
-        def form_module(fp): return '.' + os.path.splitext(fp)[0]
+        def form_module(fp):
+            return "." + os.path.splitext(fp)[0]
+
         pp = map(form_module, pluginfiles)
-        importlib.import_module('plugins')
+        importlib.import_module("plugins")
         for plugin in pp:
-            if not plugin.startswith('.__'):
+            if not plugin.startswith(".__"):
                 module = importlib.import_module(plugin, package="plugins")
                 class_ = getattr(module, "WebserverPlugin")
                 instance = class_(self.app)
@@ -38,14 +41,14 @@ class EnvInit(State):
 
     def __read_hat_info_field__(self, field, default):
         try:
-            f = open('/proc/device-tree/hat/' + field, 'r')
+            f = open("/proc/device-tree/hat/" + field, "r")
             return f.read()
         except Exception:
             logging.warning("Could not load HAT info: {}".format(field))
             return default
 
     def __read_hat_info__(self):
-        self.app.my_name = self.__read_hat_info_field__('product', 'LEMPA')
+        self.app.my_name = self.__read_hat_info_field__("product", "LEMPA")
         self.app.print(self.app.my_name)
 
     def __setup_pins__(self):
@@ -61,7 +64,7 @@ class EnvInit(State):
             self.__setup_pins__()
         self.steps_counter = self.steps_counter + 1
         t = time.time() - self.init_time
-        return (t > 2)
+        return t > 2
 
     def on_event(self, event):
         return Application.APP_STATE_PROFILE_SENSE

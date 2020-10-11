@@ -20,8 +20,13 @@ class esp(Programmer):
 
     def program(self):
         self.__reset_device__()
-        command = ['--port', SERIAL_PORT, '--baud',
-                   str(self.programming_speed), 'write_flash']
+        command = [
+            "--port",
+            SERIAL_PORT,
+            "--baud",
+            str(self.programming_speed),
+            "write_flash",
+        ]
         for b in self.profile["bins"]:
             command.append(b["addr"])
             command.append("bins/%s.hex" % (b["name"]))

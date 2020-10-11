@@ -14,18 +14,18 @@ class DisplayView(View):
 
     def __get_icon__(self):
         state = self.app.app_state
-        if (state == application.Application.APP_STATE_WAITING_FOR_BUTTON):
-            return '\uf0a5'
-        if (state == application.Application.APP_STATE_PROGRAMMING):
-            return '\uf0c7'
-        if (state == application.Application.APP_STATE_ERASE):
-            return '\uf2ed'
-        if (state == application.Application.APP_STATE_SUCCESS):
-            return '\uf118'
-        if (state == application.Application.APP_STATE_FAIL):
-            return '\uf119'
-        if (state == application.Application.APP_STATE_FIRMWARE_DOWNLOAD):
-            return '\uf358'
+        if state == application.Application.APP_STATE_WAITING_FOR_BUTTON:
+            return "\uf0a5"
+        if state == application.Application.APP_STATE_PROGRAMMING:
+            return "\uf0c7"
+        if state == application.Application.APP_STATE_ERASE:
+            return "\uf2ed"
+        if state == application.Application.APP_STATE_SUCCESS:
+            return "\uf118"
+        if state == application.Application.APP_STATE_FAIL:
+            return "\uf119"
+        if state == application.Application.APP_STATE_FIRMWARE_DOWNLOAD:
+            return "\uf358"
         return None
 
     def __init__(self, app):
@@ -41,28 +41,27 @@ class DisplayView(View):
             self.is_display_connected = True
         except OSError as e:
             logging.error(e)
-            logging.warning(
-                "Could not initialize display. Well... LEDs should suffice")
+            logging.warning("Could not initialize display. Well... LEDs should suffice")
             return
         self.disp.clear()
         self.disp.display()
         width = self.disp.width
         height = self.disp.height
-        self.image = Image.new('1', (width, height))
+        self.image = Image.new("1", (width, height))
         self.draw = ImageDraw.Draw(self.image)
         self.font = ImageFont.load_default()
-        self.fontHeader = ImageFont.truetype(
-            str(self.fonts_folder) + "/Arimo.ttf", 10)
-        self.fontBody = ImageFont.truetype(
-            str(self.fonts_folder) + "/Arimo.ttf", 12)
+        self.fontHeader = ImageFont.truetype(str(self.fonts_folder) + "/Arimo.ttf", 10)
+        self.fontBody = ImageFont.truetype(str(self.fonts_folder) + "/Arimo.ttf", 12)
         self.fontIcon = ImageFont.truetype(
-            str(self.fonts_folder) + "/FontAwesomeRegular.ttf", 10)
+            str(self.fonts_folder) + "/FontAwesomeRegular.ttf", 10
+        )
 
     def __refresh(self):
         if not self.is_display_connected:
             return
         self.draw.rectangle(
-            (0, 0, self.disp.width, self.disp.height), outline=0, fill=0)
+            (0, 0, self.disp.width, self.disp.height), outline=0, fill=0
+        )
         y = 0
         self.draw.text((0, y), self.disp_header, font=self.fontHeader, fill=1)
         icon = self.__get_icon__()

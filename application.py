@@ -76,9 +76,9 @@ class Application:
     def is_auto_detect(self):
         if not self.profile_info:
             return False
-        if 'autodetect' not in self.profile_info:
+        if "autodetect" not in self.profile_info:
             return False
-        return self.profile_info['autodetect']
+        return self.profile_info["autodetect"]
 
     @profile_name.setter
     def profile_name(self, x):

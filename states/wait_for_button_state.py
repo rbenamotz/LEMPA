@@ -7,7 +7,6 @@ import time
 
 
 class WaitForButtonState(State):
-
     def _do_erase(self):
         self.next_state = Application.APP_STATE_ERASE
 
@@ -25,12 +24,12 @@ class WaitForButtonState(State):
             self.app.print("Connect MCU")
             GPIO.setup(PIN_RESET_ATMEGA, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
             self.waiting_for_board_disconnect = True
-        self.button_prog = HatButton('Prog', app, PIN_BUTTON_PROG)
+        self.button_prog = HatButton("Prog", app, PIN_BUTTON_PROG)
         self.button_prog.on_short_click = self._do_prog
         self.button_prog.on_long_click = self._do_dowload
         self.button_prog.long_click_action_name = "Download"
 
-        self.button_erase = HatButton('Erase', app, PIN_BUTTON_ERASE)
+        self.button_erase = HatButton("Erase", app, PIN_BUTTON_ERASE)
         self.button_erase.long_click_action_name = "Erase"
         self.button_erase.on_long_click = self._do_erase
         self.button_erase.long_click_duration = 3
