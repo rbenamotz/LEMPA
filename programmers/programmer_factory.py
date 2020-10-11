@@ -1,6 +1,7 @@
 from programmers.avr import avr
 from programmers.esp import esp
 
+
 def create_programmer(app, profile):
     code = profile["programmer"]
     if code == 'linuxspi':

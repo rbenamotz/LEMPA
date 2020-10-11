@@ -2,7 +2,6 @@ import logging
 import subprocess
 import time
 from . import Programmer
-from application import Application
 
 
 class avr(Programmer):
@@ -25,9 +24,20 @@ class avr(Programmer):
     def __burn_fuses__(self):
         self.app.print("Burning fuses")
         f = self.profile["fuses"]
-        command: str = '-p {} -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b {} ' \
-                       '-D -e -u -U lfuse:w:{}:m -U hfuse:w:{}:m'.format(
-                           self.profile["device"], self.comm_speed, f["lfuse"], f["hfuse"])
+        command: str = \
+            '-p {} ' \
+            '-C ./avrdude_profile.conf ' \
+            '-c linuxspi ' \
+            '-P /dev/spidev0.0 ' \
+            '-b {} ' \
+            '-D -e -u ' \
+            '-U lfuse:w:{}:m ' \
+            '-U hfuse:w:{}:m' \
+            .format(
+                self.profile["device"],
+                self.comm_speed,
+                f["lfuse"],
+                f["hfuse"])
         if "efuse" in f:
             command = '{} -U efuse:w:{}:m'.format(command, f["efuse"])
         if "lock" in f:
@@ -37,8 +47,18 @@ class avr(Programmer):
     def __write_flash__(self):
         self.app.print("Writing flash")
         b = self.profile["bins"][0]
-        command: str = "-p %s -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b %s -u -U flash:w:bins/%s.hex:i -u  -e " % (
-            self.profile["device"], self.comm_speed, b["name"])
+        command: str = \
+            '-p {} ' \
+            '-C ./avrdude_profile.conf ' \
+            '-c linuxspi ' \
+            '-P /dev/spidev0.0 ' \
+            ' -b {} -u  ' \
+            '-U flash:w:bins/{}.hex:i ' \
+            '-u  -e ' \
+            .format(
+                self.profile["device"],
+                self.comm_speed,
+                b["name"])
         logging.debug(command)
         return self.__run_avrdude__(command)
 
@@ -49,7 +69,16 @@ class avr(Programmer):
         return self.__write_flash__()
 
     def erase(self):
-        command: str = "-p %s -C ./avrdude_profile.conf -c linuxspi -P /dev/spidev0.0 -b %s -e" % (self.profile["device"], self.comm_speed)
+        command: str = \
+            '-p {} ' \
+            '-C ./avrdude_profile.conf ' \
+            '-c linuxspi ' \
+            '-P /dev/spidev0.0 ' \
+            '-b {} ' \
+            '-e' \
+            .format(
+                self.profile["device"],
+                self.comm_speed)
         self.app.detail(command)
         output = self.__run_avrdude__(command)
         time.sleep(2)

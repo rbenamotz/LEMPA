@@ -7,7 +7,8 @@ import RPi.GPIO as GPIO
 
 from application import Application
 from states import State
-from hardware import *
+from hardware import PIN_ESP_RESET
+
 
 class EnvInit(State):
     def __init__(self, app):
@@ -20,8 +21,11 @@ class EnvInit(State):
             logging.warning("Plugins already loaded. Not loading again")
             return
         pysearchre = re.compile('.py$', re.IGNORECASE)
-        pluginfiles = filter(pysearchre.search, os.listdir(os.path.join(os.path.dirname(__file__), '../plugins')))
-        form_module = lambda fp: '.' + os.path.splitext(fp)[0]
+        pluginfiles = filter(
+            pysearchre.search,
+            os.listdir(os.path.join(os.path.dirname(__file__), '../plugins')))
+
+        def form_module(fp): return '.' + os.path.splitext(fp)[0]
         pp = map(form_module, pluginfiles)
         importlib.import_module('plugins')
         for plugin in pp:
@@ -31,21 +35,25 @@ class EnvInit(State):
                 instance = class_(self.app)
                 instance.on_start()
                 self.app.plugins.append(instance)
-    def __read_hat_info_field__(self,field, default):
+
+    def __read_hat_info_field__(self, field, default):
         try:
-            f = open('/proc/device-tree/hat/' + field,'r')
+            f = open('/proc/device-tree/hat/' + field, 'r')
             return f.read()
-        except:
+        except Exception:
+            logging.warning("Could not load HAT info: {}".format(field))
             return default
+
     def __read_hat_info__(self):
         self.app.my_name = self.__read_hat_info_field__('product', 'LEMPA')
         self.app.print(self.app.my_name)
+
     def __setup_pins__(self):
         GPIO.setup(PIN_ESP_RESET, GPIO.OUT)
         GPIO.output(PIN_ESP_RESET, False)
 
     def do_step(self):
-        if self.steps_counter ==1:
+        if self.steps_counter == 1:
             self.__read_hat_info__()
         if self.steps_counter == 2:
             self.__load_plugins__()
@@ -53,7 +61,7 @@ class EnvInit(State):
             self.__setup_pins__()
         self.steps_counter = self.steps_counter + 1
         t = time.time() - self.init_time
-        return (t>2)
+        return (t > 2)
 
     def on_event(self, event):
         return Application.APP_STATE_PROFILE_SENSE

@@ -1,10 +1,10 @@
-import subprocess
 import esptool
 from . import Programmer
-from application import Application
-from hardware import *
+from hardware import SERIAL_PORT
 import RPi.GPIO as GPIO
 import time
+from hardware import PIN_ESP_RESET
+
 
 class esp(Programmer):
     def __init__(self, app, profile):
@@ -17,7 +17,6 @@ class esp(Programmer):
         GPIO.output(PIN_ESP_RESET, True)
         time.sleep(0.1)
         GPIO.output(PIN_ESP_RESET, False)
-        
 
     def program(self):
         self.__reset_device__()
@@ -28,7 +27,7 @@ class esp(Programmer):
             command.append("bins/%s.hex" % (b["name"]))
         try:
             esptool.main(command)
-        except Exception  as e:
+        except Exception as e:
             self.app.error(e)
             return False
         self.__reset_device__()

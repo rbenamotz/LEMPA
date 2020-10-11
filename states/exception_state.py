@@ -4,7 +4,6 @@ from hardware import PIN_BUTTON_PROG, PIN_BUTTON_ERASE
 from .hat_button import HatButton
 
 
-
 class ExceptionState(State):
 
     def __do_acknloedge(self):
