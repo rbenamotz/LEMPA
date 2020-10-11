@@ -13,8 +13,8 @@ class FirmwareDownload(State):
     def __init__(self, app):
         super().__init__(app)
         self.profile_index = 0
-        if not os.path.exists('./bins'):
-            os.makedirs('./bins')
+        if not os.path.exists("./bins"):
+            os.makedirs("./bins")
 
     def __download_cloud__(self, b):
         bin_file = "./bins/%s.hex" % (b["name"])

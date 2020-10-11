@@ -5,17 +5,16 @@ from .hat_button import HatButton
 
 
 class ExceptionState(State):
-
     def __do_acknloedge(self):
         self.is_acknowledged = True
 
     def __init__(self, app):
         super().__init__(app)
         self.is_acknowledged = False
-        self.button_prog = HatButton('Ack', app, PIN_BUTTON_PROG)
+        self.button_prog = HatButton("Ack", app, PIN_BUTTON_PROG)
         self.button_prog.on_short_click = self.__do_acknloedge
 
-        self.button_erase = HatButton('Erase', app, PIN_BUTTON_ERASE)
+        self.button_erase = HatButton("Erase", app, PIN_BUTTON_ERASE)
         self.button_erase.long_click_action_name = "Ack"
         self.button_erase.on_short_click = self.__do_acknloedge
 

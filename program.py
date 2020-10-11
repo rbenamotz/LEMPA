@@ -4,8 +4,10 @@ import logging
 import time
 import RPi.GPIO as GPIO
 import traceback
+
 try:
     import eventlet
+
     eventlet.monkey_patch()
 except (ModuleNotFoundError):
     logging.warning("Eventlet not installed.")
@@ -14,9 +16,12 @@ except (ModuleNotFoundError):
 from application import Application
 from states.state_factory import state_by_code
 
-logging.basicConfig(format='%(asctime)s %(message)s',
-                    datefmt='%m/%d/%Y %I:%M:%S %p',
-                    filename='LEMPA.log', level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s %(message)s",
+    datefmt="%m/%d/%Y %I:%M:%S %p",
+    filename="LEMPA.log",
+    level=logging.INFO,
+)
 logging.getLogger().addHandler(logging.StreamHandler())
 logging.info("Programmer is running")
 

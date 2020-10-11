@@ -16,7 +16,7 @@ class SensingProfileState(State):
             self.app.profiles = []
             self.app.profile_name = profile_id
             self.app.profile_info = p
-            self.app.detail("Loading \"{}\"".format(profile_id))
+            self.app.detail('Loading "{}"'.format(profile_id))
             if "plugins" in p:
                 for pl in self.app.plugins:
                     pl.load_conf(p["plugins"][0]["conf"])
@@ -36,7 +36,7 @@ class SensingProfileState(State):
         self.skip_detect = False
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
             id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
-            if not id == '_':
+            if not id == "_":
                 self.app.detail("Using profile from args: {}".format(id))
                 self.__load_profile__(sys.argv[1])
                 self.skip_detect = True

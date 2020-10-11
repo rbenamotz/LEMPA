@@ -40,8 +40,7 @@ class HatButton:
                 self.long_cick_wait_started = True
                 pt = self.long_click_duration - t
                 if self.long_click_action_name and self.last_print_time != pt:
-                    self.app.print(
-                        self.long_click_action_name + "? " + str(pt))
+                    self.app.print(self.long_click_action_name + "? " + str(pt))
                     self.last_print_time = pt
             return False
         self.on_long_click()
@@ -64,6 +63,6 @@ class HatButton:
         self.waiting_for_button_up = False
         if not self.button_down_since and self.is_down:
             self.button_down_since = time.time()
-        if (self.__check_short_click()):
+        if self.__check_short_click():
             return True
         return self.__check_long_click()
