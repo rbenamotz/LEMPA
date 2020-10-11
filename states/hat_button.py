@@ -1,8 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 
-from application import Application
-
 
 class HatButton:
     def __init__(self, name, app, pin):

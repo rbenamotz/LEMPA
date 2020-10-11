@@ -7,15 +7,16 @@ COMMAND_LINE_PARAM_PROFILE_ID = 1
 COMMAND_LINE_PARAM_CONFIG_FILE = 2
 
 
-
 class PlugingsList(list):
-    def __init__(self,app):
+    def __init__(self, app):
         self.app = app
         super().__init__()
-    def append(self,x):
-        if isinstance(x,View):
+
+    def append(self, x):
+        if isinstance(x, View):
             self.app.views.append(x)
         return super().append(x)
+
 
 class Application:
     APP_STATE_PROFILE_SENSE = "Profile Sensing"
@@ -75,7 +76,7 @@ class Application:
     def is_auto_detect(self):
         if not self.profile_info:
             return False
-        if not 'autodetect' in self.profile_info:
+        if 'autodetect' not in self.profile_info:
             return False
         return self.profile_info['autodetect']
 

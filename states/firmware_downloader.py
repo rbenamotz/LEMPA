@@ -6,7 +6,7 @@ import requests
 
 from application import Application
 from states import State
-from .binfetchers.binfetcher_factory import  create_fetcher
+from .binfetchers.binfetcher_factory import create_fetcher
 
 
 class FirmwareDownload(State):
@@ -42,10 +42,9 @@ class FirmwareDownload(State):
 
     def do_step(self):
         profile = self.app.profiles[self.profile_index]
-        # TODO: Seriously??? Else if? Might as well program in BASIC
         for b in profile["bins"]:
             m = b["method"]
-            f = create_fetcher(m,self.app)
+            f = create_fetcher(m, self.app)
             f.fetch(b)
             continue
             if m == "cloud":

@@ -27,7 +27,7 @@ class LedsView(View):
             time.sleep(0.1)
             self.blink_state_fast = not self.blink_state_fast
             cnt = cnt + 1
-            if cnt ==5:
+            if cnt == 5:
                 self.blink_state_slow = not self.blink_state_slow
                 cnt = 0
 
@@ -35,27 +35,33 @@ class LedsView(View):
         if self.app.app_state == application.Application.APP_STATE_PROGRAMMING:
             self.blink_gpio = PIN_BLUE
         b = (self.app.app_state == application.Application.APP_STATE_INIT)
-        b = b or (self.app.app_state == application.Application.APP_STATE_WAITING_FOR_BUTTON)
-        b = b or (self.blink_state_fast and self.app.app_state == application.Application.APP_STATE_PROGRAMMING)
+        b = b or (self.app.app_state ==
+                  application.Application.APP_STATE_WAITING_FOR_BUTTON)
+        b = b or (self.blink_state_fast and self.app.app_state ==
+                  application.Application.APP_STATE_PROGRAMMING)
         b = b or self.app.app_state == application.Application.APP_STATE_ERASE
         GPIO.output(PIN_BLUE, b)
 
     def __update_green(self):
         b = (self.app.app_state == application.Application.APP_STATE_INIT)
-        b = b or (self.app.app_state == application.Application.APP_STATE_SUCCESS)
+        b = b or (self.app.app_state ==
+                  application.Application.APP_STATE_SUCCESS)
         b = b or (self.blink_gpio == PIN_GREEN and self.blink_state_fast)
         GPIO.output(PIN_GREEN, b)
 
     def __update_red(self):
         b = (self.app.app_state == application.Application.APP_STATE_INIT)
         b = b or (self.app.app_state == application.Application.APP_STATE_FAIL)
-        b = b or (self.blink_state_fast and self.app.app_state == application.Application.APP_STATE_ERASE)
-        b = b or (self.blink_state_slow and self.app.app_state == application.Application.APP_STATE_EXCEPTION)
+        b = b or (self.blink_state_fast and self.app.app_state ==
+                  application.Application.APP_STATE_ERASE)
+        b = b or (self.blink_state_slow and self.app.app_state ==
+                  application.Application.APP_STATE_EXCEPTION)
         GPIO.output(PIN_RED, b)
 
     def __update_blue_2(self):
         b = (self.app.app_state == application.Application.APP_STATE_INIT)
-        b = b or (self.app.app_state == application.Application.APP_STATE_FIRMWARE_DOWNLOAD)
+        b = b or (self.app.app_state ==
+                  application.Application.APP_STATE_FIRMWARE_DOWNLOAD)
         GPIO.output(PIN_BLUE2, b)
 
     def refresh(self):

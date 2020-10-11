@@ -34,9 +34,7 @@ class WaitForButtonState(State):
         self.button_erase.long_click_action_name = "Erase"
         self.button_erase.on_long_click = self._do_erase
         self.button_erase.long_click_duration = 3
-
         self.next_state = None
-    
 
     def do_step(self):
         if self.button_erase.loop() or self.button_prog.loop():

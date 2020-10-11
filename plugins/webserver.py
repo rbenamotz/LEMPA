@@ -1,31 +1,33 @@
-import json
 import os
 import threading
 import logging
-from hardware import SERIAL_PORT
+from hardware import SERIAL_PORT, DEFAULT_SERIAL_SPEED
 import serial
 from flask import Flask, send_from_directory, jsonify, request
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 from . import Plugin
 import time
 from views import View
 
 test_conf = {}
 ser = None
-serial_speed = 9600
 WEB_SERVER_PORT = 8080
+serial_speed = DEFAULT_SERIAL_SPEED
 
 
 def init_serial():
     global ser
-    try:
-        ser = serial.Serial(port=SERIAL_PORT, baudrate=serial_speed, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                            bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
-        logging.info(
-            "Serial connection initiated with speed of " + str(serial_speed))
-    except:
-        logging.warning(
-            SERIAL_PORT + " not availabvle. Web Server will not be able to push data")
+    ser = serial.Serial(
+        port=SERIAL_PORT,
+        baudrate=serial_speed,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=0,
+        writeTimeout=0)
+    logging.info(
+        "Serial connection initiated to {} with speed {}"
+        .format(SERIAL_PORT, serial_speed))
 
 
 server = Flask(__name__)
@@ -36,11 +38,14 @@ logging.getLogger('engineio').setLevel(logging.ERROR)
 logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 
-def export_config():
-    global ser
-    if ser == None:
+def validate_serial():
+    if ser is None:
         raise Exception(
-            "Serial not available. Can't push data. Try to enable Serial with raspi-config")
+            "Serial not available. Try to enable Serial with raspi-config")
+
+
+def export_config():
+    validate_serial()
     packet = bytearray()
     for f in test_conf:
         i = int(f["value"])
@@ -51,10 +56,7 @@ def export_config():
 
 
 def export_text(txt):
-    global ser
-    if ser == None:
-        raise Exception(
-            "Serial not available. Can't push data. Try to enable Serial with raspi-config")
+    validate_serial()
     ser.write(txt.encode())
     socketio.emit('serialout', txt)
 
@@ -66,8 +68,10 @@ def root():
 
 @server.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join(server.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(
+        os.path.join(server.root_path, 'static'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon')
 
 
 @server.route('/data', methods=["GET"])
@@ -92,7 +96,7 @@ def data_post():
 
 
 def update_serial_status():
-    data = {"connected": (ser != None), "speed": serial_speed}
+    data = {"connected": (ser is not None), "speed": serial_speed}
     socketio.emit('serialstatus', data)
 
 
@@ -134,13 +138,10 @@ class WebserverPlugin(Plugin, View):
         ba = bytearray()
         while True:
             try:
-                if (ser == None):
+                if (ser is None):
                     update_serial_status()
-                    ser = serial.Serial(port=SERIAL_PORT, baudrate=serial_speed, parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                                        bytesize=serial.EIGHTBITS, timeout=0, writeTimeout=0)
-                    logging.info(
-                        "Serial connection initiated with speed of " + str(serial_speed))
-                    while (ser == None):
+                    init_serial()
+                    while (ser is None):
                         time.sleep(0.2)
                     update_serial_status()
                 b = ser.read()

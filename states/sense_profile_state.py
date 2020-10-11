@@ -9,7 +9,6 @@ from . import State
 from hardware import PINS_PROFILES
 
 
-
 class SensingProfileState(State):
     def __load_profile__(self, profile_id, first=True):
         p = profile_by_id(profile_id)
@@ -38,7 +37,7 @@ class SensingProfileState(State):
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
             id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
             if not id == '_':
-                self.app.detail("Using profile from command line: {}".format(id))
+                self.app.detail("Using profile from args: {}".format(id))
                 self.__load_profile__(sys.argv[1])
                 self.skip_detect = True
                 return
