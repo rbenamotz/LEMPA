@@ -52,16 +52,8 @@ class EnvInit(State):
         if self.steps_counter == 3:
             self.__setup_pins__()
         self.steps_counter = self.steps_counter + 1
-        self.app.blue_led_on = (self.steps_counter % 3 == 0)
-        self.app.green_led_on = (self.steps_counter % 3 == 1)
-        self.app.red_led_on = (self.steps_counter % 3 == 2)
         t = time.time() - self.init_time
-        if t>2:
-            self.app.blue_led_on = False
-            self.app.green_led_on = False
-            self.app.red_led_on = False
-            return True
-        return False
+        return (t>2)
 
     def on_event(self, event):
         return Application.APP_STATE_PROFILE_SENSE

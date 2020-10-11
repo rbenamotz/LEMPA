@@ -36,10 +36,6 @@ class Application:
     def __init__(self):
         self.my_name = "LEMPA"
         self.__profile_name__ = ""
-        self.blue_led_on = False
-        self.green_led_on = False
-        self.red_led_on = False
-        self.dl_led_on = False
         self.firmware_version = 0
         self.__app_state = self.APP_STATE_PROFILE_SENSE
         self.profiles = []
