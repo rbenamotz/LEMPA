@@ -4,7 +4,7 @@ import sys
 from application import COMMAND_LINE_PARAM_CONFIG_FILE
 
 all_profiles = []
-file_name = 'profiles.json'
+file_name = "profiles.json"
 if len(sys.argv) >= COMMAND_LINE_PARAM_CONFIG_FILE + 1:
     file_name = sys.argv[COMMAND_LINE_PARAM_CONFIG_FILE]
 with open(file_name) as f:

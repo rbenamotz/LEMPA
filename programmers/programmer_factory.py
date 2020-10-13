@@ -1,10 +1,11 @@
 from programmers.avr import avr
 from programmers.esp import esp
 
+
 def create_programmer(app, profile):
     code = profile["programmer"]
-    if code == 'linuxspi':
+    if code == "linuxspi":
         return avr(app, profile)
-    if code == 'esptool':
+    if code == "esptool":
         return esp(app, profile)
     raise Exception("Unknown programmer of type {}".format(code))

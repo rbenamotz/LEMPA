@@ -1,9 +1,11 @@
+from hardware import DEFAULT_PRGM_COMM_SPEED
+
 
 class Programmer(object):
     def __init__(self, app, profile):
         self.app = app
         self.profile = profile
-        self.comm_speed = 921600 #125000
+        self.comm_speed = DEFAULT_PRGM_COMM_SPEED
         if "speed" in self.profile:
             self.comm_speed = self.profile["speed"]
 

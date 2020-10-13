@@ -4,7 +4,6 @@ from . import State
 
 
 class FirmwareEraseState(State):
-
     def __init__(self, app):
         super().__init__(app)
         self.is_error = False

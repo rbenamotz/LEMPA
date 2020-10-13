@@ -20,7 +20,7 @@ class View(object):
     def refresh(self):
         pass
 
-    def set_profile_name(self,x):
+    def set_profile_name(self, x):
         pass
 
     def __repr__(self):

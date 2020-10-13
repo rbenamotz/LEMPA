@@ -6,15 +6,15 @@ import requests
 
 from application import Application
 from states import State
-from .binfetchers.binfetcher_factory import  create_fetcher
+from .binfetchers.binfetcher_factory import create_fetcher
 
 
 class FirmwareDownload(State):
     def __init__(self, app):
         super().__init__(app)
         self.profile_index = 0
-        if not os.path.exists('./bins'):
-            os.makedirs('./bins')
+        if not os.path.exists("./bins"):
+            os.makedirs("./bins")
 
     def __download_cloud__(self, b):
         bin_file = "./bins/%s.hex" % (b["name"])
@@ -42,10 +42,9 @@ class FirmwareDownload(State):
 
     def do_step(self):
         profile = self.app.profiles[self.profile_index]
-        # TODO: Seriously??? Else if? Might as well program in BASIC
         for b in profile["bins"]:
             m = b["method"]
-            f = create_fetcher(m,self.app)
+            f = create_fetcher(m, self.app)
             f.fetch(b)
             continue
             if m == "cloud":

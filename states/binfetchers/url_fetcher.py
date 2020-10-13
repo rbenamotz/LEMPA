@@ -1,4 +1,3 @@
-import os
 import urllib.request
 import requests
 from pathlib import Path
@@ -8,7 +7,7 @@ from states.binfetchers import BinFetcher
 class UrlFetcher(BinFetcher):
     def __fetch_impl__(self, bin_info, bin_file):
         self.app.print("DL {}".format(bin_file))
-        if not "url" in bin_info:
+        if "url" not in bin_info:
             raise Exception("Missing URL for bin")
         download_url = bin_info["url"]
         self.app.detail(download_url)
@@ -19,7 +18,7 @@ class UrlFetcher(BinFetcher):
 
 class CloudGwFetcher(UrlFetcher):
     def __fetch_impl__(self, bin_info, bin_file):
-        if not "info_url" in bin_info:
+        if "info_url" not in bin_info:
             raise Exception("Missing info_url for bin")
         info_url = bin_info["info_url"]
         r = requests.get(info_url)
