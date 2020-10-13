@@ -27,7 +27,7 @@ def init_serial():
         writeTimeout=0,
     )
     logging.info(
-        "Serial connection initiated to {} with speed {}".format(
+        "Serial connection initiated to {} with speed {:,d}bps".format(
             SERIAL_PORT, serial_speed
         )
     )

@@ -32,7 +32,7 @@ class FirmwareDownload(State):
         self.app.detail(download_url)
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
-        self.app.detail("{} bytes downloaded".format(p.st_size))
+        self.app.detail("{:,d} bytes downloaded".format(p.st_size))
 
     def __validate_local_bin(self, b):
         bin_file = "./bins/%s.hex" % (b["name"])
@@ -46,13 +46,6 @@ class FirmwareDownload(State):
             m = b["method"]
             f = create_fetcher(m, self.app)
             f.fetch(b)
-            continue
-            if m == "cloud":
-                self.__download_cloud__(b)
-            elif m == "local":
-                self.__validate_local_bin(b)
-            else:
-                raise Exception("Unknown bin method {}".format(m))
         self.profile_index = self.profile_index + 1
 
         if len(self.app.profiles) > self.profile_index:

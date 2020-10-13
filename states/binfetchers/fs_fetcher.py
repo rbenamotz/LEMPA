@@ -20,4 +20,4 @@ class FSCopyFetcher(BinFetcher):
         self.app.detail("Copying {}".format(src))
         shutil.copy(src, bin_file)
         p = Path(bin_file).stat()
-        self.app.detail("{} bytes copied".format(p.st_size))
+        self.app.detail("{:,d} bytes copied".format(p.st_size))

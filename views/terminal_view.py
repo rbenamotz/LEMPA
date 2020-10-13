@@ -1,4 +1,5 @@
 from views import View
+HEADER_LEN = 70
 
 
 class TerminalView(View):
@@ -9,17 +10,15 @@ class TerminalView(View):
         print("Goodbye")
 
     def print(self, txt):
-        print(txt)
+        print("\033[92m{}\033[39m".format(txt))
 
     def detail(self, txt):
         print(txt)
 
     def error(self, e):
-        print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print(e)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+        print("\n\n{}".format("|" * HEADER_LEN))
+        print("\033[31m{}\033[39m".format(e))
+        print("!" * HEADER_LEN)
 
     def header(self):
-        print("\n\n=================================================")
-        print(self.app.app_state)
-        print("===========================================================")
+        print("\n\n\033[7m{:^{w}}\033[0m".format(self.app.app_state, w=HEADER_LEN))
