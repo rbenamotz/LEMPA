@@ -13,7 +13,7 @@ class UrlFetcher(BinFetcher):
         self.app.detail(download_url)
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
-        self.app.detail("{} bytes downloaded".format(p.st_size))
+        self.app.detail("{:,d} bytes downloaded".format(p.st_size))
 
 
 class CloudGwFetcher(UrlFetcher):

@@ -44,7 +44,8 @@ class EnvInit(State):
             f = open("/proc/device-tree/hat/" + field, "r")
             return f.read()
         except Exception:
-            logging.warning("Could not load HAT info: {}".format(field))
+            logging.warning(
+                "Could not load HAT info for \"{}\". Defaulting to: \"{}\"".format(field, default))
             return default
 
     def __read_hat_info__(self):
