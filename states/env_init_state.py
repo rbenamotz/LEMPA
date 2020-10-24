@@ -5,7 +5,10 @@ import re
 import time
 import RPi.GPIO as GPIO
 
+
+# Loox Programmer 0.3$$$https://84exaczpag.execute-api.us-east-1.amazonaws.com/public/profiles
 from application import Application
+from profiles import init_profile_data
 from states import State
 from hardware import PIN_ESP_RESET
 
@@ -15,6 +18,9 @@ class EnvInit(State):
         super().__init__(app)
         self.init_time = time.time()
         self.steps_counter = 0
+    
+    def __load_profiles__(self):
+        init_profile_data(self.app)
 
     def __load_plugins__(self):
         if len(self.app.plugins) > 0:
@@ -49,7 +55,18 @@ class EnvInit(State):
             return default
 
     def __read_hat_info__(self):
-        self.app.my_name = self.__read_hat_info_field__("product", "LEMPA")
+        app_name = self.__read_hat_info_field__("product", "LEMPA")
+        profiles_url = None
+        p = app_name.index("$$$")
+        if (p>0):
+            print(p)
+            profiles_url = app_name[p+3:]
+            while profiles_url.endswith('\x00'):
+                profiles_url = profiles_url[0:len(profiles_url) - 1]
+            app_name = app_name[0:p]
+        print("{}-{}.".format(app_name,profiles_url))
+        self.app.my_name = app_name
+        self.app.profiles_url = profiles_url
         self.app.print(self.app.my_name)
 
     def __setup_pins__(self):
@@ -60,8 +77,10 @@ class EnvInit(State):
         if self.steps_counter == 1:
             self.__read_hat_info__()
         if self.steps_counter == 2:
-            self.__load_plugins__()
+            self.__load_profiles__()
         if self.steps_counter == 3:
+            self.__load_plugins__()
+        if self.steps_counter == 4:
             self.__setup_pins__()
         self.steps_counter = self.steps_counter + 1
         t = time.time() - self.init_time

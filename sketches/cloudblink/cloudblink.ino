@@ -1,4 +1,4 @@
-int pinLed = PD3;
+int pinLed = 2;
 int blinkDuration = 500;
 byte intensity = 100;
 
