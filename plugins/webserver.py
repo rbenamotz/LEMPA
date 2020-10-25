@@ -127,9 +127,12 @@ class WebserverPlugin(Plugin, View):
         socketio.emit("viewProfile", x)
 
     def load_conf(self, conf):
-        global test_conf, serial_speed
+        global test_conf, serial_speed, ser
         serial_speed = conf["serialSpeed"]
         test_conf = conf["fields"]
+        if (ser):
+            ser.close()
+            ser = None
 
     def run(self):
         self.app.detail("LEMPA Web Interface on port {}".format(WEB_SERVER_PORT))
