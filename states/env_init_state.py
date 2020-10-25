@@ -57,14 +57,12 @@ class EnvInit(State):
     def __read_hat_info__(self):
         app_name = self.__read_hat_info_field__("product", "LEMPA")
         profiles_url = None
-        p = app_name.index("$$$")
-        if (p>0):
-            print(p)
+        if ("$$$" in app_name):
+            p = app_name.index("$$$")
             profiles_url = app_name[p+3:]
             while profiles_url.endswith('\x00'):
                 profiles_url = profiles_url[0:len(profiles_url) - 1]
             app_name = app_name[0:p]
-        print("{}-{}.".format(app_name,profiles_url))
         self.app.my_name = app_name
         self.app.profiles_url = profiles_url
         self.app.print(self.app.my_name)
