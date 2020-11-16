@@ -1,6 +1,7 @@
 from views.led_view import LedsView
 from views.terminal_view import TerminalView
 from views.display_view import DisplayView
+from views.buzzer import BuzzerView
 from views import View
 
 COMMAND_LINE_PARAM_PROFILE_ID = 1
@@ -41,7 +42,7 @@ class Application:
         self.__app_state = self.APP_STATE_PROFILE_SENSE
         self.profiles = []
         self.plugins = PlugingsList(self)
-        self.views = [TerminalView(self), LedsView(self), DisplayView(self)]
+        self.views = [TerminalView(self), LedsView(self), DisplayView(self), BuzzerView(self)]
         self.profiles_url = None
         self.profile_info = {}
 

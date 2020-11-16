@@ -31,6 +31,7 @@ python-engineio==3.13.2
 python-socketio==4.6.0
 requests==2.24.0
 RPi.GPIO==0.7.0
+rtttl==0.2
 six==1.15.0
 spidev==3.5
 toml==0.10.1
