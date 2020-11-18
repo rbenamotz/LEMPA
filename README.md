@@ -3,13 +3,11 @@
 
 LEMPA is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
 
-### version 4 with OLED display coming up <a href="https://www.youtube.com/watch?v=MS-8_smsfuY">soon</a>
 Click image for short video:
+[![Click to watch](imgs/v41_3.jpeg)](https://www.youtube.com/watch?v=akKgeq9fPFQ)
+
 ![Image](imgs/zero_on.jpg)
 
-[![Click to watch](imgs/yt.png)](https://www.youtube.com/watch?v=8qee_lv31-o)
-
-<!--![Image](https://i.giphy.com/media/S64nu0NFtD7TRhJ7rL/giphy.webp)-->
 
 LEMPA is composed of 3 parts:
 ### Hardware: Raspberry PI HAT
@@ -28,7 +26,7 @@ The board also includes:
 * LED for testing 
 * Program / download button. Short click to program the MCU, long click to download latest version of the BINs from cloud / local network / shared folder.
 
-![Image](imgs/2D.png)
+![Image](imgs/v41_2d.jpg)
 ![Image](imgs/zero_2d.png)
 
 ### Software
