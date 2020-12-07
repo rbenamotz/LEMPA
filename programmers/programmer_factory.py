@@ -8,4 +8,4 @@ def create_programmer(app, profile):
         return avr(app, profile)
     if code == "esptool":
         return esp(app, profile)
-    raise Exception("Unknown programmer of type {}".format(code))
+    raise KeyError("Unknown programmer of type {}".format(code))
