@@ -13,86 +13,53 @@ test_conf = {}
 WEB_SERVER_PORT = 8080
 
 
-server = Flask(__name__)
-server.debug = False
-socketio = SocketIO(server, cors_allowed_origin="*", log_output=False)
 logging.getLogger("socketio").setLevel(logging.ERROR)
 logging.getLogger("engineio").setLevel(logging.ERROR)
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
 
-@server.route("/")
+# @server.route("/")
 def root():
     return send_from_directory("./static", "index.html")
-
-
-@server.route("/favicon.ico")
-def favicon():
-    return send_from_directory(
-        os.path.join(server.root_path, "static"),
-        "favicon.ico",
-        mimetype="image/vnd.microsoft.icon",
-    )
-
-
-@server.route("/data", methods=["GET"])
-def data_get():
-    return jsonify(test_conf)
-
-
-@server.route("/data", methods=["POST"])
-def data_post():
-    j = request.get_json(force=True)
-    if j["type"] == "form":
-        for f in j["data"]:
-            for f1 in test_conf:
-                if f1["id"] == f["id"]:
-                    f1["value"] = f["value"]
-        export_config(test_conf)
-        socketio.emit("serialout", test_conf["data"])
-    elif j["type"] == "text":
-        txt = j["data"]
-        export_text(txt)
-        socketio.emit("serialout", txt)
-    else:
-        raise ValueError("Unknown type")
-    return "Data (probably) sent to MCU"
-
-
-
-def serial_in(s):
-    socketio.emit("serialin", s)
-
-def update_serial_status():
-    data = {"connected": (ser is not None), "speed": serial_speed}
-    socketio.emit("serialstatus", data)
-
 
 
 
 
 class LempaPlugin(Plugin, View):
     def __init__(self, app):
-        self.cnt = 0
         super().__init__(app)
+        self.cnt = 0
+        self.server = Flask(__name__)
+        self.server.debug = False
+        print("ggg")
+        self.server.add_url_rule("/", "root", root)
+        self.server.add_url_rule("/data", "data_get", self.data_get,methods=["GET"] )
+        self.server.add_url_rule("/data", "data_post", self.data_post,methods=["POST"] )
+        self.server.add_url_rule("/favicon.ico", "favicon", self.favicon)
+        
+        
+            # @server.route("/data", methods=["POST"])
+
+        self.socketio = SocketIO(
+            self.server, cors_allowed_origin="*", log_output=False)
 
     def header(self):
-        socketio.emit("viewHeader", self.app.app_state)
+        self.socketio.emit("viewHeader", self.app.app_state)
 
     def print(self, txt):
-        socketio.emit("viewPrint", txt)
+        self.socketio.emit("viewPrint", txt)
 
     def detail(self, txt):
-        socketio.emit("viewDetail", txt)
+        self.socketio.emit("viewDetail", txt)
 
     def error(self, e):
-        socketio.emit("viewError", str(e))
+        self.socketio.emit("viewError", str(e))
 
     def cleanup(self):
         pass
 
     def set_profile_name(self, x):
-        socketio.emit("viewProfile", x)
+        self.socketio.emit("viewProfile", x)
 
     def load_conf(self, conf):
         global test_conf, serial_speed
@@ -103,10 +70,10 @@ class LempaPlugin(Plugin, View):
     def run(self):
         self.app.detail(
             "LEMPA Web Interface on port {}".format(WEB_SERVER_PORT))
-        socketio.run(server, host="0.0.0.0", port=WEB_SERVER_PORT)
+        self.socketio.run(self.server, host="0.0.0.0", port=WEB_SERVER_PORT)
 
     def on_start(self):
-        t = SerialConnectionThread(serial_in,update_serial_status)
+        t = SerialConnectionThread(self.serial_in, self.update_serial_status)
         daemon1 = threading.Thread(name="daemon_server", target=self.run)
         daemon1.setDaemon(True)
         daemon1.start()
@@ -114,3 +81,45 @@ class LempaPlugin(Plugin, View):
             name="serial_listener", target=t.run)
         daemon2.setDaemon(True)
         daemon2.start()
+        
+    def data_get(self):
+        return jsonify(test_conf)
+    
+
+    def serial_in(self,s):
+        self.socketio.emit("serialin", s)
+        
+    def update_serial_status(self):
+        data = {"connected": (ser is not None), "speed": serial_speed}
+        self.socketio.emit("serialstatus", data)
+        
+    
+
+    def data_post(self):
+        j = request.get_json(force=True)
+        if j["type"] == "form":
+            for f in j["data"]:
+                for f1 in test_conf:
+                    if f1["id"] == f["id"]:
+                        f1["value"] = f["value"]
+            export_config(test_conf)
+            log = ",".join("0x{:02X}".format(a)
+                        for a in map(lambda x: int(x["value"]), test_conf))
+            self.socketio.emit("serialout", log)
+        elif j["type"] == "text":
+            txt = j["data"]
+            export_text(txt)
+            self.socketio.emit("serialout", txt)
+        else:
+            raise ValueError("Unknown type")
+        return "Data (probably) sent to MCU"
+    
+    def favicon(self):
+        return send_from_directory(
+            os.path.join(self.server.root_path, "static"),
+            "favicon.ico",
+            mimetype="image/vnd.microsoft.icon",
+        )
+
+
+        

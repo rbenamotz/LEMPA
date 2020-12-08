@@ -58,29 +58,34 @@ class SerialConnectionThread():
     def __init__(self, serial_in_callback, status_callback):
         self.status_callback = status_callback
         self.serial_in_callback = serial_in_callback
+    def reconnect(self):
+        global ser
+        if ser:
+            return
+        if (self.status_callback):
+            self.status_callback()
+        init_serial()
+        while ser is None:
+            time.sleep(0.2)
+        if (self.status_callback):
+            self.status_callback()
+
+    def read_line(self):
+        global ser
+        l = ser.readline()
+        if (len(l) ==0):
+            time.sleep(0.1)
+            return
+        s = l.decode("utf-8", errors="replace")
+        self.serial_in_callback(s)
 
     def run(self):
         global ser
-        ba = bytearray()
         while True:
             try:
-                if ser is None:
-                    if (self.status_callback):
-                        self.status_callback()
-                    init_serial()
-                    while ser is None:
-                        time.sleep(0.2)
-                    if (self.status_callback):
-                        self.status_callback()
-                b = ser.read()
-                if b and b[0] > 0x00:
-                    ba.append(ord(b))
-                    if b == b"\n":
-                        s = ba.decode("utf-8", errors="replace")
-                        self.serial_in_callback(s)
-                        ba = bytearray()
-                else:
-                    time.sleep(0.1)
+                self.reconnect()
+                self.read_line()
+                # time.sleep(0.1)
             except KeyboardInterrupt:
                 break
             except Exception as e:
