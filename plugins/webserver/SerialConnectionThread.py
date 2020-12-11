@@ -2,6 +2,7 @@ from hardware import SERIAL_PORT, DEFAULT_SERIAL_SPEED
 import serial
 import logging
 import time
+from serial import SerialException
 
 ser = None
 serial_speed = DEFAULT_SERIAL_SPEED
@@ -86,11 +87,11 @@ class SerialConnectionThread():
                 self.reconnect()
                 self.read_line()
                 # time.sleep(0.1)
-            except KeyboardInterrupt:
-                break
+            except SerialException:
+                ser = None
             except Exception as e:
                 logging.error(e)
-                # break
+                #raise
         if ser:
             print("!!!!!!!!!!!!Closing Serial!!!!!!!!!!!!!!!!!")
             ser.close()

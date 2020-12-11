@@ -18,28 +18,18 @@ logging.getLogger("engineio").setLevel(logging.ERROR)
 logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
 
-# @server.route("/")
-def root():
-    return send_from_directory("./static", "index.html")
-
-
-
-
 class LempaPlugin(Plugin, View):
     def __init__(self, app):
         super().__init__(app)
         self.cnt = 0
         self.server = Flask(__name__)
         self.server.debug = False
-        print("ggg")
-        self.server.add_url_rule("/", "root", root)
-        self.server.add_url_rule("/data", "data_get", self.data_get,methods=["GET"] )
-        self.server.add_url_rule("/data", "data_post", self.data_post,methods=["POST"] )
+        self.server.add_url_rule("/", "root", self.root)
+        self.server.add_url_rule(
+            "/data", "data_get", self.data_get, methods=["GET"])
+        self.server.add_url_rule("/data", "data_post",
+                                 self.data_post, methods=["POST"])
         self.server.add_url_rule("/favicon.ico", "favicon", self.favicon)
-        
-        
-            # @server.route("/data", methods=["POST"])
-
         self.socketio = SocketIO(
             self.server, cors_allowed_origin="*", log_output=False)
 
@@ -77,23 +67,22 @@ class LempaPlugin(Plugin, View):
         daemon1 = threading.Thread(name="daemon_server", target=self.run)
         daemon1.setDaemon(True)
         daemon1.start()
-        daemon2 = threading.Thread(
-            name="serial_listener", target=t.run)
+        daemon2 = threading.Thread(name="serial_listener", target=t.run)
         daemon2.setDaemon(True)
         daemon2.start()
-        
+
     def data_get(self):
         return jsonify(test_conf)
-    
 
-    def serial_in(self,s):
+    def serial_in(self, s):
         self.socketio.emit("serialin", s)
-        
+
     def update_serial_status(self):
         data = {"connected": (ser is not None), "speed": serial_speed}
         self.socketio.emit("serialstatus", data)
-        
-    
+
+    def root(self):
+        return send_from_directory("./static", "index.html")
 
     def data_post(self):
         j = request.get_json(force=True)
@@ -104,7 +93,7 @@ class LempaPlugin(Plugin, View):
                         f1["value"] = f["value"]
             export_config(test_conf)
             log = ",".join("0x{:02X}".format(a)
-                        for a in map(lambda x: int(x["value"]), test_conf))
+                           for a in map(lambda x: int(x["value"]), test_conf))
             self.socketio.emit("serialout", log)
         elif j["type"] == "text":
             txt = j["data"]
@@ -113,13 +102,10 @@ class LempaPlugin(Plugin, View):
         else:
             raise ValueError("Unknown type")
         return "Data (probably) sent to MCU"
-    
+
     def favicon(self):
         return send_from_directory(
             os.path.join(self.server.root_path, "static"),
             "favicon.ico",
             mimetype="image/vnd.microsoft.icon",
         )
-
-
-        
