@@ -29,4 +29,4 @@ def state_by_code(code, app):
         return FirmwareEraseState(app)
     if code == Application.APP_STATE_EXCEPTION:
         return ExceptionState(app)
-    raise Exception("Unknown state %s" % code)
+    raise ValueError("Unknown state %s" % code)

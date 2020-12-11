@@ -4,13 +4,13 @@ import os
 import re
 import time
 import RPi.GPIO as GPIO
+from glob import glob
 
 
-# Loox Programmer 0.3$$$https://84exaczpag.execute-api.us-east-1.amazonaws.com/public/profiles
 from application import Application
 from profiles import init_profile_data
 from states import State
-from hardware import PIN_ESP_RESET
+from hardware import PIN_ESP_RESET, PIN_MASTER_POWER
 
 
 class EnvInit(State):
@@ -18,7 +18,7 @@ class EnvInit(State):
         super().__init__(app)
         self.init_time = time.time()
         self.steps_counter = 0
-    
+
     def __load_profiles__(self):
         init_profile_data(self.app)
 
@@ -26,6 +26,23 @@ class EnvInit(State):
         if len(self.app.plugins) > 0:
             logging.warning("Plugins already loaded. Not loading again")
             return
+
+        def form_module(fp):
+            output = fp.replace("/", ".")[2:]
+            if (output.endswith(".")):
+                output = output[0:len(output)-1]
+            return output
+        dirs = glob("./plugins/*/")
+        for d in dirs:
+            if d.startswith("./plugins/__"):
+                continue
+            module = importlib.import_module(".__init__", form_module(d))
+            class_ = getattr(module, "LempaPlugin")
+            instance = class_(self.app)
+            instance.on_start()
+            self.app.plugins.append(instance)
+
+    def __load_plugins_old__(self):
         pysearchre = re.compile(".py$", re.IGNORECASE)
         pluginfiles = filter(
             pysearchre.search,
@@ -70,6 +87,8 @@ class EnvInit(State):
     def __setup_pins__(self):
         GPIO.setup(PIN_ESP_RESET, GPIO.OUT)
         GPIO.output(PIN_ESP_RESET, False)
+        GPIO.setup(PIN_MASTER_POWER, GPIO.OUT)
+        GPIO.output(PIN_MASTER_POWER, True)
 
     def do_step(self):
         if self.steps_counter == 1:

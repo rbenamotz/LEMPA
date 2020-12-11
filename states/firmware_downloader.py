@@ -27,18 +27,12 @@ class FirmwareDownload(State):
             o = r.json()
             download_url = o["url"]
         else:
-            raise Exception("Missing URL for bin")
+            raise NameError("Missing URL for bin")
         self.app.detail(bin_file)
         self.app.detail(download_url)
         urllib.request.urlretrieve(download_url, bin_file)
         p = Path(bin_file).stat()
         self.app.detail("{:,d} bytes downloaded".format(p.st_size))
-
-    def __validate_local_bin(self, b):
-        bin_file = "./bins/%s.hex" % (b["name"])
-        if not os.path.exists(bin_file):
-            raise Exception("{} does not exist".format(bin_file))
-        self.app.detail("{} exists on disk".format(b["name"]))
 
     def do_step(self):
         profile = self.app.profiles[self.profile_index]

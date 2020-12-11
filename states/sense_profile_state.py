@@ -27,7 +27,7 @@ class SensingProfileState(State):
             for p0 in p["profiles"]:
                 self.__load_profile__(p0, False)
             return True
-        raise Exception("Unknown profile type {}".format(p["type"]))
+        raise ValueError("Unknown profile type {}".format(p["type"]))
 
     def __init__(self, app):
         super().__init__(app)
@@ -35,9 +35,9 @@ class SensingProfileState(State):
             GPIO.setup(p, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         self.skip_detect = False
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
-            id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
-            if not id == "_":
-                self.app.detail("Using profile from args: {}".format(id))
+            profile_id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
+            if not profile_id == "_":
+                self.app.detail("Using profile from args: {}".format(profile_id))
                 self.__load_profile__(sys.argv[1])
                 self.skip_detect = True
                 return
@@ -52,8 +52,8 @@ class SensingProfileState(State):
             if not GPIO.input(p):
                 self.app.detail("Detected jumper {}".format(j + 1))
                 temp = profile_by_jumper(j + 1)
-                id = temp["id"]
-                self.__load_profile__(id)
+                profile_id = temp["id"]
+                self.__load_profile__(profile_id)
                 return True
         time.sleep(0.1)
         if not self.message_shown:
