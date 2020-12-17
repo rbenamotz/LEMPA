@@ -9,7 +9,7 @@ body {
 
 h1 {
     text-align: center;
-    color: slateblue;
+    color: #6b5b95;
 }
 
 h2 {
@@ -56,7 +56,7 @@ input[type=button] {
     border-bottom: 2px white solid;
     padding: 0;
     /* background-color: #EFEFEF; */
-    color: blue;
+    color: #6b5b95;
     font-size: small;
     height: 20px;
     overflow: hidden;
@@ -67,6 +67,33 @@ input[type=button] {
     background-color: white;
     text-align: right;
 }
+
+#viewProfileDetails {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+.profileDetailHeader {
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: white;
+    font-weight: bold;
+    background-color: #6b5b95
+}
+
+.profileDetailData {
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    border: 1px black solid;
+    border-collapse: collapse;
+}
+
+
+/* .profileDetails-child {} */
 
 .form-grid-container {
     display: grid;
@@ -106,7 +133,7 @@ input[type=button] {
     font-weight: bold;
     font-size: large;
     vertical-align: middle;
-    background-color: blue;
+    background-color: #6b5b95;
     color: white;
     line-height: 30px;
     text-align: center;

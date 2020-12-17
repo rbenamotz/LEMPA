@@ -36,7 +36,7 @@
             document.getElementById("viewDetails").innerText = data;
         });
         socket.on('viewProfile', data => {
-            document.getElementById('viewProfile').innerText = data;
+            onload();
         });
     </script>
     <script language="javascript" src="static/js/main.js"></script>
@@ -47,13 +47,28 @@
     <h1>LEMPA Web Interface</h1>
     <div class="grid-container">
         <div class="grid-child">
-            <div class="cellheader">System Status</div>
+            <div class="cellheader" id="viewProfileId">System Status</div>
             <div class="monitor">
-                <h4 id="viewProfile">
-                    </h2>
-                    <h2 id="viewHeader">&nbsp;</h2>
-                    <h3 id="viewPrint">&nbsp;</h3>
-                    <div id="viewDetails"></div>
+                <div>&nbsp;</div>
+                <div id="viewProfileDetails">
+                    <div class="profileDetailHeader">device</div>
+                    <div class="profileDetailHeader">progammer</div>
+                    <div class="profileDetailHeader" style="grid-column: span 2">bins</div>
+                    <div class="profileDetailData" id="profileDetailDevice">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetailProgrammer">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetailBins" style="grid-column: span 2">&nbsp;</div>
+                    <div class="profileDetailHeader">high</div>
+                    <div class="profileDetailHeader">low</div>
+                    <div class="profileDetailHeader">ext.</div>
+                    <div class="profileDetailHeader">lock</div>
+                    <div class="profileDetailData" id="profileDetaiFuseHigh">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetaiFuseLow">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetaiFuseExt">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetaiFuseLock">&nbsp;</div>
+                </div>
+                <h2 id="viewHeader">&nbsp;</h2>
+                <h3 id="viewPrint">&nbsp;</h3>
+                <div id="viewDetails"></div>
             </div>
             <div class="toolbar"></div>
         </div>

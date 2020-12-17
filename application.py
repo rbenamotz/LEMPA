@@ -44,6 +44,7 @@ class Application:
         self.plugins = PlugingsList(self)
         self.views = [TerminalView(self), LedsView(self), DisplayView(self), BuzzerView(self)]
         self.profiles_url = None
+        self.buzzer_enabled = True
         self.profile_info = {}
 
     def refresh_views(self):

@@ -1,14 +1,42 @@
-ddd = {};
+ddd = { "binData": [] };
+
+function onDataChanged() {
+    let p = ddd.profile;
+    document.getElementById("viewProfileId").innerText = p.id;
+    document.getElementById("profileDetailDevice").innerText = p.device ? p.device : "-";
+    document.getElementById("profileDetailProgrammer").innerText = p.programmer ? p.programmer : "-";
+    let binsDiv = document.getElementById("profileDetailBins");
+    binsDiv.innerHTML = "";
+    if (p.bins) {
+        p.bins.forEach(b => {
+            let d = document.createElement("div");
+            d.innerText = b.name;
+            binsDiv.appendChild(d);
+        });
+    }
+    let f = p.fuses ? p.fuses : {};
+    document.getElementById("profileDetaiFuseHigh").innerText = f.hfuse ? f.hfuse : "-";
+    document.getElementById("profileDetaiFuseLow").innerText = f.lfuse ? f.lfuse : "-";
+    document.getElementById("profileDetaiFuseExt").innerText = f.efuse ? f.efuse : "-";
+    document.getElementById("profileDetaiFuseLock").innerText = f.lock ? f.lock : "-";
+
+
+}
 
 function buildForm() {
-    if (!ddd.forEach) {
+    let root = document.getElementById("mainform");
+    while (root.firstChild) {
+        root.removeChild(root.firstChild);
+    }
+    clearLog('serialMonitor')
+    let binData = ddd.binData;
+    if (!binData.forEach) {
         return;
     }
-    root = document.getElementById("mainform");
-    ddd.forEach(f => {
-        div1 = document.createElement("div");
+    binData.forEach(f => {
+        let div1 = document.createElement("div");
         div1.className = "formLine";
-        div2 = document.createElement("div");
+        let div2 = document.createElement("div");
         div2.className = "formLine formValue"
         div2.id = "data_" + f.id;
         div1.innerText = f.title;
@@ -23,13 +51,13 @@ function sendFormToSerial() {
     if (!ddd) {
         return;
     }
-    ddd.forEach(f => {
+    ddd.binData.forEach(f => {
         d = document.getElementById("data_" + f.id);
         f.value = d.innerText;
     });
     payload = {
         "type": "form",
-        "data": ddd.map(o => {
+        "data": ddd.binData.map(o => {
             return { "id": o.id, "value": o.value };
         })
     };
@@ -62,6 +90,7 @@ function onload() {
         .then(resp => resp.json())
         .then(data => {
             ddd = data;
+            onDataChanged();
             buildForm()
         })
         .then(() => writeToLog("Data loaded from server"))
