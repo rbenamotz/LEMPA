@@ -1,10 +1,8 @@
 html,
 body {
-    height: 100%;
-}
-
-body {
     font-family: Arial, Helvetica, sans-serif;
+    height: calc(100% - 20px);
+    margin: 0;
 }
 
 h1 {
@@ -12,12 +10,31 @@ h1 {
     color: #6b5b95;
 }
 
-h2 {
-    height: 30px;
+#divOledScreen {
+    height: 60px;
     text-align: center;
     line-height: 30px;
-    border-bottom: 1px black solid;
-    border-top: 1px black solid;
+    margin-top: 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+    /* border-bottom: 1px #6b5b95 solid; */
+    /* border-top: 1px #6b5b95 solid; */
+    background-color: black;
+    color: aqua;
+}
+
+#viewHeader {
+    font-size: x-large;
+    height: 30px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding: 0;
+    text-transform: uppercase;
+    border-bottom: 1px white dashed;
+}
+
+#viewPrint {
+    height: 20px;
 }
 
 .logDir {

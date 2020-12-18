@@ -32,14 +32,16 @@ class BuzzerView(View):
         self.pending_song = None
         for note in song["notes"]:
             if (self.pending_song):
+                buzzer.stop()
                 break
             f = note["frequency"]
-            time.sleep(note["duration"] / 1000 * 0.5)
+            time.sleep(note["duration"] / 2000 * 0.5)
             if (f > 0):
                 buzzer.start(50)
                 buzzer.ChangeFrequency(f)
-            time.sleep(note["duration"] / 1000 * 0.5)
+            time.sleep(note["duration"] / 2000 * 0.5)
             buzzer.stop()
+        time.sleep(0.5)
 
     def orchestra(self):
         buzzer = GPIO.PWM(PIN_BUZZER, 1000)

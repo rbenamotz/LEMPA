@@ -26,7 +26,7 @@ class HatButton:
             return False
         if not self.is_down:
             self.long_cick_wait_started = False
-            self.app.detail(self.long_click_action_name + " cancelled")
+            self.app.detail(self.long_click_action_name + " request cancelled")
             self.last_print_time = 0
             self.app.print(self.long_click_cancel_message)
             self.button_down_since = None
