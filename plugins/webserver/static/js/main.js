@@ -1,16 +1,24 @@
-ddd = { "binData": [] };
+let ddd = { "binData": [] };
+
+let buildBinTitleElement = (data) => {
+    let a = document.createElement("a");
+    a.innerText = data.name + " (" + data.method + ")";
+    a.title = data.src ? data.src : "" + data.url ? data.url : "" + data.info_url ? data.info_url : "";
+    return a;
+
+}
 
 function onDataChanged() {
+    document.getElementById("viewHeader").innerText = ddd.header;
     let p = ddd.profile;
     document.getElementById("viewProfileId").innerText = p.id;
     document.getElementById("profileDetailDevice").innerText = p.device ? p.device : "-";
-    document.getElementById("profileDetailProgrammer").innerText = p.programmer ? p.programmer : "-";
     let binsDiv = document.getElementById("profileDetailBins");
     binsDiv.innerHTML = "";
     if (p.bins) {
         p.bins.forEach(b => {
             let d = document.createElement("div");
-            d.innerText = b.name;
+            d.appendChild(buildBinTitleElement(b));
             binsDiv.appendChild(d);
         });
     }
@@ -19,6 +27,11 @@ function onDataChanged() {
     document.getElementById("profileDetaiFuseLow").innerText = f.lfuse ? f.lfuse : "-";
     document.getElementById("profileDetaiFuseExt").innerText = f.efuse ? f.efuse : "-";
     document.getElementById("profileDetaiFuseLock").innerText = f.lock ? f.lock : "-";
+
+    document.getElementById("profileDetailJumper").innerText = p.jumper ? p.jumper : "-";
+    document.getElementById("profileDetailAutoDetect").innerText = p.autodetect ? "true" : "false";
+    document.getElementById("profileDetailProfileType").innerText = p["type"]
+
 
 
 }

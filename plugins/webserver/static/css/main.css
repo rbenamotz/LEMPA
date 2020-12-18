@@ -37,12 +37,15 @@ h4 {
 }
 
 input {
-    width: 100px;
+    width: 60px;
 }
 
 input[type=button] {
     font-weight: bold;
     text-align: center;
+    display: inline-block;
+    /* width: auto; */
+    height: auto;
 }
 
 .footer {
@@ -157,5 +160,6 @@ input[type=button] {
 }
 
 .longtextbox {
-    width: calc(100% - 210px);
+    width: calc(100% - 135px);
+    float: left;
 }

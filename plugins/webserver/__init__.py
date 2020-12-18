@@ -74,6 +74,7 @@ class LempaPlugin(Plugin, View):
 
     def data_get(self):
         output = {}
+        output["header"] = self.app.app_state
         output ["profile"] = self.app.profile_info
         output["binData"] = test_conf
         return jsonify(output)

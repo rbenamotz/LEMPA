@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,6 +7,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script type="text/javascript" charset="utf-8">
         var socket = io();
+        socket.on('reconnect', (data) => {
+            onload();
+        });
         socket.on('serialout', (data) => {
             writeToSerialMonitor(data, ">>>");
         });
@@ -15,7 +19,6 @@
         socket.on('viewHeader', (data) => {
             document.getElementById("viewHeader").innerText = data;
             document.getElementById("viewPrint").style.color = "gray";
-            document.getElementById("viewDetails").style.color = "gray";
             writeToLog(data, "blue")
             writeSepToLog();
         });
@@ -25,15 +28,9 @@
         });
         socket.on('viewDetail', (data) => {
             writeToLog(data);
-            if (!data) {
-                return;
-            }
-            document.getElementById("viewDetails").innerText = data;
-            document.getElementById("viewDetails").style.color = "";
         });
         socket.on('viewError', data => {
             writeToLog(data, "red");
-            document.getElementById("viewDetails").innerText = data;
         });
         socket.on('viewProfile', data => {
             onload();
@@ -51,12 +48,12 @@
             <div class="monitor">
                 <div>&nbsp;</div>
                 <div id="viewProfileDetails">
-                    <div class="profileDetailHeader">device</div>
-                    <div class="profileDetailHeader">progammer</div>
-                    <div class="profileDetailHeader" style="grid-column: span 2">bins</div>
-                    <div class="profileDetailData" id="profileDetailDevice">&nbsp;</div>
-                    <div class="profileDetailData" id="profileDetailProgrammer">&nbsp;</div>
-                    <div class="profileDetailData" id="profileDetailBins" style="grid-column: span 2">&nbsp;</div>
+                    <div class="profileDetailHeader" style="grid-column: span 2">device</div>
+                    <div class="profileDetailHeader">jumper</div>
+                    <div class="profileDetailHeader">auto</div>
+                    <div class="profileDetailData" id="profileDetailDevice" style="grid-column: span 2">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetailJumper">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetailAutoDetect">&nbsp;</div>
                     <div class="profileDetailHeader">high</div>
                     <div class="profileDetailHeader">low</div>
                     <div class="profileDetailHeader">ext.</div>
@@ -65,10 +62,13 @@
                     <div class="profileDetailData" id="profileDetaiFuseLow">&nbsp;</div>
                     <div class="profileDetailData" id="profileDetaiFuseExt">&nbsp;</div>
                     <div class="profileDetailData" id="profileDetaiFuseLock">&nbsp;</div>
+                    <div class="profileDetailHeader">type</div>
+                    <div class="profileDetailHeader" style="grid-column: span 3">bin(s)</div>
+                    <div class="profileDetailData" id="profileDetailProfileType">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetailBins" style="grid-column: span 3">&nbsp;</div>
                 </div>
                 <h2 id="viewHeader">&nbsp;</h2>
                 <h3 id="viewPrint">&nbsp;</h3>
-                <div id="viewDetails"></div>
             </div>
             <div class="toolbar"></div>
         </div>
