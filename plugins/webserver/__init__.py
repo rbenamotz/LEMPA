@@ -21,6 +21,7 @@ logging.getLogger("werkzeug").setLevel(logging.ERROR)
 class LempaPlugin(Plugin, View):
     def __init__(self, app):
         super().__init__(app)
+        self.app = app
         self.cnt = 0
         self.server = Flask(__name__)
         self.server.debug = False
@@ -72,7 +73,11 @@ class LempaPlugin(Plugin, View):
         daemon2.start()
 
     def data_get(self):
-        return jsonify(test_conf)
+        output = {}
+        output["header"] = self.app.app_state
+        output ["profile"] = self.app.profile_info
+        output["binData"] = test_conf
+        return jsonify(output)
 
     def serial_in(self, s):
         self.socketio.emit("serialin", s)

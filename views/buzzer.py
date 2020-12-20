@@ -16,6 +16,7 @@ SONG_MCGYVER = "McGyver:d=4,o=4,b=160:8c5,8c5,8c5,8c5,2b,8f#,a,2g,8c5,c5,b,8a,8b
 class BuzzerView(View):
     def __init__(self, app):
         super().__init__(app)
+        self.app = app
         self.pending_song = None
         GPIO.setup(PIN_BUZZER, GPIO.OUT)
         t = threading.Thread(target=self.orchestra, daemon=True)
@@ -24,18 +25,23 @@ class BuzzerView(View):
     def play_next_song(self, buzzer):
         if not self.pending_song:
             return
+        if not self.app.buzzer_enabled:
+            self.pending_song = None
+            return
         song = parse_rtttl(self.pending_song)
         self.pending_song = None
         for note in song["notes"]:
             if (self.pending_song):
+                buzzer.stop()
                 break
             f = note["frequency"]
-            time.sleep(note["duration"] / 1000 * 0.5)
+            time.sleep(note["duration"] / 2000 * 0.5)
             if (f > 0):
                 buzzer.start(50)
                 buzzer.ChangeFrequency(f)
-            time.sleep(note["duration"] / 1000 * 0.5)
+            time.sleep(note["duration"] / 2000 * 0.5)
             buzzer.stop()
+        time.sleep(0.5)
 
     def orchestra(self):
         buzzer = GPIO.PWM(PIN_BUZZER, 1000)

@@ -3,6 +3,7 @@ from views.terminal_view import TerminalView
 from views.display_view import DisplayView
 from views.buzzer import BuzzerView
 from views import View
+from logging import StreamHandler, LogRecord
 
 COMMAND_LINE_PARAM_PROFILE_ID = 1
 COMMAND_LINE_PARAM_CONFIG_FILE = 2
@@ -19,7 +20,7 @@ class PlugingsList(list):
         return super().append(x)
 
 
-class Application:
+class Application (StreamHandler):
     APP_STATE_PROFILE_SENSE = "Profile Sensing"
     APP_STATE_INIT = "Initializing"
     APP_STATE_FIRMWARE_DOWNLOAD = "Firmware Download"
@@ -31,20 +32,27 @@ class Application:
     APP_STATE_ERASE = "Erasing"
     APP_STATE_EXCEPTION = "Exception"
 
-    def update_views(self):
-        for v in self.views:
-            v.update()
-
     def __init__(self):
+        StreamHandler.__init__(self)
         self.my_name = "LEMPA"
         self.__profile_name__ = ""
         self.firmware_version = 0
         self.__app_state = self.APP_STATE_PROFILE_SENSE
         self.profiles = []
         self.plugins = PlugingsList(self)
-        self.views = [TerminalView(self), LedsView(self), DisplayView(self), BuzzerView(self)]
+        self.views = [TerminalView(self), LedsView(
+            self), DisplayView(self), BuzzerView(self)]
         self.profiles_url = None
+        self.buzzer_enabled = True
         self.profile_info = {}
+
+    def emit(self, record: LogRecord) -> None:
+        msg = self.format(record)
+        self.detail(msg)
+
+    def update_views(self):
+        for v in self.views:
+            v.update()
 
     def refresh_views(self):
         for v in self.views:

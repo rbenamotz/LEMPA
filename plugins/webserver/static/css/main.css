@@ -1,23 +1,40 @@
 html,
 body {
-    height: 100%;
-}
-
-body {
     font-family: Arial, Helvetica, sans-serif;
+    height: calc(100% - 20px);
+    margin: 0;
 }
 
 h1 {
     text-align: center;
-    color: slateblue;
+    color: #6b5b95;
 }
 
-h2 {
-    height: 30px;
+#divOledScreen {
+    height: 60px;
     text-align: center;
     line-height: 30px;
-    border-bottom: 1px black solid;
-    border-top: 1px black solid;
+    margin-top: 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+    /* border-bottom: 1px #6b5b95 solid; */
+    /* border-top: 1px #6b5b95 solid; */
+    background-color: black;
+    color: aqua;
+}
+
+#viewHeader {
+    font-size: x-large;
+    height: 30px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding: 0;
+    text-transform: uppercase;
+    border-bottom: 1px white dashed;
+}
+
+#viewPrint {
+    height: 20px;
 }
 
 .logDir {
@@ -37,12 +54,15 @@ h4 {
 }
 
 input {
-    width: 100px;
+    width: 60px;
 }
 
 input[type=button] {
     font-weight: bold;
     text-align: center;
+    display: inline-block;
+    /* width: auto; */
+    height: auto;
 }
 
 .footer {
@@ -56,7 +76,7 @@ input[type=button] {
     border-bottom: 2px white solid;
     padding: 0;
     /* background-color: #EFEFEF; */
-    color: blue;
+    color: #6b5b95;
     font-size: small;
     height: 20px;
     overflow: hidden;
@@ -67,6 +87,33 @@ input[type=button] {
     background-color: white;
     text-align: right;
 }
+
+#viewProfileDetails {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+.profileDetailHeader {
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: white;
+    font-weight: bold;
+    background-color: #6b5b95
+}
+
+.profileDetailData {
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 5px;
+    border: 1px black solid;
+    border-collapse: collapse;
+}
+
+
+/* .profileDetails-child {} */
 
 .form-grid-container {
     display: grid;
@@ -106,7 +153,7 @@ input[type=button] {
     font-weight: bold;
     font-size: large;
     vertical-align: middle;
-    background-color: blue;
+    background-color: #6b5b95;
     color: white;
     line-height: 30px;
     text-align: center;
@@ -130,5 +177,6 @@ input[type=button] {
 }
 
 .longtextbox {
-    width: calc(100% - 210px);
+    width: calc(100% - 135px);
+    float: left;
 }

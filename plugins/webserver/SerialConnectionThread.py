@@ -93,6 +93,6 @@ class SerialConnectionThread():
                 logging.error(e)
                 #raise
         if ser:
-            print("!!!!!!!!!!!!Closing Serial!!!!!!!!!!!!!!!!!")
+            logging.info("Closing Serial")
             ser.close()
             ser = None

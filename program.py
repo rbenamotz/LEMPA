@@ -22,7 +22,7 @@ logging.basicConfig(
     filename="LEMPA.log",
     level=logging.INFO,
 )
-logging.getLogger().addHandler(logging.StreamHandler())
+# logging.getLogger().addHandler(logging.StreamHandler())
 logging.info("Programmer is running")
 
 
@@ -47,6 +47,7 @@ def cycle():
 
 GPIO.setmode(GPIO.BCM)
 app = Application()
+logging.getLogger().addHandler(app)
 state = load_state(Application.APP_STATE_INIT)
 
 while True:
@@ -54,7 +55,7 @@ while True:
         cycle()
     except KeyboardInterrupt:
         app.clean_views()
-        logging.info("LEMPA stopped due to Keyboard Interrupt")
+        logging.info("LEMPA stopped due to keyboard interrupt")
         break
     except Exception as e:
         logging.error(e)
