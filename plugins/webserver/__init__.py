@@ -21,6 +21,7 @@ logging.getLogger("werkzeug").setLevel(logging.ERROR)
 class LempaPlugin(Plugin, View):
     def __init__(self, app):
         super().__init__(app)
+        self.serial_daemon = None
         self.app = app
         self.cnt = 0
         self.server = Flask(__name__)
@@ -35,6 +36,8 @@ class LempaPlugin(Plugin, View):
             self.server, cors_allowed_origin="*", log_output=False)
 
     def header(self):
+        if (self.serial_daemon):
+            self.serial_daemon.state_changed(self.app.app_state)
         self.socketio.emit("viewHeader", self.app.app_state)
 
     def print(self, txt):
@@ -64,11 +67,11 @@ class LempaPlugin(Plugin, View):
         self.socketio.run(self.server, host="0.0.0.0", port=WEB_SERVER_PORT)
 
     def on_start(self):
-        t = SerialConnectionThread(self.serial_in, self.update_serial_status)
+        self.serial_daemon = SerialConnectionThread(self.serial_in, self.update_serial_status)
         daemon1 = threading.Thread(name="daemon_server", target=self.run)
         daemon1.setDaemon(True)
         daemon1.start()
-        daemon2 = threading.Thread(name="serial_listener", target=t.run)
+        daemon2 = threading.Thread(name="serial_listener", target=self.serial_daemon.run)
         daemon2.setDaemon(True)
         daemon2.start()
 

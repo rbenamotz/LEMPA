@@ -12,8 +12,6 @@ class esp(Programmer):
 
     def __reset_device(self):
         self.app.detail("Resetting device")
-        GPIO.output(PIN_ESP_RESET, True)
-        time.sleep(0.1)
         GPIO.output(PIN_ESP_RESET, False)
         time.sleep(0.1)
         GPIO.output(PIN_ESP_RESET, True)

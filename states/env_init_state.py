@@ -86,7 +86,7 @@ class EnvInit(State):
 
     def __setup_pins__(self):
         GPIO.setup(PIN_ESP_RESET, GPIO.OUT)
-        GPIO.output(PIN_ESP_RESET, False)
+        GPIO.output(PIN_ESP_RESET, True)
         GPIO.setup(PIN_MASTER_POWER, GPIO.OUT)
         GPIO.output(PIN_MASTER_POWER, True)
 

@@ -2,6 +2,8 @@ from hardware import SERIAL_PORT, DEFAULT_SERIAL_SPEED
 import serial
 import logging
 import time
+import application
+
 from serial import SerialException
 
 ser = None
@@ -57,6 +59,7 @@ def close_serial():
 
 class SerialConnectionThread():
     def __init__(self, serial_in_callback, status_callback):
+        self.should_connect = False
         self.status_callback = status_callback
         self.serial_in_callback = serial_in_callback
     def reconnect(self):
@@ -66,7 +69,7 @@ class SerialConnectionThread():
         if (self.status_callback):
             self.status_callback()
         init_serial()
-        while ser is None:
+        while ser is None and self.should_connect:
             time.sleep(0.2)
         if (self.status_callback):
             self.status_callback()
@@ -80,12 +83,22 @@ class SerialConnectionThread():
         s = l.decode("utf-8", errors="replace")
         self.serial_in_callback(s)
 
+    def state_changed(self, new_state):
+        self.should_connect = (new_state == application.Application.APP_STATE_WAITING_FOR_BUTTON)
+        if not self.should_connect:
+            close_serial()
+            print ("serial closed")
+
     def run(self):
         global ser
         while True:
             try:
+                while (not self.should_connect):
+                    time.sleep(0.1)
+                    continue
                 self.reconnect()
-                self.read_line()
+                if (self.should_connect):
+                    self.read_line()
                 # time.sleep(0.1)
             except SerialException:
                 ser = None
