@@ -10,7 +10,7 @@ click==7.1.2
 dnspython==1.16.0
 ecdsa==0.15
 esptool==2.8
-eventlet==0.28.0
+eventlet==0.31.0
 Flask==1.1.2
 Flask-SocketIO==4.3.1
 greenlet==0.4.17
