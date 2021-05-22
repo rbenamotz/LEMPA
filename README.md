@@ -3,7 +3,7 @@
 LEMPA is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
 
 Click image for short video:
-[![Click to watch](imgs/v41_3.jpeg)](https://www.youtube.com/watch?v=akKgeq9fPFQ)
+[![Click to watch](imgs/v5_1.jpeg)](https://www.youtube.com/watch?v=akKgeq9fPFQ)
 
 ![Image](imgs/zero_on.jpg)
 
