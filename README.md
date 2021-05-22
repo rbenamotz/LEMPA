@@ -1,6 +1,17 @@
 # LEMPA - Standalone MCU programmer for RPi
 
-LEMPA is a combination of software and hardware to allow easy..ish programming of micro controllers such as Arduino (ATMega), ESP, and others directly from the PI with as little wire mess as possible.
+LEMPA is a combination of software and hardware that brings modern CI/CD practices to firmware flasging.
+Key features:
+
+* Fully open source hardware and software
+* No need for a computer, screen, or keyboard
+* LEMPA will fetch latest versions from cloud / local network automatically
+* Embedded web based 2-way serial monitor
+* Support for mulitiple controllers including the popular ATMega, ATTiny, and ESP
+* Web based interface
+* RESTful API for automation
+* Multi profile 
+* Plugin based architecture that can used for automatic testing, embedding unique serial number etc.
 
 Click image for short video:
 [![Click to watch](imgs/v5_1.jpeg)](https://www.youtube.com/watch?v=akKgeq9fPFQ)
