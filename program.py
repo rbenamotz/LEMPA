@@ -39,8 +39,11 @@ def cycle():
     event = False
     while not event:
         event = state.do_step()
+        if Application.should_exit:
+            return
         app.refresh_views()
         time.sleep(0.01)
+
     state_code = state.on_event(event)
     state = load_state(state_code)
 
@@ -53,6 +56,9 @@ state = load_state(Application.APP_STATE_INIT)
 while True:
     try:
         cycle()
+        if Application.should_exit:
+            app.clean_views()
+            break
     except KeyboardInterrupt:
         app.clean_views()
         logging.info("LEMPA stopped due to keyboard interrupt")
@@ -63,3 +69,4 @@ while True:
         state = load_state(Application.APP_STATE_EXCEPTION)
         app.error(e)
 GPIO.cleanup()
+print ("LEMPA stopped")

@@ -18,6 +18,7 @@ class UrlFetcher(BinFetcher):
 
 class CloudGwFetcher(UrlFetcher):
     def __fetch_impl__(self, bin_info, bin_file):
+        print(bin_info)
         if "info_url" not in bin_info:
             raise Exception("Missing info_url for bin")
         info_url = bin_info["info_url"]

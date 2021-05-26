@@ -23,11 +23,11 @@ def init_serial():
         timeout=1,
         writeTimeout=0,
     )
-    logging.info(
-        "Serial connection initiated to {} with speed {:,d}bps".format(
-            SERIAL_PORT, serial_speed
-        )
-    )
+    # logging.info(
+    #     "Serial connection initiated to {} with speed {:,d}bps".format(
+    #         SERIAL_PORT, serial_speed
+    #     )
+    # )
 
 def validate_serial():
     if ser is None:
@@ -102,6 +102,8 @@ class SerialConnectionThread():
                 # time.sleep(0.1)
             except SerialException:
                 ser = None
+            except KeyboardInterrupt:
+                application.Application.should_exit = True
             except Exception as e:
                 logging.error(e)
                 #raise

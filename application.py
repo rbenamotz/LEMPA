@@ -31,6 +31,9 @@ class Application (StreamHandler):
     APP_STATE_FAIL = "Fail"
     APP_STATE_ERASE = "Erasing"
     APP_STATE_EXCEPTION = "Exception"
+    APP_STATE_SHUTDOWN = "Shut down"
+
+    should_exit = False
 
     def __init__(self):
         StreamHandler.__init__(self)

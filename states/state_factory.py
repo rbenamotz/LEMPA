@@ -8,6 +8,7 @@ from .success_state import SuccessState
 from .wait_for_button_state import WaitForButtonState
 from .fw_erase import FirmwareEraseState
 from .exception_state import ExceptionState
+from .shutdown_state import ShutDownState
 
 
 def state_by_code(code, app):
@@ -29,4 +30,6 @@ def state_by_code(code, app):
         return FirmwareEraseState(app)
     if code == Application.APP_STATE_EXCEPTION:
         return ExceptionState(app)
+    if code == Application.APP_STATE_SHUTDOWN:
+        return ShutDownState(app)
     raise ValueError("Unknown state %s" % code)
