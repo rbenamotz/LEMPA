@@ -87,5 +87,5 @@ class DoublePinButton(HatButton):
         GPIO.setup(pin2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
     def loop(self):
-        self.is_down = not (GPIO.input(self.pin1) and GPIO.input(self.pin2))
+        self.is_down = not (GPIO.input(self.pin1) or GPIO.input(self.pin2))
         return super().loop()

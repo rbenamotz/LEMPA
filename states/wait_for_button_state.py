@@ -30,6 +30,7 @@ class WaitForButtonState(State):
         self.button_shut_down = DoublePinButton("Shutdown", app, PIN_BUTTON_PROG, PIN_BUTTON_ERASE)
         self.button_shut_down.on_long_click = self._do_shutdown
         self.button_shut_down.long_click_action_name = "Shut down"
+        self.button_shut_down.long_click_duration = 5
 
         self.button_prog = SinglePinButton("Prog", app, PIN_BUTTON_PROG)
         self.button_prog.on_short_click = self._do_prog

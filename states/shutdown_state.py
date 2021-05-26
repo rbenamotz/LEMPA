@@ -12,6 +12,6 @@ class ShutDownState(State):
 
     def do_step(self):
         time.sleep(1)
-        call("sudo shutdown 1", shell=True)
+        call("sudo shutdown now", shell=True)
         Application.should_exit = True
         return True
