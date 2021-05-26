@@ -47,6 +47,8 @@ class WaitForButtonState(State):
         if self.button_shut_down.loop():
             return True
         if self.button_shut_down.is_down:
+            self.button_erase.long_click_started = False
+            self.button_prog.long_click_started = False
             return False
         if self.button_erase.loop() or self.button_prog.loop():
             return True
