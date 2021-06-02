@@ -36,6 +36,6 @@ six==1.15.0
 spidev==3.5
 toml==0.10.1
 typed-ast==1.4.1
-urllib3==1.25.9
+urllib3==1.26.5
 Werkzeug==1.0.1
 wrapt==1.12.1
