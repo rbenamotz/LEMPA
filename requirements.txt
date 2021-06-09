@@ -29,13 +29,13 @@ pylint==2.5.3
 pyserial==3.4
 python-engineio==3.13.2
 python-socketio==4.6.0
-requests==2.24.0
+requests>=2.25.1
 RPi.GPIO==0.7.0
 rtttl==0.2
 six==1.15.0
 spidev==3.5
 toml==0.10.1
 typed-ast==1.4.1
-urllib3==1.26.5
+urllib3>=1.26.5
 Werkzeug==1.0.1
 wrapt==1.12.1
