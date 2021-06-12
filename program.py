@@ -61,7 +61,7 @@ while True:
             break
     except KeyboardInterrupt:
         app.clean_views()
-        logging.info("LEMPA stopped due to keyboard interrupt")
+        logging.info("Stopping due to keyboard interrupt")
         break
     except Exception as e:
         logging.error(e)
