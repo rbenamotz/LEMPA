@@ -121,7 +121,7 @@ Bin method can be one of the following:
 
 ## Web Interface
 
-It is possible to access the system via web UI that allows:
+Once LEMPA is up and running, It exposes web UI via port 8080 that allows:
 
 * Live view of system actions
 * Full working 2 way serial monitor. ATMega328 is connected by default to RPi serial0. External boards can be connected via dedicated headers on the HAT
