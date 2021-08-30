@@ -185,3 +185,17 @@ function clearLog(elementId) {
         elm.removeChild(elm.firstChild);
     }
 }
+
+function doProgram() {
+    writeToLog("Sending program request")
+    fetch('/prgm', { method: 'POST' })
+        .then(async resp => {
+            txt = await resp.text();
+            if (resp.ok) {
+                writeToLog(txt, null)
+            } else {
+                writeToLog(txt, "red")
+            }
+        })
+        .finally(() => writeSepToLog())
+}

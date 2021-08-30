@@ -32,6 +32,11 @@ h1 {
     text-transform: uppercase;
     border-bottom: 1px white dashed;
 }
+#viewButtons {
+    height: 20px;
+    padding: 10px 10px 10px 10px;
+    text-align: center;
+}
 
 #viewPrint {
     height: 20px;

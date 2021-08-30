@@ -48,6 +48,7 @@ class Application (StreamHandler):
         self.profiles_url = None
         self.buzzer_enabled = True
         self.profile_info = {}
+        self.move_to_state = None
 
     def emit(self, record: LogRecord) -> None:
         msg = self.format(record)

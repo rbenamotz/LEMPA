@@ -34,18 +34,21 @@ def load_state(code):
 
 
 def cycle():
-    global state
+    # global state
     app.refresh_views()
     event = False
     while not event:
+        if (app.move_to_state):
+            state_code = app.move_to_state
+            app.move_to_state = None
+            return state_code
         event = state.do_step()
         if Application.should_exit:
             return
         app.refresh_views()
         time.sleep(0.01)
 
-    state_code = state.on_event(event)
-    state = load_state(state_code)
+    return state.on_event(event)
 
 
 GPIO.setmode(GPIO.BCM)
@@ -55,7 +58,8 @@ state = load_state(Application.APP_STATE_INIT)
 
 while True:
     try:
-        cycle()
+        state_code = cycle()
+        state = load_state(state_code)
         if Application.should_exit:
             app.clean_views()
             break

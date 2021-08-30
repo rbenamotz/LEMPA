@@ -1,3 +1,4 @@
+from application import Application
 import os
 import threading
 import logging
@@ -31,6 +32,8 @@ class LempaPlugin(Plugin, View):
             "/data", "data_get", self.data_get, methods=["GET"])
         self.server.add_url_rule("/data", "data_post",
                                  self.data_post, methods=["POST"])
+        self.server.add_url_rule("/prgm", "btn_prgm",
+                                 self.btn_prgm, methods=["POST"])
         self.server.add_url_rule("/favicon.ico", "favicon", self.favicon)
         self.socketio = SocketIO(
             self.server, cors_allowed_origin="*", log_output=False)
@@ -91,6 +94,10 @@ class LempaPlugin(Plugin, View):
 
     def root(self):
         return send_from_directory("./static", "index.html")
+
+    def btn_prgm(self):
+        self.app.move_to_state = Application.APP_STATE_PROGRAMMING
+        return "ok"
 
     def data_post(self):
         j = request.get_json(force=True)

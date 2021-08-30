@@ -10,12 +10,15 @@ class TerminalView(View):
         print("Goodbye")
 
     def print(self, txt):
-        print("\033[92m{}\033[39m".format(txt))
+        if (txt):
+            print("\033[92m{}\033[39m".format(txt))
 
     def detail(self, txt):
         print(txt)
 
     def error(self, e):
+        if not e:
+            return
         print("\n\n{}".format("|" * HEADER_LEN))
         print("\033[31m{}\033[39m".format(e))
         print("!" * HEADER_LEN)

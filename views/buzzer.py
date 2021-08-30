@@ -45,9 +45,12 @@ class BuzzerView(View):
 
     def orchestra(self):
         buzzer = GPIO.PWM(PIN_BUZZER, 1000)
-        while True:
-            self.play_next_song(buzzer)
-            time.sleep(0.1)
+        try:
+            while True:
+                self.play_next_song(buzzer)
+                time.sleep(0.1)
+        except KeyboardInterrupt:
+            return
 
     def header(self):
         if (self.app.app_state == application.Application.APP_STATE_SUCCESS):
