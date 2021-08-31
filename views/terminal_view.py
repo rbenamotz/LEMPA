@@ -24,4 +24,5 @@ class TerminalView(View):
         print("!" * HEADER_LEN)
 
     def header(self):
-        print("\n\n\033[7m{:^{w}}\033[0m".format(self.app.app_state, w=HEADER_LEN))
+        if self.app and self.app.app_state:
+            print("\n\n\033[7m{:^{w}}\033[0m".format(self.app.app_state, w=HEADER_LEN))
