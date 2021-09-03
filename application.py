@@ -51,9 +51,9 @@ class Application (StreamHandler):
         self.profile_info = {}
         self.move_to_state = None
 
-    def emit(self, record: LogRecord) -> None:
-        msg = self.format(record)
-        self.detail(msg)
+    # def emit(self, record: LogRecord) -> None:
+    #     msg = self.format(record)
+    #     self.detail(msg)
 
     def update_views(self):
         for v in self.views:
@@ -72,7 +72,6 @@ class Application (StreamHandler):
             v.print(txt)
 
     def detail(self, txt):
-        # logging.debug("detail: {}".format(txt))
         for v in self.views:
             v.detail(txt)
 

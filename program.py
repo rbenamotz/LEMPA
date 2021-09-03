@@ -21,7 +21,7 @@ logging.basicConfig(
     # format="%(asctime)s %(message)s",
     datefmt="%m/%d/%Y %I:%M:%S %p",
     filename="LEMPA.log",
-    level=logging.DEBUG,
+    level=logging.INFO,
 )
 # logging.getLogger().addHandler(logging.StreamHandler())
 logging.info("Programmer is running")
@@ -47,7 +47,7 @@ def cycle():
         event = state.do_step()
         if Application.should_exit:
             return
-        app.refresh_views()
+        # app.refresh_views()
         time.sleep(0.01)
 
     return state.on_event(event)
