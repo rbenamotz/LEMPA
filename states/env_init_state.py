@@ -42,26 +42,6 @@ class EnvInit(State):
             instance.on_start()
             self.app.plugins.append(instance)
 
-    def __load_plugins_old__(self):
-        pysearchre = re.compile(".py$", re.IGNORECASE)
-        pluginfiles = filter(
-            pysearchre.search,
-            os.listdir(os.path.join(os.path.dirname(__file__), "../plugins")),
-        )
-
-        def form_module(fp):
-            return "." + os.path.splitext(fp)[0]
-
-        pp = map(form_module, pluginfiles)
-        importlib.import_module("plugins")
-        for plugin in pp:
-            if not plugin.startswith(".__"):
-                module = importlib.import_module(plugin, package="plugins")
-                class_ = getattr(module, "WebserverPlugin")
-                instance = class_(self.app)
-                instance.on_start()
-                self.app.plugins.append(instance)
-
     def __read_hat_info_field__(self, field, default):
         try:
             f = open("/proc/device-tree/hat/" + field, "r")

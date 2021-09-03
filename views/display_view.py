@@ -30,6 +30,9 @@ class DisplayView(View):
 
     def __init__(self, app):
         super().__init__(app)
+        logging.getLogger("Adafruit_I2C.Device").setLevel(logging.ERROR)
+        logging.getLogger("Adafruit_SSD1306").setLevel(logging.ERROR)
+        logging.getLogger("PIL").setLevel(logging.ERROR)
         self.disp_header = ""
         self.disp_body = ""
         self.disp_error = None
@@ -72,7 +75,7 @@ class DisplayView(View):
         y = y + 3
         if self.disp_error:
             self.draw.text((0, y), self.disp_error, font=self.fontBody, fill=1)
-        else:
+        elif self.disp_body:
             self.draw.text((0, y), self.disp_body, font=self.fontBody, fill=1)
         self.disp.image(self.image)
         self.disp.display()

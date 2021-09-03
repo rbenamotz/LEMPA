@@ -1,3 +1,4 @@
+import logging
 import RPi.GPIO as GPIO
 import time
 
@@ -16,6 +17,7 @@ class HatButton:
         self.long_click_duration = 3
         self.long_cick_wait_started = False
         self.waiting_for_button_up = False
+        logging.debug("Button {} inititated".format(name))
 
     def __check_long_click(self):
         if not self.on_long_click:

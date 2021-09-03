@@ -12,6 +12,8 @@ from .shutdown_state import ShutDownState
 
 
 def state_by_code(code, app):
+    if (not code):
+        return None
     if code == Application.APP_STATE_INIT:
         return EnvInit(app)
     if code == Application.APP_STATE_PROFILE_SENSE:

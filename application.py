@@ -1,3 +1,4 @@
+import logging
 from views.led_view import LedsView
 from views.terminal_view import TerminalView
 from views.display_view import DisplayView
@@ -71,6 +72,7 @@ class Application (StreamHandler):
             v.print(txt)
 
     def detail(self, txt):
+        # logging.debug("detail: {}".format(txt))
         for v in self.views:
             v.detail(txt)
 
