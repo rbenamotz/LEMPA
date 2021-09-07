@@ -1,6 +1,5 @@
 import esptool
 from . import Programmer
-from hardware import SERIAL_PORT
 import RPi.GPIO as GPIO
 import time
 from hardware import PIN_ESP_RESET
@@ -19,7 +18,7 @@ class esp(Programmer):
     def program(self):
         command = [
             "--port",
-            SERIAL_PORT,
+            self.app.serial_port,
             "--baud",
             str(self.comm_speed),
             "write_flash",

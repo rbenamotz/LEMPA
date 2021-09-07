@@ -21,6 +21,16 @@ class EnvInit(State):
 
     def __load_profiles__(self):
         init_profile_data(self.app)
+    
+    def __init_serial__(self):
+        arr = os.listdir("/dev")
+        arr.sort()
+        for s in arr:
+            if s.startswith("serial"):
+                p = "/dev/" + s
+                self.app.serial_port = p
+                logging.info("Using serial port {}".format(p))
+                return
 
     def __load_plugins__(self):
         if len(self.app.plugins) > 0:
@@ -76,12 +86,14 @@ class EnvInit(State):
         if self.steps_counter == 2:
             self.__load_profiles__()
         if self.steps_counter == 3:
-            self.__load_plugins__()
+            self.__init_serial__()
         if self.steps_counter == 4:
+            self.__load_plugins__()
+        if self.steps_counter == 5:
             self.__setup_pins__()
         self.steps_counter = self.steps_counter + 1
         t = time.time() - self.init_time
-        return t > 2
+        return (self.steps_counter > 5 and t > 2)
 
     def on_event(self, event):
         return Application.APP_STATE_PROFILE_SENSE

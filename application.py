@@ -40,6 +40,7 @@ class Application (StreamHandler):
         StreamHandler.__init__(self)
         self.my_name = "LEMPA"
         self.__profile_name__ = ""
+        self.serial_port = None
         self.firmware_version = 0
         self.__app_state = self.APP_STATE_PROFILE_SENSE
         self.profiles = []

@@ -1,4 +1,4 @@
-from hardware import SERIAL_PORT, DEFAULT_SERIAL_SPEED
+from hardware import DEFAULT_SERIAL_SPEED
 import serial
 import logging
 import time
@@ -12,10 +12,10 @@ serial_speed = DEFAULT_SERIAL_SPEED
 
 
 
-def init_serial():
+def init_serial(serial_port):
     global ser
     ser = serial.Serial(
-        port=SERIAL_PORT,
+        port=serial_port,
         baudrate=serial_speed,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
@@ -23,11 +23,6 @@ def init_serial():
         timeout=1,
         writeTimeout=0,
     )
-    # logging.info(
-    #     "Serial connection initiated to {} with speed {:,d}bps".format(
-    #         SERIAL_PORT, serial_speed
-    #     )
-    # )
 
 def validate_serial():
     if ser is None:
@@ -58,7 +53,8 @@ def close_serial():
 
 
 class SerialConnectionThread():
-    def __init__(self, serial_in_callback, status_callback):
+    def __init__(self, serial_port, serial_in_callback, status_callback):
+        self.serial_port = serial_port
         self.should_connect = False
         self.status_callback = status_callback
         self.serial_in_callback = serial_in_callback
@@ -68,7 +64,7 @@ class SerialConnectionThread():
             return
         if (self.status_callback):
             self.status_callback()
-        init_serial()
+        init_serial(self.serial_port)
         while ser is None and self.should_connect:
             time.sleep(0.2)
         if (self.status_callback):
@@ -91,6 +87,9 @@ class SerialConnectionThread():
 
     def run(self):
         global ser
+        if (not self.serial_port):
+            logging.warning("No serial port. Live monitor will not work")
+            return
         while True:
             try:
                 while (not self.should_connect):
@@ -100,7 +99,9 @@ class SerialConnectionThread():
                 if (self.should_connect):
                     self.read_line()
                 # time.sleep(0.1)
-            except SerialException:
+            except SerialException as e:
+                print ("Serial Exception")
+                logging.error(e)
                 ser = None
             except KeyboardInterrupt:
                 application.Application.should_exit = True

@@ -70,7 +70,7 @@ class LempaPlugin(Plugin, View):
         self.socketio.run(self.server, host="0.0.0.0", port=WEB_SERVER_PORT)
 
     def on_start(self):
-        self.serial_daemon = SerialConnectionThread(self.serial_in, self.update_serial_status)
+        self.serial_daemon = SerialConnectionThread(self.app.serial_port,self.serial_in, self.update_serial_status)
         daemon1 = threading.Thread(name="daemon_server", target=self.run)
         daemon1.setDaemon(True)
         daemon1.start()
