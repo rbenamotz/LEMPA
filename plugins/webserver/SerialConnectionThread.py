@@ -14,6 +14,8 @@ serial_speed = DEFAULT_SERIAL_SPEED
 
 def init_serial(serial_port):
     global ser
+    if not serial_port:
+        return
     ser = serial.Serial(
         port=serial_port,
         baudrate=serial_speed,
@@ -60,7 +62,7 @@ class SerialConnectionThread():
         self.serial_in_callback = serial_in_callback
     def reconnect(self):
         global ser
-        if ser:
+        if ser or not self.serial_port:
             return
         if (self.status_callback):
             self.status_callback()
@@ -83,7 +85,6 @@ class SerialConnectionThread():
         self.should_connect = (new_state == application.Application.APP_STATE_WAITING_FOR_BUTTON)
         if not self.should_connect:
             close_serial()
-            print ("serial closed")
 
     def run(self):
         global ser
