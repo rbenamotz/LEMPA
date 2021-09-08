@@ -1,10 +1,11 @@
 import importlib
 import logging
-import os
+from os.path import exists
 import re
 import time
 import RPi.GPIO as GPIO
 from glob import glob
+from hardware import SERIAL_PORT
 
 
 from application import Application
@@ -23,14 +24,10 @@ class EnvInit(State):
         init_profile_data(self.app)
     
     def __init_serial__(self):
-        arr = os.listdir("/dev")
-        arr.sort()
-        for s in arr:
-            if s.startswith("serial"):
-                p = "/dev/" + s
-                self.app.serial_port = p
-                logging.info("Using serial port {}".format(p))
-                return
+        if not exists(SERIAL_PORT):
+            logging.warn("Serial port {} does not exist. Please enable using raspi-conif".format(SERIAL_PORT))
+            return
+        self.app.serial_port = SERIAL_PORT
 
     def __load_plugins__(self):
         if len(self.app.plugins) > 0:

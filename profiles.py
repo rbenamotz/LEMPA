@@ -24,6 +24,7 @@ def init_profile_data(app):
         file_name = sys.argv[COMMAND_LINE_PARAM_CONFIG_FILE]
     with open(file_name) as f:
         profile_data = json.load(f)
+    print(profile_data)
 
 def profile_by_jumper(jumper):
     for x in profile_data:

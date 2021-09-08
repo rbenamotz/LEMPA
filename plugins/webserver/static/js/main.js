@@ -30,9 +30,13 @@ function onDataChanged() {
 
     document.getElementById("profileDetailJumper").innerText = p.jumper ? p.jumper : "-";
     document.getElementById("profileDetailAutoDetect").innerText = p.autodetect ? "true" : "false";
-    document.getElementById("profileDetailProfileType").innerText = p["type"]
-
-
+    document.getElementById("profileDetailProfileType").innerText = p["type"];
+    let s = ddd.serial;
+    document.getElementById("profileDetailSerialPort").innerText = s.port;
+    document.getElementById("profileDetailSerialEnable").innerText = s.enabled;
+    document.getElementById("profileDetailSerialSpeed").innerText = s["speed"];
+    let elms = document.querySelectorAll('[data-is-ser-related]');
+    elms.forEach(e => e.disabled = !s.enabled);
 
 }
 
@@ -108,6 +112,9 @@ function onload() {
         })
         .then(() => writeToLog("Data loaded from server"))
         .finally(() => writeSepToLog())
+    fetch ("/profiles")
+        .then(resp => resp.json())
+        .then(loadProfiles)
     var serialOutText = document.getElementById("serialOutText");
     serialOutText.addEventListener("keyup", onSerialOutTextKeyUp);
 }
@@ -185,10 +192,9 @@ function clearLog(elementId) {
         elm.removeChild(elm.firstChild);
     }
 }
-
-function doProgram() {
-    writeToLog("Sending program request")
-    fetch('/prgm', { method: 'POST' })
+sendCommand = (title,cmd) => {
+    writeToLog("Sending " + title + " request")
+    fetch('/' + cmd, { method: 'POST' })
         .then(async resp => {
             txt = await resp.text();
             if (resp.ok) {
@@ -197,5 +203,35 @@ function doProgram() {
                 writeToLog(txt, "red")
             }
         })
+        .catch ((e) => alert(e))
         .finally(() => writeSepToLog())
+
 }
+
+function doErase() {
+    if (!confirm("Are you sure?")) {
+        return;
+    }
+    sendCommand("Erase", "erase");
+}
+
+function loadProfiles(profiles) {
+    let root = document.getElementById("divAllProfiles");
+    while (root.firstChild) {
+        root.removeChild(root.firstChild);
+    }
+    clearLog('serialMonitor')
+    if (!profiles.forEach) {
+        return;
+    }
+    arr = profiles.filter (p => p.jumper);
+    arr = arr.sort((a, b) => a.jumper - b.jumper);
+    arr.forEach(p => {
+        let d = document.createElement("div");
+        let s = `${p.jumper}: ${p.id} (${p.device})`
+        d.innerText = s;
+        root.appendChild(d);
+    })
+    
+}    
+

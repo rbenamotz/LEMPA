@@ -49,7 +49,7 @@ h1 {
 }
 
 h3 {
-    height: 30px;
+    margin-bottom: 5px;
 }
 
 h4 {
@@ -133,14 +133,15 @@ input[type=button] {
     grid-template-rows: 1fr 1fr;
     /* grid-template-columns: auto 100px; */
     grid-template-columns: 1fr 2fr 3fr;
-    grid-gap: 20px;
+    grid-gap: 10px;
     height: 80%;
     padding: 10px;
 }
 
-.grid-child:nth-child(4) {
-    grid-column: span 2;
+.grid-child:nth-child(1) {
+    grid-row: span 2;
 }
+
 
 .grid-child:nth-child(3) {
     grid-row: span 2;

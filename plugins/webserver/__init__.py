@@ -1,4 +1,5 @@
 from application import Application
+from hardware import SERIAL_PORT, DEFAULT_SERIAL_SPEED
 import os
 import threading
 import logging
@@ -9,6 +10,7 @@ from .. import Plugin
 import time
 from views import View
 from .SerialConnectionThread import close_serial, SerialConnectionThread, ser, serial_speed, export_text, export_config
+from profiles import profile_data
 
 test_conf = {}
 WEB_SERVER_PORT = 8080
@@ -32,8 +34,14 @@ class LempaPlugin(Plugin, View):
             "/data", "data_get", self.data_get, methods=["GET"])
         self.server.add_url_rule("/data", "data_post",
                                  self.data_post, methods=["POST"])
+        self.server.add_url_rule(
+            "/profiles", "profiles_get", self.profiles_get, methods=["GET"])
         self.server.add_url_rule("/prgm", "btn_prgm",
                                  self.btn_prgm, methods=["POST"])
+        self.server.add_url_rule("/erase", "btn_erase",
+                                 self.btn_erase, methods=["POST"])                                 
+        self.server.add_url_rule("/reload", "btn_reload",
+                                 self.btn_reload, methods=["POST"])
         self.server.add_url_rule("/favicon.ico", "favicon", self.favicon)
         self.socketio = SocketIO(
             self.server, cors_allowed_origin="*", log_output=False)
@@ -81,9 +89,13 @@ class LempaPlugin(Plugin, View):
     def data_get(self):
         output = {}
         output["header"] = self.app.app_state
-        output ["profile"] = self.app.profile_info
+        output["profile"] = self.app.profile_info
+        output["serial"] = {"port" : SERIAL_PORT, "enabled" : (self.app.serial_port != None), "speed" : DEFAULT_SERIAL_SPEED}
         output["binData"] = test_conf
         return jsonify(output)
+    
+    def profiles_get(self):
+        return jsonify(profile_data)
 
     def serial_in(self, s):
         self.socketio.emit("serialin", s)
@@ -98,6 +110,16 @@ class LempaPlugin(Plugin, View):
     def btn_prgm(self):
         self.app.move_to_state = Application.APP_STATE_PROGRAMMING
         return "ok"
+
+    def btn_erase(self):
+        self.app.move_to_state = Application.APP_STATE_ERASE
+        return "ok"
+
+    def btn_reload(self):
+        self.app.move_to_state = Application.APP_STATE_FIRMWARE_DOWNLOAD
+        return "ok"
+        
+        
 
     def data_post(self):
         j = request.get_json(force=True)

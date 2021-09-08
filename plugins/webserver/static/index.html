@@ -46,7 +46,19 @@
         <div class="grid-child">
             <div class="cellheader" id="viewProfileId">System Status</div>
             <div class="monitor">
-                <div>&nbsp;</div>
+                <div id="divOledScreen">
+                    <div id="viewHeader"></div>
+                    <div id="viewPrint"></div>
+                </div>
+                <div id="viewButtons">
+                    <input type="button" onclick="sendCommand('program', 'prgm')" value="PRGM">
+                    <input type="button" onclick="sendCommand('reload', 'reload')" value="FETCH">
+                    <input type="button" onclick="doErase()" value="ERASE">
+                    
+                </div>
+                
+                <div>&nbsp;</div>      
+                <h3>PROFILE</h3>
                 <div id="viewProfileDetails">
                     <div class="profileDetailHeader" style="grid-column: span 2">device</div>
                     <div class="profileDetailHeader">jumper</div>
@@ -54,6 +66,9 @@
                     <div class="profileDetailData" id="profileDetailDevice" style="grid-column: span 2">&nbsp;</div>
                     <div class="profileDetailData" id="profileDetailJumper">&nbsp;</div>
                     <div class="profileDetailData" id="profileDetailAutoDetect">&nbsp;</div>
+                </div>
+                <h3>FUSES</h3>
+                <div id="viewProfileDetails">
                     <div class="profileDetailHeader">high</div>
                     <div class="profileDetailHeader">low</div>
                     <div class="profileDetailHeader">ext.</div>
@@ -62,25 +77,36 @@
                     <div class="profileDetailData" id="profileDetaiFuseLow">&nbsp;</div>
                     <div class="profileDetailData" id="profileDetaiFuseExt">&nbsp;</div>
                     <div class="profileDetailData" id="profileDetaiFuseLock">&nbsp;</div>
+                </div>
+                <h3>BINARIES</h3>
+                <div id="viewProfileDetails">
                     <div class="profileDetailHeader">type</div>
                     <div class="profileDetailHeader" style="grid-column: span 3">bin(s)</div>
                     <div class="profileDetailData" id="profileDetailProfileType">&nbsp;</div>
                     <div class="profileDetailData" id="profileDetailBins" style="grid-column: span 3">&nbsp;</div>
                 </div>
-                <div id="divOledScreen">
-                    <div id="viewHeader"></div>
-                    <div id="viewPrint"></div>
+                
+                    
+                <h3>SERIAL</h3>
+                <div id="viewProfileDetails">
+                    <div class="profileDetailHeader" style="grid-column: span 2">port</div>
+                    <div class="profileDetailHeader" style="grid-column: span 1">enb</div>
+                    <div class="profileDetailHeader" style="grid-column: span 1">spd</div>
+                    <div class="profileDetailData" id="profileDetailSerialPort" style="grid-column: span 2">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetailSerialEnable" style="grid-column: span 1">&nbsp;</div>
+                    <div class="profileDetailData" id="profileDetailSerialSpeed" style="grid-column: span 1">&nbsp;</div>
                 </div>
-                <div id="viewButtons">
-                    <input type="button" onclick="doProgram()" value="PRGM">
-                </div>
+                <h3>PROFILES</h3>
+                <div id="divAllProfiles"></div>
             </div>
             <div class="toolbar"></div>
         </div>
         <div class="grid-child">
             <div class="cellheader">Binary Data Injection</div>
             <div id="mainform" class="form-grid-container"></div>
-            <div class="toolbar"><input type="button" onclick="sendFormToSerial()" value="send"></div>
+            <div class="toolbar">
+                <input type="button" onclick="sendFormToSerial()" value="send" data-is-ser-related>
+            </div>
         </div>
         <div class="grid-child">
             <div class="cellheader">Operation Log</div>
@@ -91,9 +117,9 @@
             <div class="cellheader">Live Serial Monitor</div>
             <div id="serialMonitor" class="monitor"></div>
             <div class="toolbar">
-                <input type="text" class="longtextbox" id="serialOutText">
-                <input type="button" value="send" onclick="sendSerialTextFromForm()">
-                <input type="button" onclick="clearLog('serialMonitor')" value="clear">
+                <input type="text" class="longtextbox" id="serialOutText" data-is-ser-related>
+                <input type="button" value="send" onclick="sendSerialTextFromForm()" data-is-ser-related>
+                <input type="button" onclick="clearLog('serialMonitor')" value="clear" data-is-ser-related>
             </div>
         </div>
     </div>
