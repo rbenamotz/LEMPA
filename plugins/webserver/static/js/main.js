@@ -229,9 +229,14 @@ function loadProfiles(profiles) {
     arr.forEach(p => {
         let d = document.createElement("div");
         let s = `${p.jumper}: ${p.id} (${p.device})`
-        d.innerText = s;
+        let d1 = document.createElement("div");
+        if (p.id === ddd.profile.id) {
+            d1.style.fontWeight = "bold";
+            d1.style.color = "blue";
+        }
+        d1.innerText = s;
+        d.appendChild(d1);
         root.appendChild(d);
     })
-    
-}    
+}
 
