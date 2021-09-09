@@ -224,13 +224,10 @@ function loadProfiles(profiles) {
     if (!profiles.forEach) {
         return;
     }
-    let arr = profiles.map(p => {return {"id" : p.id, "device" : p.device, "jumper" : p.jumper? p.jumper : 10}})
-    console.log(arr)
-    //arr = profiles.filter (p => p.jumper);
+    let arr = profiles.map(p => {return {"id" : p.id, "device" : p.device, "jumper" : p.jumper? p.jumper : 10}});
     arr = arr.sort((a, b) => a.jumper - b.jumper);
     arr.forEach(p => {
         let d = document.createElement("div");
-        console.log(p);
         let s = `${p.jumper<5 ? p.jumper : 'x'}: ${p.id} (${p.device})`
         let d1 = document.createElement("div");
         if (p.id === ddd.profile.id) {
