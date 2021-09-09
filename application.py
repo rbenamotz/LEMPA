@@ -44,6 +44,7 @@ class Application (StreamHandler):
         self.firmware_version = 0
         self.__app_state = self.APP_STATE_PROFILE_SENSE
         self.profiles = []
+        self.skip_detect = False
         self.plugins = PlugingsList(self)
         self.views = [TerminalView(self), LedsView(
             self), DisplayView(self), BuzzerView(self)]

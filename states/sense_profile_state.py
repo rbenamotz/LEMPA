@@ -33,19 +33,19 @@ class SensingProfileState(State):
         super().__init__(app)
         for p in PINS_PROFILES:
             GPIO.setup(p, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-        self.skip_detect = False
+        self.app.skip_detect = False
         if len(sys.argv) >= COMMAND_LINE_PARAM_PROFILE_ID + 1:
             profile_id = sys.argv[COMMAND_LINE_PARAM_PROFILE_ID]
             if not profile_id == "_":
                 self.app.detail("Using profile from args: {}".format(profile_id))
                 self.__load_profile__(sys.argv[1])
-                self.skip_detect = True
+                self.app.skip_detect = True
                 return
         self.app.detail("Detecting profile by jumper")
         self.message_shown = False
 
     def do_step(self):
-        if self.skip_detect:
+        if self.app.skip_detect:
             return True
         for j in range(4):
             p = PINS_PROFILES[j]

@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+from hardware import PINS_PROFILES
 from application import Application
 from . import State
 from hardware import PIN_BUTTON_PROG, PIN_BUTTON_ERASE, PIN_RESET_ATMEGA
@@ -15,12 +16,15 @@ class WaitForButtonState(State):
 
     def _do_dowload(self):
         self.next_state = Application.APP_STATE_PROFILE_SENSE
-    
+
     def _do_shutdown(self):
         self.next_state = Application.APP_STATE_SHUTDOWN
 
     def __init__(self, app):
         super().__init__(app)
+        self.watch_jumper = None
+        if not self.app.skip_detect and "jumper" in self.app.profile_info:
+            self.watch_jumper = self.app.profile_info["jumper"]
         self.waiting_for_board_disconnect = False
         if self.app.is_auto_detect:
             self.app.detail("Auto detect enabled")
@@ -43,7 +47,16 @@ class WaitForButtonState(State):
         self.button_erase.long_click_duration = 3
         self.next_state = None
 
+    def is_jumper_changed(self):
+        if not self.watch_jumper:
+            return False
+        return GPIO.input(PINS_PROFILES[self.watch_jumper-1])
+
+
     def do_step(self):
+        if self.is_jumper_changed():
+            self.next_state = Application.APP_STATE_PROFILE_SENSE
+            return True
         if self.button_shut_down.loop():
             return True
         if self.button_shut_down.is_down:
