@@ -186,3 +186,8 @@ input[type=button] {
     width: calc(100% - 135px);
     float: left;
 }
+
+.highlilghted {
+    color: white;
+    background-color: blue;
+}

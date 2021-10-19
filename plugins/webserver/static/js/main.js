@@ -231,8 +231,9 @@ function loadProfiles(profiles) {
         let s = `${p.jumper<5 ? p.jumper : 'x'}: ${p.id} (${p.device})`
         let d1 = document.createElement("div");
         if (p.id === ddd.profile.id) {
-            d1.style.fontWeight = "bold";
-            d1.style.color = "blue";
+            d1.className = "highlilghted"
+            //d1.style.fontWeight = "bold";
+            //d1.style.color = "blue";
         }
         d1.innerText = s;
         d.appendChild(d1);
