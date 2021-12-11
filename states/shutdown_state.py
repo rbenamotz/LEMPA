@@ -5,7 +5,7 @@ from . import State
 from subprocess import call
 from hardware import PIN_BUTTON_PROG, PIN_BUTTON_ERASE
 from .hat_button import SinglePinButton
-WAIT_DURATION = 55
+WAIT_DURATION = 10
 
 class ShutDownState(State):
     def __init__(self, app):
@@ -17,10 +17,10 @@ class ShutDownState(State):
 
         self.button_erase = SinglePinButton("Erase", app, PIN_BUTTON_ERASE)
         self.button_erase.on_short_click = self.__do_cancel
-        call ("sudo shutdown 1", shell=True)
 
     def __do_cancel(self):
-        call ("sudo shutdown -c", shell=True)
+        self.app.print("shutdown cancelled")
+        #call ("sudo shutdown -c", shell=True)
 
     def do_step(self):
         if self.button_erase.loop() or self.button_prog.loop():
@@ -29,6 +29,7 @@ class ShutDownState(State):
         pt = WAIT_DURATION - t
         if pt==0:
             Application.should_exit = True
+            call ("sleep 3 && sudo shutdown now &", shell=True)
             return True
         if self.last_print_time != pt:
             self.app.print("Shutdown in {}s".format(pt))

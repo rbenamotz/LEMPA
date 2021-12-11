@@ -52,6 +52,9 @@ class BuzzerView(View):
         except KeyboardInterrupt:
             return
 
+    def print(self, txt):
+        if (self.app.app_state ==application.Application.APP_STATE_SHUTDOWN):
+            self.pending_song = SONG_ONE_SHORT
     def header(self):
         if (self.app.app_state == application.Application.APP_STATE_SUCCESS):
             self.pending_song = SONG_SUCCESS
