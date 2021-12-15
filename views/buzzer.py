@@ -62,4 +62,6 @@ class BuzzerView(View):
         if (self.app.app_state == application.Application.APP_STATE_FAIL):
             self.pending_song = SONG_ERROR
             return
+        if (self.app.app_state == application.Application.APP_STATE_INIT):
+            return
         self.pending_song = SONG_ONE_SHORT
